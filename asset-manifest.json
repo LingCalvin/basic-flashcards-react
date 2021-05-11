@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/flashcards-react/static/css/main.6dea0f05.chunk.css",
+    "main.js": "/flashcards-react/static/js/main.6bc79297.chunk.js",
+    "main.js.map": "/flashcards-react/static/js/main.6bc79297.chunk.js.map",
+    "runtime-main.js": "/flashcards-react/static/js/runtime-main.e6df389d.js",
+    "runtime-main.js.map": "/flashcards-react/static/js/runtime-main.e6df389d.js.map",
+    "static/js/2.b6a20360.chunk.js": "/flashcards-react/static/js/2.b6a20360.chunk.js",
+    "static/js/2.b6a20360.chunk.js.map": "/flashcards-react/static/js/2.b6a20360.chunk.js.map",
+    "static/js/3.af68410f.chunk.js": "/flashcards-react/static/js/3.af68410f.chunk.js",
+    "static/js/3.af68410f.chunk.js.map": "/flashcards-react/static/js/3.af68410f.chunk.js.map",
+    "index.html": "/flashcards-react/index.html",
+    "service-worker.js": "/flashcards-react/service-worker.js",
+    "service-worker.js.map": "/flashcards-react/service-worker.js.map",
+    "static/css/main.6dea0f05.chunk.css.map": "/flashcards-react/static/css/main.6dea0f05.chunk.css.map",
+    "static/js/2.b6a20360.chunk.js.LICENSE.txt": "/flashcards-react/static/js/2.b6a20360.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.e6df389d.js",
+    "static/js/2.b6a20360.chunk.js",
+    "static/css/main.6dea0f05.chunk.css",
+    "static/js/main.6bc79297.chunk.js"
+  ]
+}
