@@ -13,6 +13,9 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     padding: theme.spacing(3),
   },
+  typography: {
+    fontSize: theme.typography.h5.fontSize,
+  },
 }));
 
 export default useStyles;

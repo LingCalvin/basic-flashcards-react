@@ -1,21 +1,32 @@
 import clsx from 'clsx';
-import { useState } from 'react';
 import CardSide from './card-side';
 import useStyles from './card.styles';
 
 interface CardProps {
   frontText: string;
   backText: string;
+  showBack: boolean;
   className?: string;
+  onFlip: () => void;
 }
 
-export default function Card({ frontText, backText, className }: CardProps) {
+export default function Card({
+  frontText,
+  backText,
+  showBack,
+  className,
+  onFlip,
+}: CardProps) {
   const classes = useStyles();
-  const [showBack, setShowBack] = useState(false);
   return (
     <div
-      className={clsx(classes.root, showBack && classes.flip, className)}
-      onClick={() => setShowBack((state) => !state)}
+      className={clsx(
+        classes.root,
+        classes.cardFlipTransition,
+        showBack && classes.flip,
+        className
+      )}
+      onClick={onFlip}
     >
       <CardSide className={classes.cardSide} text={frontText} />
       <CardSide

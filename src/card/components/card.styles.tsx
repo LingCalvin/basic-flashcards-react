@@ -4,8 +4,10 @@ const useStyles = makeStyles({
   root: {
     display: 'grid',
     gridTemplateAreas: '"main"',
-    transition: 'transform 0.4s',
     transformStyle: 'preserve-3d',
+  },
+  cardFlipTransition: {
+    transition: 'transform 0.3s',
   },
   flip: {
     transform: 'rotateX(180deg)',

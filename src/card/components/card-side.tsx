@@ -12,7 +12,7 @@ export default function CardSide({ text, className }: CardSideProps) {
   return (
     <MuiCard className={clsx(classes.root, className)}>
       <CardContent className={classes.content}>
-        <Typography>{text}</Typography>
+        <Typography className={classes.typography}>{text}</Typography>
       </CardContent>
     </MuiCard>
   );
