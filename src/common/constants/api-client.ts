@@ -5,4 +5,13 @@ const apiClient = axios.create({
   withCredentials: true,
 });
 
+// Send the access token with requests if present
+apiClient.interceptors.request.use((config) => {
+  const accessToken = localStorage.getItem('accessToken');
+  if (accessToken) {
+    config.headers['Authorization'] = `Bearer ${accessToken}`;
+  }
+  return config;
+});
+
 export default apiClient;

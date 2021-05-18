@@ -18,7 +18,10 @@ export default function DeckStackControls({
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <IconButton onClick={onBack} disabled={currentIndex === 0}>
+      <IconButton
+        onClick={onBack}
+        disabled={currentIndex === 0 || numberOfCards === 0}
+      >
         <ArrowBack />
       </IconButton>
       <div>
@@ -26,12 +29,14 @@ export default function DeckStackControls({
           variant="subtitle2"
           align="center"
           className={classes.positionIndicator}
-        >{`${currentIndex + 1}/${numberOfCards}`}</Typography>
+        >{`${
+          numberOfCards > 0 ? currentIndex + 1 : 0
+        }/${numberOfCards}`}</Typography>
       </div>
 
       <IconButton
         onClick={onForward}
-        disabled={currentIndex === numberOfCards - 1}
+        disabled={currentIndex === numberOfCards - 1 || numberOfCards === 0}
       >
         <ArrowForward />
       </IconButton>

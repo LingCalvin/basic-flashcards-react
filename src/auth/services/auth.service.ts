@@ -7,10 +7,11 @@ export class AuthService {
 
   async logIn(idToken: string) {
     const {
-      data: { decodedAccessToken },
+      data: { accessToken, decodedAccessToken },
     } = await this.http.post<LogInResponse>('/auth/access-tokens', {
       idToken,
     });
+    localStorage.setItem('accessToken', accessToken);
     localStorage.setItem(
       'accessTokenPayload',
       JSON.stringify(decodedAccessToken)
@@ -18,9 +19,15 @@ export class AuthService {
     return decodedAccessToken;
   }
 
-  async verifyAccessToken(): Promise<boolean> {
+  async logOut() {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('accessTokenPayload');
+    // TODO: Revoke token from server
+  }
+
+  async verifyAccessToken(token: string): Promise<boolean> {
     try {
-      await this.http.get('/auth/token-info');
+      await this.http.get(`/auth/access-tokens/${token}`);
       return true;
     } catch {
       return false;

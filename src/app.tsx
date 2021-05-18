@@ -1,3 +1,4 @@
+import { CssBaseline } from '@material-ui/core';
 import { useState } from 'react';
 import { AuthenticationStatusUpdateContext } from './auth/contexts/authentication-status-update.context';
 import { AuthenticationStatusContext } from './auth/contexts/authentication-status.context';
@@ -22,12 +23,15 @@ export default function App() {
   };
 
   return (
-    <AuthenticationStatusContext.Provider value={authenticationStatus}>
-      <AuthenticationStatusUpdateContext.Provider
-        value={updateAuthenticationStatus}
-      >
-        <Router isAuthenticated={authenticationStatus.loggedIn} />
-      </AuthenticationStatusUpdateContext.Provider>
-    </AuthenticationStatusContext.Provider>
+    <>
+      <CssBaseline />
+      <AuthenticationStatusContext.Provider value={authenticationStatus}>
+        <AuthenticationStatusUpdateContext.Provider
+          value={updateAuthenticationStatus}
+        >
+          <Router isAuthenticated={authenticationStatus.loggedIn} />
+        </AuthenticationStatusUpdateContext.Provider>
+      </AuthenticationStatusContext.Provider>
+    </>
   );
 }

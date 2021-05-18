@@ -34,6 +34,22 @@ export default function DeckStack({
     }
   }, [unmount]);
 
+  if (!activeCard) {
+    return (
+      <div className={className}>
+        {!unmount && (
+          <CardComponent
+            className={classes.card}
+            frontText=""
+            backText=""
+            showBack={false}
+            onFlip={() => {}}
+          />
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className={className}>
       {!unmount && (

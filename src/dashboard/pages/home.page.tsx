@@ -1,10 +1,15 @@
 import { Backdrop, CircularProgress, Typography } from '@material-ui/core';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { GoogleLogin, GoogleLoginResponse } from 'react-google-login';
+import { useHistory } from 'react-router';
 import { googleClientId } from '../../auth/configs/auth.config';
 import { AuthenticationStatusUpdateContext } from '../../auth/contexts/authentication-status-update.context';
 import { authService } from '../../auth/services/auth.service';
+import paths from '../../common/constants/paths';
+import Deck from '../../deck/interfaces/deck';
+import { decksService } from '../../deck/services/decks.service';
 import AppBar from '../components/app-bar';
+import DeckInfoTile from '../components/deck-info-tile';
 import useStyles from './home.page.styles';
 
 export default function HomePage() {
@@ -13,6 +18,17 @@ export default function HomePage() {
   const updateAuthenticationStatus = useContext(
     AuthenticationStatusUpdateContext
   );
+
+  const history = useHistory();
+
+  const [exampleDecks, setExampleDecks] = useState<Deck[]>([]);
+
+  useEffect(() => {
+    decksService
+      .findAll({ orderTitleBy: 'asc', take: 3 })
+      .then(({ decks }) => setExampleDecks(decks));
+  }, []);
+
   return (
     <div>
       <Backdrop className={classes.backDrop} open={loggingIn}>
@@ -34,6 +50,20 @@ export default function HomePage() {
             }}
             onFailure={() => setLoggingIn(false)}
           />
+        </div>
+        <div className={classes.exampleDecksSection}>
+          <Typography variant="h2">Decks</Typography>
+          <div className={classes.exampleDecksContainer}>
+            {exampleDecks.map((deck) => (
+              <DeckInfoTile
+                key={deck.id}
+                title={deck.title}
+                numberOfCards={deck.cards.length}
+                author={deck.authorId ?? ''}
+                onClick={() => history.push(`${paths.decks}/${deck.id}`)}
+              />
+            ))}
+          </div>
         </div>
       </main>
     </div>
