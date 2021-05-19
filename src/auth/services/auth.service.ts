@@ -33,6 +33,14 @@ export class AuthService {
       return false;
     }
   }
+
+  getCurrentUser(): string | null {
+    const accessTokenPayload = localStorage.getItem('accessTokenPayload');
+    if (!accessTokenPayload) {
+      return null;
+    }
+    return JSON.parse(accessTokenPayload).sub;
+  }
 }
 
 export const authService = new AuthService(apiClient);

@@ -25,6 +25,10 @@ export class DecksService {
       count: data.count,
     };
   }
+
+  async remove(id: string) {
+    return this.http.delete(`/decks/${id}`);
+  }
 }
 
 export const decksService = new DecksService(apiClient);

@@ -57,6 +57,7 @@ export default function HomePage() {
             {exampleDecks.map((deck) => (
               <DeckInfoTile
                 key={deck.id}
+                deckId={deck.id ?? ''}
                 title={deck.title}
                 numberOfCards={deck.cards.length}
                 author={deck.authorId ?? ''}

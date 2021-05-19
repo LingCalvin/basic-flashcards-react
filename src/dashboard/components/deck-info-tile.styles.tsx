@@ -8,6 +8,10 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.grey[50],
     },
   },
+  buttonBox: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
 }));
 
 export default useStyles;
