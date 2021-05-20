@@ -21,6 +21,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     gap: theme.spacing(2),
   },
+  addButton: {
+    marginLeft: 'auto',
+  },
 }));
 
 export default useStyles;

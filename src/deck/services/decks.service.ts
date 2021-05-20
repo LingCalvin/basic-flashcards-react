@@ -1,4 +1,5 @@
 import { AxiosInstance } from 'axios';
+import { authService } from '../../auth/services/auth.service';
 import apiClient from '../../common/constants/api-client';
 import Deck from '../interfaces/deck';
 import { FindAllDecksParams } from '../interfaces/find-all-decks-params';
@@ -7,6 +8,22 @@ import FindOneDeckResponse from '../interfaces/find-one-deck-response';
 
 export class DecksService {
   constructor(private http: AxiosInstance) {}
+
+  async create({ title, description, visibility, cards }: Deck) {
+    const { data } = await this.http.post('/decks', {
+      authorId: authService.getCurrentUser(),
+      title,
+      description,
+      visibility,
+      cards: cards.map(
+        ({ sides: [{ text: frontText }, { text: backText }] }) => ({
+          frontText,
+          backText,
+        })
+      ),
+    });
+    return data;
+  }
 
   async findOne(id: string): Promise<Deck | null> {
     const { data } = await this.http.get<FindOneDeckResponse>(`/decks/${id}`);
@@ -34,12 +51,13 @@ export class DecksService {
 export const decksService = new DecksService(apiClient);
 
 function findOneDeckResponseToDeck(data: FindOneDeckResponse): Deck {
-  const { id, authorId, title, description } = data;
+  const { id, authorId, title, description, visibility } = data;
   return {
     id,
     authorId,
     title,
     description,
+    visibility,
     cards: data.cards.map((card) => ({
       sides: [{ text: card.frontText }, { text: card.backText }],
     })),

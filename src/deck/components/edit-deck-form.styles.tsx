@@ -18,6 +18,10 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     gap: theme.spacing(2),
   },
+  saveButtonContainer: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
 }));
 
 export default useStyles;

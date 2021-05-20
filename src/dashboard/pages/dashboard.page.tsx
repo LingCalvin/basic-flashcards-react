@@ -15,6 +15,7 @@ import {
 import { Pagination } from '@material-ui/lab';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
+import { Link } from 'react-router-dom';
 import paths from '../../common/constants/paths';
 import useDebouncedValue from '../../common/hooks/use-debounced-file';
 import useUniqueId from '../../common/hooks/use-unique-id';
@@ -124,6 +125,7 @@ export default function DashboardPage({
       <AppBar />
       <div className={classes.content}>
         <Typography variant="h2">Your decks</Typography>
+
         <div className={classes.sortAndSearchContainer}>
           <div>
             <InputLabel id={id}>Sort by</InputLabel>
@@ -136,6 +138,16 @@ export default function DashboardPage({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
+          <Button
+            color="primary"
+            variant="contained"
+            size="small"
+            component={Link}
+            to={paths.deckAdd}
+            className={classes.addButton}
+          >
+            Add Deck
+          </Button>
         </div>
         <div className={classes.paginationContainer}>
           <div className={classes.deckList}>
