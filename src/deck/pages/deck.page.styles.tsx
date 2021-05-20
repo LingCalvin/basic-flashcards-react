@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     gap: theme.spacing(2),
-    margin: theme.spacing(3),
+    padding: theme.spacing(3),
   },
   deckStack: {
     height: 280,

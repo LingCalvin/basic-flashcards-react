@@ -5,12 +5,16 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     gap: theme.spacing(2),
-    margin: theme.spacing(3),
+    padding: theme.spacing(3),
   },
   paginationContainer: {
     display: 'flex',
     flexDirection: 'column',
     gap: theme.spacing(2),
+  },
+  paginationControls: {
+    display: 'flex',
+    justifyContent: 'center',
   },
   deckList: {
     display: 'flex',
@@ -23,6 +27,11 @@ const useStyles = makeStyles((theme) => ({
   },
   addButton: {
     marginLeft: 'auto',
+  },
+  fab: {
+    position: 'fixed',
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
   },
 }));
 

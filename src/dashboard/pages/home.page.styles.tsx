@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
   exampleDecksSection: {
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(2),
+    paddingBottom: theme.spacing(3),
   },
 }));
 

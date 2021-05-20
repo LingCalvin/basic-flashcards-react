@@ -26,7 +26,9 @@ export default function DeckInfoTile({
   const classes = useStyles();
   return (
     <Paper className={classes.root} onClick={onClick}>
-      <Typography variant="h5">{title}</Typography>
+      <Typography className={classes.title} variant="h5">
+        {title}
+      </Typography>
       <Typography>{`${numberOfCards} cards`}</Typography>
       {author && (
         <Typography>

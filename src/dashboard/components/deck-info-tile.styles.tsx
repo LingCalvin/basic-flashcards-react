@@ -8,6 +8,11 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.grey[50],
     },
   },
+  title: {
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+  },
   buttonBox: {
     display: 'flex',
     justifyContent: 'flex-end',

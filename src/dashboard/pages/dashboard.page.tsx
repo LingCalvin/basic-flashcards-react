@@ -5,6 +5,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Fab,
   InputLabel,
   MenuItem,
   Select,
@@ -12,12 +13,14 @@ import {
   Typography,
   useTheme,
 } from '@material-ui/core';
+import { Add as AddIcon } from '@material-ui/icons';
 import { Pagination } from '@material-ui/lab';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import paths from '../../common/constants/paths';
-import useDebouncedValue from '../../common/hooks/use-debounced-file';
+import useDebouncedValue from '../../common/hooks/use-debounced-value';
+import useIsMobile from '../../common/hooks/use-is-mobile';
 import useUniqueId from '../../common/hooks/use-unique-id';
 import Deck from '../../deck/interfaces/deck';
 import { FindAllDecksParams } from '../../deck/interfaces/find-all-decks-params';
@@ -36,6 +39,8 @@ export default function DashboardPage({
   pageSize = 10,
 }: DashboardPageProps) {
   const theme = useTheme();
+  const isMobile = useIsMobile();
+
   const [decks, setDecks] = useState<Deck[]>([]);
   const [totalDecks, setTotalDecks] = useState(0);
   const [page, setPage] = useState(1);
@@ -138,16 +143,17 @@ export default function DashboardPage({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <Button
-            color="primary"
-            variant="contained"
-            size="small"
-            component={Link}
-            to={paths.deckAdd}
-            className={classes.addButton}
-          >
-            Add Deck
-          </Button>
+          {!isMobile && (
+            <Button
+              color="primary"
+              variant="contained"
+              component={Link}
+              to={paths.deckAdd}
+              className={classes.addButton}
+            >
+              Add Deck
+            </Button>
+          )}
         </div>
         <div className={classes.paginationContainer}>
           <div className={classes.deckList}>
@@ -166,13 +172,27 @@ export default function DashboardPage({
               />
             ))}
           </div>
-          <Pagination
-            count={Math.ceil(totalDecks / pageSize)}
-            page={page}
-            onChange={(e, value) => setPage(value)}
-            disabled={loading}
-          />
+          {decks.length > 0 && (
+            <div className={classes.paginationControls}>
+              <Pagination
+                count={Math.ceil(totalDecks / pageSize)}
+                page={page}
+                onChange={(_e, value) => setPage(value)}
+                disabled={loading}
+              />
+            </div>
+          )}
         </div>
+        {isMobile && (
+          <Fab
+            className={classes.fab}
+            color="primary"
+            component={Link}
+            to={paths.deckAdd}
+          >
+            <AddIcon />
+          </Fab>
+        )}
       </div>
     </div>
   );
