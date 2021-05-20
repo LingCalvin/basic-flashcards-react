@@ -5,6 +5,7 @@ import { useHistory } from 'react-router';
 import { googleClientId } from '../../auth/configs/auth.config';
 import { AuthenticationStatusUpdateContext } from '../../auth/contexts/authentication-status-update.context';
 import { authService } from '../../auth/services/auth.service';
+import LoadableComponent from '../../common/components/loadable-component';
 import paths from '../../common/constants/paths';
 import Deck from '../../deck/interfaces/deck';
 import { decksService } from '../../deck/services/decks.service';
@@ -19,6 +20,8 @@ export default function HomePage() {
     AuthenticationStatusUpdateContext
   );
 
+  const [loading, setLoading] = useState(true);
+
   const history = useHistory();
 
   const [exampleDecks, setExampleDecks] = useState<Deck[]>([]);
@@ -26,7 +29,8 @@ export default function HomePage() {
   useEffect(() => {
     decksService
       .findAll({ orderTitleBy: 'asc', take: 3 })
-      .then(({ decks }) => setExampleDecks(decks));
+      .then(({ decks }) => setExampleDecks(decks))
+      .finally(() => setLoading(false));
   }, []);
 
   return (
@@ -53,18 +57,20 @@ export default function HomePage() {
         </div>
         <div className={classes.exampleDecksSection}>
           <Typography variant="h2">Decks</Typography>
-          <div className={classes.exampleDecksContainer}>
-            {exampleDecks.map((deck) => (
-              <DeckInfoTile
-                key={deck.id}
-                deckId={deck.id ?? ''}
-                title={deck.title}
-                numberOfCards={deck.cards.length}
-                author={deck.authorId ?? ''}
-                onClick={() => history.push(`${paths.decks}/${deck.id}`)}
-              />
-            ))}
-          </div>
+          <LoadableComponent loading={loading}>
+            <div className={classes.exampleDecksContainer}>
+              {exampleDecks.map((deck) => (
+                <DeckInfoTile
+                  key={deck.id}
+                  deckId={deck.id ?? ''}
+                  title={deck.title}
+                  numberOfCards={deck.cards.length}
+                  author={deck.authorId ?? ''}
+                  onClick={() => history.push(`${paths.decks}/${deck.id}`)}
+                />
+              ))}
+            </div>
+          </LoadableComponent>
         </div>
       </main>
     </div>
