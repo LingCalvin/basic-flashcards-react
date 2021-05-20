@@ -1,9 +1,9 @@
 {
-  "name": "flashcards-react",
+  "name": "basic-flashcards-react",
   "version": "0.0.0",
   "private": true,
   "license": "MIT",
-  "homepage": "https://lingcalvin.github.io/flashcards-react",
+  "homepage": "https://lingcalvin.github.io/basic-flashcards-react",
   "dependencies": {
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
