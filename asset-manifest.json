@@ -1,24 +1,24 @@
 {
   "files": {
     "main.css": "/flashcards-react/static/css/main.6dea0f05.chunk.css",
-    "main.js": "/flashcards-react/static/js/main.dfb1e903.chunk.js",
-    "main.js.map": "/flashcards-react/static/js/main.dfb1e903.chunk.js.map",
-    "runtime-main.js": "/flashcards-react/static/js/runtime-main.41e78a13.js",
-    "runtime-main.js.map": "/flashcards-react/static/js/runtime-main.41e78a13.js.map",
-    "static/js/2.01c3f96b.chunk.js": "/flashcards-react/static/js/2.01c3f96b.chunk.js",
-    "static/js/2.01c3f96b.chunk.js.map": "/flashcards-react/static/js/2.01c3f96b.chunk.js.map",
-    "static/js/3.e229bdfc.chunk.js": "/flashcards-react/static/js/3.e229bdfc.chunk.js",
-    "static/js/3.e229bdfc.chunk.js.map": "/flashcards-react/static/js/3.e229bdfc.chunk.js.map",
+    "main.js": "/flashcards-react/static/js/main.95e76f33.chunk.js",
+    "main.js.map": "/flashcards-react/static/js/main.95e76f33.chunk.js.map",
+    "runtime-main.js": "/flashcards-react/static/js/runtime-main.db8a1c83.js",
+    "runtime-main.js.map": "/flashcards-react/static/js/runtime-main.db8a1c83.js.map",
+    "static/js/2.b08714d9.chunk.js": "/flashcards-react/static/js/2.b08714d9.chunk.js",
+    "static/js/2.b08714d9.chunk.js.map": "/flashcards-react/static/js/2.b08714d9.chunk.js.map",
+    "static/js/3.673105ca.chunk.js": "/flashcards-react/static/js/3.673105ca.chunk.js",
+    "static/js/3.673105ca.chunk.js.map": "/flashcards-react/static/js/3.673105ca.chunk.js.map",
     "index.html": "/flashcards-react/index.html",
     "service-worker.js": "/flashcards-react/service-worker.js",
     "service-worker.js.map": "/flashcards-react/service-worker.js.map",
     "static/css/main.6dea0f05.chunk.css.map": "/flashcards-react/static/css/main.6dea0f05.chunk.css.map",
-    "static/js/2.01c3f96b.chunk.js.LICENSE.txt": "/flashcards-react/static/js/2.01c3f96b.chunk.js.LICENSE.txt"
+    "static/js/2.b08714d9.chunk.js.LICENSE.txt": "/flashcards-react/static/js/2.b08714d9.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.41e78a13.js",
-    "static/js/2.01c3f96b.chunk.js",
+    "static/js/runtime-main.db8a1c83.js",
+    "static/js/2.b08714d9.chunk.js",
     "static/css/main.6dea0f05.chunk.css",
-    "static/js/main.dfb1e903.chunk.js"
+    "static/js/main.95e76f33.chunk.js"
   ]
 }
