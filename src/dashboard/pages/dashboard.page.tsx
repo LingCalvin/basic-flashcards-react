@@ -41,7 +41,7 @@ export default function DashboardPage({
   const theme = useTheme();
   const isMobile = useIsMobile();
 
-  const [decks, setDecks] = useState<Deck[]>([]);
+  const [loadedDecks, setLoadedDecks] = useState<Deck[]>([]);
   const [totalDecks, setTotalDecks] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -61,7 +61,7 @@ export default function DashboardPage({
         ...params,
       })
       .then((res) => {
-        setDecks(res.decks);
+        setLoadedDecks(res.decks);
         setTotalDecks(res.count);
       })
       .finally(() => setLoading(false));
@@ -157,7 +157,7 @@ export default function DashboardPage({
         </div>
         <div className={classes.paginationContainer}>
           <div className={classes.deckList}>
-            {decks.map((deck) => (
+            {loadedDecks.map((deck) => (
               <DeckInfoTile
                 key={deck.id}
                 deckId={deck.id ?? ''}
@@ -172,7 +172,8 @@ export default function DashboardPage({
               />
             ))}
           </div>
-          {decks.length > 0 && (
+          {/* Only show pagination controls if there is more than one page */}
+          {totalDecks / pageSize > 1 && (
             <div className={classes.paginationControls}>
               <Pagination
                 count={Math.ceil(totalDecks / pageSize)}
