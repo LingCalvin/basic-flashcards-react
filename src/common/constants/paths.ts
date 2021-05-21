@@ -4,6 +4,8 @@ const paths = {
   decks: '/decks',
   deckSearch: '/search-decks',
   deckAdd: '/add-deck',
+  login: '/login',
+  registration: '/register',
 };
 
 export default paths;

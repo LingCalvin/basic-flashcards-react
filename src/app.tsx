@@ -7,7 +7,7 @@ import { LogInResponse } from './auth/interfaces/log-in-response';
 import Router from './router';
 
 export default function App() {
-  const [authenticationStatus, setAuthenticatinStatus] = useState({
+  const [authenticationStatus, setAuthenticationStatus] = useState({
     loggedIn:
       new Date(
         (JSON.parse(
@@ -19,7 +19,7 @@ export default function App() {
   const updateAuthenticationStatus = (
     update: Partial<AuthenticationStatus>
   ) => {
-    setAuthenticatinStatus((state) => ({ ...state, ...update }));
+    setAuthenticationStatus((state) => ({ ...state, ...update }));
   };
 
   return (

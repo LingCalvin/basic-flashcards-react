@@ -1,4 +1,6 @@
 import { HashRouter, Redirect, Route, Switch } from 'react-router-dom';
+import LoginPage from './auth/pages/login.page';
+import RegistrationPage from './auth/pages/registration.page';
 import { authService } from './auth/services/auth.service';
 import paths from './common/constants/paths';
 import DashboardPage from './dashboard/pages/dashboard.page';
@@ -28,6 +30,12 @@ export default function Router({ isAuthenticated }: RouterProps) {
         </Route>
         <Route path={paths.deckAdd}>
           <AddDeckPage />
+        </Route>
+        <Route path={paths.registration}>
+          <RegistrationPage />
+        </Route>
+        <Route path={paths.login}>
+          <LoginPage />
         </Route>
       </Switch>
     </HashRouter>

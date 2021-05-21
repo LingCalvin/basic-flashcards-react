@@ -1,10 +1,7 @@
-import { Backdrop, CircularProgress, Typography } from '@material-ui/core';
-import { useContext, useEffect, useState } from 'react';
-import { GoogleLogin, GoogleLoginResponse } from 'react-google-login';
+import { Button, Typography } from '@material-ui/core';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
-import { googleClientId } from '../../auth/configs/auth.config';
-import { AuthenticationStatusUpdateContext } from '../../auth/contexts/authentication-status-update.context';
-import { authService } from '../../auth/services/auth.service';
+import { Link } from 'react-router-dom';
 import LoadableComponent from '../../common/components/loadable-component';
 import paths from '../../common/constants/paths';
 import Deck from '../../deck/interfaces/deck';
@@ -15,16 +12,12 @@ import useStyles from './home.page.styles';
 
 export default function HomePage() {
   const classes = useStyles();
-  const [loggingIn, setLoggingIn] = useState(false);
-  const updateAuthenticationStatus = useContext(
-    AuthenticationStatusUpdateContext
-  );
 
   const [loading, setLoading] = useState(true);
 
-  const history = useHistory();
-
   const [exampleDecks, setExampleDecks] = useState<Deck[]>([]);
+
+  const history = useHistory();
 
   useEffect(() => {
     decksService
@@ -35,25 +28,28 @@ export default function HomePage() {
 
   return (
     <div>
-      <Backdrop className={classes.backDrop} open={loggingIn}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
       <AppBar />
       <main>
         <div className={classes.loginSection}>
-          <Typography variant="h1">Log in to create decks.</Typography>
-          <GoogleLogin
-            clientId={googleClientId}
-            responseType="id_token"
-            onRequest={() => setLoggingIn(true)}
-            onSuccess={(res) => {
-              authService
-                .logIn((res as GoogleLoginResponse).tokenId)
-                .then(() => updateAuthenticationStatus({ loggedIn: true }))
-                .finally(() => setLoggingIn(false));
-            }}
-            onFailure={() => setLoggingIn(false)}
-          />
+          <Typography variant="h1">Log in or create a new account.</Typography>
+          <div className={classes.buttonBox}>
+            <Button
+              color="secondary"
+              variant="contained"
+              component={Link}
+              to={paths.login}
+            >
+              Log in
+            </Button>
+            <Button
+              color="secondary"
+              variant="contained"
+              component={Link}
+              to={paths.registration}
+            >
+              Register
+            </Button>
+          </div>
         </div>
         <div className={classes.exampleDecksSection}>
           <Typography variant="h2">Decks</Typography>

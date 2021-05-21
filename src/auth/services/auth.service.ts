@@ -5,11 +5,12 @@ import { LogInResponse } from '../interfaces/log-in-response';
 export class AuthService {
   constructor(private http: AxiosInstance) {}
 
-  async logIn(idToken: string) {
+  async logIn(username: string, password: string) {
     const {
       data: { accessToken, decodedAccessToken },
     } = await this.http.post<LogInResponse>('/auth/access-tokens', {
-      idToken,
+      username,
+      password,
     });
     localStorage.setItem('accessToken', accessToken);
     localStorage.setItem(

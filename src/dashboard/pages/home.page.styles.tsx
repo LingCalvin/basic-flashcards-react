@@ -1,9 +1,6 @@
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
-  backDrop: {
-    zIndex: theme.zIndex.appBar + 1,
-  },
   loginSection: {
     backgroundColor: theme.palette.primary.dark,
     color: theme.palette.primary.contrastText,
@@ -12,6 +9,11 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     gap: theme.spacing(2),
+  },
+  buttonBox: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: theme.spacing(1),
   },
   exampleDecksContainer: {
     display: 'flex',
