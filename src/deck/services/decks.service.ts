@@ -43,6 +43,22 @@ export class DecksService {
     };
   }
 
+  async update({ id, title, description, visibility, cards }: Deck) {
+    const { data } = await this.http.put(`/decks/${id}`, {
+      authorId: authService.getCurrentUser(),
+      title,
+      description,
+      visibility,
+      cards: cards.map(
+        ({ sides: [{ text: frontText }, { text: backText }] }) => ({
+          frontText,
+          backText,
+        })
+      ),
+    });
+    return data;
+  }
+
   async remove(id: string) {
     return this.http.delete(`/decks/${id}`);
   }

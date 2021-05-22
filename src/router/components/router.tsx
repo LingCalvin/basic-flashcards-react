@@ -9,6 +9,7 @@ import DeckPage from '../../deck/pages/deck.page';
 import ProtectedRoute from './protected-route';
 import { useContext } from 'react';
 import CredentialsContext from '../../auth/contexts/credentials.context';
+import EditDeckPage from '../../deck/pages/edit-deck.page';
 
 export default function Router() {
   const credentials = useContext(CredentialsContext);
@@ -24,11 +25,11 @@ export default function Router() {
         <Route exact path={routes.deckView}>
           <DeckPage />
         </Route>
-        <ProtectedRoute path={routes.deckEdit}>
-          <AddDeckPage />
-        </ProtectedRoute>
         <ProtectedRoute path={routes.deckAdd}>
           <AddDeckPage />
+        </ProtectedRoute>
+        <ProtectedRoute path={routes.deckEdit}>
+          <EditDeckPage />
         </ProtectedRoute>
         <Route path={routes.registration}>
           <RegistrationPage />
