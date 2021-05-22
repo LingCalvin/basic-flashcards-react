@@ -23,10 +23,10 @@ export default function Router() {
         <ProtectedRoute path={routes.dashboard}>
           <DashboardPage userId={authService.getCurrentUser() as string} />
         </ProtectedRoute>
-        <Route exact path={`${routes.decks}/:id`}>
+        <Route exact path={routes.deckView}>
           <DeckPage />
         </Route>
-        <ProtectedRoute path={`${routes.decks}/:id/edit`}>
+        <ProtectedRoute path={routes.deckEdit}>
           <AddDeckPage />
         </ProtectedRoute>
         <ProtectedRoute path={routes.deckAdd}>

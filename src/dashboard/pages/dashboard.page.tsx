@@ -28,6 +28,7 @@ import { decksService } from '../../deck/services/decks.service';
 import AppBar from '../components/app-bar';
 import DeckInfoTile from '../components/deck-info-tile';
 import useStyles from './dashboard.page.styles';
+import { deckView } from '../../router/utils/route.utils';
 
 interface DashboardPageProps {
   userId: string;
@@ -163,7 +164,7 @@ export default function DashboardPage({
                 deckId={deck.id ?? ''}
                 title={deck.title}
                 numberOfCards={deck.cards.length}
-                onClick={() => history.push(`${routes.decks}/${deck.id}`)}
+                onClick={() => history.push(deckView(deck.id ?? ''))}
                 onDelete={() => {
                   setDeckToDelete(deck);
                   setShowDialog(true);

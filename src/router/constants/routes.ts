@@ -4,8 +4,10 @@ const routes = {
   decks: '/decks',
   deckSearch: '/search-decks',
   deckAdd: '/add-deck',
-  login: '/login',
-  registration: '/register',
+  deckEdit: '/decks/:id/edit',
+  deckView: '/decks/:id',
+  login: '/auth/login',
+  registration: '/auth/register',
 };
 
 export default routes;

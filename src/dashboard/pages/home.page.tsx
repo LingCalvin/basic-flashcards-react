@@ -9,6 +9,7 @@ import { decksService } from '../../deck/services/decks.service';
 import AppBar from '../components/app-bar';
 import DeckInfoTile from '../components/deck-info-tile';
 import useStyles from './home.page.styles';
+import { deckView } from '../../router/utils/route.utils';
 
 export default function HomePage() {
   const classes = useStyles();
@@ -62,7 +63,7 @@ export default function HomePage() {
                   title={deck.title}
                   numberOfCards={deck.cards.length}
                   author={deck.authorId ?? ''}
-                  onClick={() => history.push(`${routes.decks}/${deck.id}`)}
+                  onClick={() => history.push(deckView(deck.id ?? ''))}
                 />
               ))}
             </div>
