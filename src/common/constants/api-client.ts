@@ -1,4 +1,5 @@
 import axios from 'axios';
+import localStorageService from '../services/local-storage.service';
 
 const apiClient = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
@@ -7,7 +8,7 @@ const apiClient = axios.create({
 
 // Send the access token with requests if present
 apiClient.interceptors.request.use((config) => {
-  const accessToken = localStorage.getItem('accessToken');
+  const accessToken = localStorageService.getItem('accessToken');
   if (accessToken) {
     config.headers['Authorization'] = `Bearer ${accessToken}`;
   }

@@ -1,37 +1,31 @@
 import { CssBaseline } from '@material-ui/core';
-import { useState } from 'react';
-import { AuthenticationStatusUpdateContext } from './auth/contexts/authentication-status-update.context';
-import { AuthenticationStatusContext } from './auth/contexts/authentication-status.context';
-import AuthenticationStatus from './auth/interfaces/authentication-status';
-import { LogInResponse } from './auth/interfaces/log-in-response';
+import { useEffect, useState } from 'react';
+import CredentialsContext from './auth/contexts/credentials.context';
+import Credentials from './auth/interfaces/credentials';
+import { retrieve } from './auth/utils/credentials.utils';
 import Router from './router/components/router';
 
 export default function App() {
-  const [authenticationStatus, setAuthenticationStatus] = useState({
-    loggedIn:
-      new Date(
-        (JSON.parse(
-          localStorage.getItem('accessTokenPayload') ?? '{"exp": 0}'
-        ) as LogInResponse['decodedAccessToken']).exp * 1000
-      ) > new Date(),
-  });
+  const [credentials, setCredentials] = useState<Credentials | null>(retrieve);
 
-  const updateAuthenticationStatus = (
-    update: Partial<AuthenticationStatus>
-  ) => {
-    setAuthenticationStatus((state) => ({ ...state, ...update }));
-  };
+  useEffect(() => {
+    const syncCredentials = () => {
+      setCredentials(retrieve);
+    };
+    document.addEventListener('localStorageServiceChange', syncCredentials);
+    return () =>
+      document.removeEventListener(
+        'localStorageServiceChange',
+        syncCredentials
+      );
+  }, []);
 
   return (
     <>
-      <CssBaseline />
-      <AuthenticationStatusContext.Provider value={authenticationStatus}>
-        <AuthenticationStatusUpdateContext.Provider
-          value={updateAuthenticationStatus}
-        >
-          <Router />
-        </AuthenticationStatusUpdateContext.Provider>
-      </AuthenticationStatusContext.Provider>
+      <CredentialsContext.Provider value={credentials}>
+        <CssBaseline />
+        <Router />
+      </CredentialsContext.Provider>
     </>
   );
 }

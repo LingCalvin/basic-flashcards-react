@@ -1,5 +1,6 @@
 import { AxiosInstance } from 'axios';
 import apiClient from '../../common/constants/api-client';
+import localStorageService from '../../common/services/local-storage.service';
 import { LogInResponse } from '../interfaces/log-in-response';
 
 export class AuthService {
@@ -12,17 +13,22 @@ export class AuthService {
       username,
       password,
     });
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem(
+    localStorageService.setItem('accessToken', accessToken);
+    localStorageService.setItem(
       'accessTokenPayload',
       JSON.stringify(decodedAccessToken)
+    );
+    localStorageService.setItem(
+      'user',
+      JSON.stringify({ id: decodedAccessToken.sub, username })
     );
     return decodedAccessToken;
   }
 
   async logOut() {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('accessTokenPayload');
+    localStorageService.removeItem('accessToken');
+    localStorageService.removeItem('accessTokenPayload');
+    localStorageService.removeItem('user');
     // TODO: Revoke token from server
   }
 
@@ -36,11 +42,13 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return localStorage.getItem('accessToken') !== null;
+    return localStorageService.getItem('accessToken') !== null;
   }
 
   getCurrentUser(): string | null {
-    const accessTokenPayload = localStorage.getItem('accessTokenPayload');
+    const accessTokenPayload = localStorageService.getItem(
+      'accessTokenPayload'
+    );
     if (!accessTokenPayload) {
       return null;
     }

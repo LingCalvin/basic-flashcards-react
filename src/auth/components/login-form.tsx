@@ -36,6 +36,7 @@ export default function LoginForm({
   return (
     <form
       className={classes.form}
+      noValidate
       onSubmit={(e) => {
         e.preventDefault();
         setForceValidate(true);

@@ -15,7 +15,7 @@ import {
 } from '@material-ui/core';
 import { Add as AddIcon } from '@material-ui/icons';
 import { Pagination } from '@material-ui/lab';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import routes from '../../router/constants/routes';
@@ -29,18 +29,17 @@ import AppBar from '../components/app-bar';
 import DeckInfoTile from '../components/deck-info-tile';
 import useStyles from './dashboard.page.styles';
 import { deckView } from '../../router/utils/route.utils';
+import CredentialsContext from '../../auth/contexts/credentials.context';
 
 interface DashboardPageProps {
-  userId: string;
   pageSize?: number;
 }
 
-export default function DashboardPage({
-  userId,
-  pageSize = 10,
-}: DashboardPageProps) {
+export default function DashboardPage({ pageSize = 10 }: DashboardPageProps) {
   const theme = useTheme();
   const isMobile = useIsMobile();
+
+  const { id: userId } = useContext(CredentialsContext) ?? {};
 
   const [loadedDecks, setLoadedDecks] = useState<Deck[]>([]);
   const [totalDecks, setTotalDecks] = useState(0);
@@ -69,6 +68,9 @@ export default function DashboardPage({
   };
 
   useEffect(() => {
+    if (!userId) {
+      throw new Error('Unexpected nullish value: userId');
+    }
     findDecks({
       authorId: [userId],
       orderTitleBy: 'asc',
@@ -110,7 +112,10 @@ export default function DashboardPage({
               onClick={() => {
                 decksService
                   .remove(deckToDelete?.id ?? '')
-                  .then(() =>
+                  .then(() => {
+                    if (!userId) {
+                      throw new Error('Unexpected nullish value: userId');
+                    }
                     findDecks({
                       authorId: [userId],
                       orderTitleBy: 'asc',
@@ -118,8 +123,8 @@ export default function DashboardPage({
                       skip: (page - 1) * pageSize,
                       caseInsensitive: true,
                       titleContains: searchValue ? searchValue : undefined,
-                    })
-                  )
+                    });
+                  })
                   .finally(() => setShowDialog(false));
               }}
             >
