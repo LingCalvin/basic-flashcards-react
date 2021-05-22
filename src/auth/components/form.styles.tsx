@@ -6,8 +6,10 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     gap: theme.spacing(2),
   },
-  submitButton: {
-    marginLeft: 'auto',
+  submitOrAltRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 }));
 

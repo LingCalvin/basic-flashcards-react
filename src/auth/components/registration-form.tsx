@@ -4,6 +4,8 @@ import ValidatedTextField from '../../common/components/validated-text-field';
 import missingRequiredFieldErrorMessage from '../../common/constants/missing-required-field-error-message';
 import useStyles from './form.styles';
 import validator from 'validator';
+import routes from '../../router/constants/routes';
+import { Link } from 'react-router-dom';
 
 interface RegistrationFormProps {
   username: string;
@@ -88,14 +90,14 @@ export default function RegistrationForm({
         forceValidate={forceValidate}
         onValidate={validateConfirmPassword}
       />
-      <Button
-        className={classes.submitButton}
-        type="submit"
-        variant="contained"
-        color="primary"
-      >
-        Register
-      </Button>
+      <div className={classes.submitOrAltRow}>
+        <Button component={Link} to={routes.login} color="primary">
+          Log in
+        </Button>
+        <Button type="submit" variant="contained" color="primary">
+          Register
+        </Button>
+      </div>
     </form>
   );
 }

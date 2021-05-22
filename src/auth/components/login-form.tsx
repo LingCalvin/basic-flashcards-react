@@ -4,6 +4,8 @@ import validator from 'validator';
 import missingRequiredFieldErrorMessage from '../../common/constants/missing-required-field-error-message';
 import useStyles from './form.styles';
 import { Button, TextFieldProps } from '@material-ui/core';
+import routes from '../../router/constants/routes';
+import { Link } from 'react-router-dom';
 
 interface LoginFormProps {
   variant?: TextFieldProps['variant'];
@@ -66,14 +68,14 @@ export default function LoginForm({
         type="password"
         required
       />
-      <Button
-        className={classes.submitButton}
-        type="submit"
-        variant="contained"
-        color="primary"
-      >
-        Log in
-      </Button>
+      <div className={classes.submitOrAltRow}>
+        <Button component={Link} to={routes.registration} color="primary">
+          Create account
+        </Button>
+        <Button type="submit" variant="contained" color="primary">
+          Log in
+        </Button>
+      </div>
     </form>
   );
 }

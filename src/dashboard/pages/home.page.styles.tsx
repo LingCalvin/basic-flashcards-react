@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
-  loginSection: {
+  topSection: {
     backgroundColor: theme.palette.primary.dark,
     color: theme.palette.primary.contrastText,
     padding: theme.spacing(4),

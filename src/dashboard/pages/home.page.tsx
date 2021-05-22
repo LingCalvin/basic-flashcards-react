@@ -1,9 +1,7 @@
-import { Button, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
-import { Link } from 'react-router-dom';
 import LoadableComponent from '../../common/components/loadable-component';
-import routes from '../../router/constants/routes';
 import Deck from '../../deck/interfaces/deck';
 import { decksService } from '../../deck/services/decks.service';
 import AppBar from '../components/app-bar';
@@ -31,29 +29,13 @@ export default function HomePage() {
     <div>
       <AppBar />
       <main>
-        <div className={classes.loginSection}>
-          <Typography variant="h1">Log in or create a new account.</Typography>
-          <div className={classes.buttonBox}>
-            <Button
-              color="secondary"
-              variant="contained"
-              component={Link}
-              to={routes.login}
-            >
-              Log in
-            </Button>
-            <Button
-              color="secondary"
-              variant="contained"
-              component={Link}
-              to={routes.registration}
-            >
-              Register
-            </Button>
-          </div>
+        <div className={classes.topSection}>
+          <Typography variant="h1">
+            Create, search for, and review decks.
+          </Typography>
         </div>
         <div className={classes.exampleDecksSection}>
-          <Typography variant="h2">Decks</Typography>
+          <Typography variant="h2">Example decks</Typography>
           <LoadableComponent loading={loading}>
             <div className={classes.exampleDecksContainer}>
               {exampleDecks.map((deck) => (
