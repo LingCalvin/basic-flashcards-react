@@ -18,7 +18,7 @@ import { Pagination } from '@material-ui/lab';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
-import paths from '../../common/constants/paths';
+import routes from '../../router/constants/routes';
 import useDebouncedValue from '../../common/hooks/use-debounced-value';
 import useIsMobile from '../../common/hooks/use-is-mobile';
 import useUniqueId from '../../common/hooks/use-unique-id';
@@ -148,7 +148,7 @@ export default function DashboardPage({
               color="primary"
               variant="contained"
               component={Link}
-              to={paths.deckAdd}
+              to={routes.deckAdd}
               className={classes.addButton}
             >
               Add Deck
@@ -163,12 +163,12 @@ export default function DashboardPage({
                 deckId={deck.id ?? ''}
                 title={deck.title}
                 numberOfCards={deck.cards.length}
-                onClick={() => history.push(`${paths.decks}/${deck.id}`)}
+                onClick={() => history.push(`${routes.decks}/${deck.id}`)}
                 onDelete={() => {
                   setDeckToDelete(deck);
                   setShowDialog(true);
                 }}
-                onEdit={() => history.push(`${paths.decks}/${deck.id}/edit`)}
+                onEdit={() => history.push(`${routes.decks}/${deck.id}/edit`)}
               />
             ))}
           </div>
@@ -189,7 +189,7 @@ export default function DashboardPage({
             className={classes.fab}
             color="primary"
             component={Link}
-            to={paths.deckAdd}
+            to={routes.deckAdd}
           >
             <AddIcon />
           </Fab>

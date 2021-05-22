@@ -1,9 +1,10 @@
 import { Container } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { useContext, useState } from 'react';
-import { useHistory } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
+import { Redirect } from 'react-router-dom';
 import AppBarWithBackButton from '../../common/components/app-bar-with-back-button';
-import paths from '../../common/constants/paths';
+import routes from '../../router/constants/routes';
 import useTextFieldValue from '../../common/hooks/use-text-field-value';
 import LoginForm from '../components/login-form';
 import { AuthenticationStatusUpdateContext } from '../contexts/authentication-status-update.context';
@@ -22,6 +23,14 @@ export default function LoginPage() {
   );
 
   const history = useHistory();
+  const { search } = useLocation();
+  const redirectURL =
+    new URLSearchParams(search).get('continue') ?? routes.dashboard;
+
+  if (authService.isAuthenticated()) {
+    return <Redirect to={redirectURL} />;
+  }
+
   return (
     <div>
       <AppBarWithBackButton title="Basic Flashcards" />
@@ -37,7 +46,7 @@ export default function LoginPage() {
             authService
               .logIn(username, password)
               .then(() => updateAuthenticationStatus({ loggedIn: true }))
-              .then(() => history.push(paths.dashboard))
+              .then(() => history.push(redirectURL))
               .catch((e) => {
                 if (e.response) {
                   setServerError(e.response?.data?.message);

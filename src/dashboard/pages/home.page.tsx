@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import LoadableComponent from '../../common/components/loadable-component';
-import paths from '../../common/constants/paths';
+import routes from '../../router/constants/routes';
 import Deck from '../../deck/interfaces/deck';
 import { decksService } from '../../deck/services/decks.service';
 import AppBar from '../components/app-bar';
@@ -37,7 +37,7 @@ export default function HomePage() {
               color="secondary"
               variant="contained"
               component={Link}
-              to={paths.login}
+              to={routes.login}
             >
               Log in
             </Button>
@@ -45,7 +45,7 @@ export default function HomePage() {
               color="secondary"
               variant="contained"
               component={Link}
-              to={paths.registration}
+              to={routes.registration}
             >
               Register
             </Button>
@@ -62,7 +62,7 @@ export default function HomePage() {
                   title={deck.title}
                   numberOfCards={deck.cards.length}
                   author={deck.authorId ?? ''}
-                  onClick={() => history.push(`${paths.decks}/${deck.id}`)}
+                  onClick={() => history.push(`${routes.decks}/${deck.id}`)}
                 />
               ))}
             </div>

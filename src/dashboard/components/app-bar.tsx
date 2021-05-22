@@ -5,7 +5,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import paths from '../../common/constants/paths';
+import routes from '../../router/constants/routes';
 import useStyles from './app-bar.styles';
 
 export default function AppBar() {
@@ -16,7 +16,7 @@ export default function AppBar() {
         <Button
           color="inherit"
           component={Link}
-          to={paths.home}
+          to={routes.home}
           className={classes.homeLink}
         >
           <Typography variant="h6">Basic Flashcards</Typography>

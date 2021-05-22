@@ -3,7 +3,7 @@ import { Alert } from '@material-ui/lab';
 import { useState } from 'react';
 import { useHistory } from 'react-router';
 import AppBarWithBackButton from '../../common/components/app-bar-with-back-button';
-import paths from '../../common/constants/paths';
+import routes from '../../router/constants/routes';
 import useTextFieldValue from '../../common/hooks/use-text-field-value';
 import userService from '../../user/services/user.service';
 import RegistrationForm from '../components/registration-form';
@@ -31,7 +31,7 @@ export default function RegistrationPage() {
           onSubmit={() => {
             userService
               .create({ username, password })
-              .then(() => history.push(paths.login))
+              .then(() => history.push(routes.login))
               .catch((e) => {
                 if (e.response) {
                   setServerError(e.response?.data?.message);

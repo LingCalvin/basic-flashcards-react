@@ -35,6 +35,10 @@ export class AuthService {
     }
   }
 
+  isAuthenticated(): boolean {
+    return localStorage.getItem('accessToken') !== null;
+  }
+
   getCurrentUser(): string | null {
     const accessTokenPayload = localStorage.getItem('accessTokenPayload');
     if (!accessTokenPayload) {

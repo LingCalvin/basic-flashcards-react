@@ -1,4 +1,4 @@
-const paths = {
+const routes = {
   home: '/',
   dashboard: '/dashboard',
   decks: '/decks',
@@ -8,4 +8,4 @@ const paths = {
   registration: '/register',
 };
 
-export default paths;
+export default routes;

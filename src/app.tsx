@@ -4,7 +4,7 @@ import { AuthenticationStatusUpdateContext } from './auth/contexts/authenticatio
 import { AuthenticationStatusContext } from './auth/contexts/authentication-status.context';
 import AuthenticationStatus from './auth/interfaces/authentication-status';
 import { LogInResponse } from './auth/interfaces/log-in-response';
-import Router from './router';
+import Router from './router/components/router';
 
 export default function App() {
   const [authenticationStatus, setAuthenticationStatus] = useState({
@@ -29,7 +29,7 @@ export default function App() {
         <AuthenticationStatusUpdateContext.Provider
           value={updateAuthenticationStatus}
         >
-          <Router isAuthenticated={authenticationStatus.loggedIn} />
+          <Router />
         </AuthenticationStatusUpdateContext.Provider>
       </AuthenticationStatusContext.Provider>
     </>
