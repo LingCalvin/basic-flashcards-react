@@ -1,8 +1,14 @@
-import { Backdrop, CircularProgress, Container } from '@material-ui/core';
+import {
+  Backdrop,
+  CircularProgress,
+  Container,
+  Snackbar,
+} from '@material-ui/core';
 import { useState } from 'react';
 import { useHistory } from 'react-router';
 import Card from '../../card/interfaces/card';
 import AppBarWithBackButton from '../../common/components/app-bar-with-back-button';
+import { autoHideDuration } from '../../common/constants/snackbar';
 import EditDeckForm from '../components/edit-deck-form';
 import { decksService } from '../services/decks.service';
 import { DeckVisibility } from '../types/deck-visibility';
@@ -18,6 +24,9 @@ export default function AddDeckPage() {
   ]);
   const [submitting, setSubmitting] = useState(false);
   const history = useHistory();
+
+  const [showSnackbar, setShowsSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   return (
     <>
@@ -41,11 +50,19 @@ export default function AddDeckPage() {
               .create({ title, description, visibility, cards, tags: [] })
               .then(() => history.goBack())
               .catch(() => {
+                setSnackbarMessage('Failed to save deck.');
+                setShowsSnackbar(true);
                 setSubmitting(false);
               });
           }}
         />
       </Container>
+      <Snackbar
+        open={showSnackbar}
+        message={snackbarMessage}
+        autoHideDuration={autoHideDuration}
+        onClose={() => setShowsSnackbar(false)}
+      />
     </>
   );
 }

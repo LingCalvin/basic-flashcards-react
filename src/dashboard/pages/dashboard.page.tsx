@@ -1,14 +1,10 @@
 import {
   Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
   Fab,
   InputLabel,
   MenuItem,
   Select,
+  Snackbar,
   TextField,
   Typography,
   useTheme,
@@ -30,6 +26,9 @@ import DeckInfoTile from '../components/deck-info-tile';
 import useStyles from './dashboard.page.styles';
 import { deckView } from '../../router/utils/route.utils';
 import CredentialsContext from '../../auth/contexts/credentials.context';
+import DeleteDeckDialog from '../components/delete-deck-dialog';
+import { downloadBlob } from '../../common/utils/download.utils';
+import { autoHideDuration } from '../../common/constants/snackbar';
 
 interface DashboardPageProps {
   pageSize?: number;
@@ -40,6 +39,10 @@ export default function DashboardPage({ pageSize = 10 }: DashboardPageProps) {
   const isMobile = useIsMobile();
 
   const { id: userId } = useContext(CredentialsContext) ?? {};
+
+  if (!userId) {
+    throw new Error('Unexpected nullish value: userId');
+  }
 
   const [loadedDecks, setLoadedDecks] = useState<Deck[]>([]);
   const [totalDecks, setTotalDecks] = useState(0);
@@ -53,6 +56,11 @@ export default function DashboardPage({ pageSize = 10 }: DashboardPageProps) {
     search,
     theme.transitions.duration.short
   );
+
+  const exportDeck = (deck: Deck) => {
+    const deckJSON = JSON.stringify(deck, undefined, 2);
+    downloadBlob(new Blob([deckJSON], { type: 'application/json' }));
+  };
 
   const findDecks = (params: FindAllDecksParams) => {
     setLoading(true);
@@ -68,9 +76,6 @@ export default function DashboardPage({ pageSize = 10 }: DashboardPageProps) {
   };
 
   useEffect(() => {
-    if (!userId) {
-      throw new Error('Unexpected nullish value: userId');
-    }
     findDecks({
       authorId: [userId],
       orderTitleBy: 'asc',
@@ -84,55 +89,33 @@ export default function DashboardPage({ pageSize = 10 }: DashboardPageProps) {
   const [showDialog, setShowDialog] = useState(false);
   const [deckToDelete, setDeckToDelete] = useState<Deck | null>(null);
 
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+
   return (
     <div>
-      <Dialog
+      <DeleteDeckDialog
+        deckTitle={deckToDelete?.title ?? ''}
         open={showDialog}
-        onBackdropClick={() => setShowDialog(false)}
+        onBackDropClick={() => setShowDialog(false)}
         onExited={() => setDeckToDelete(null)}
-      >
-        <DialogTitle>Delete deck?</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure you want to delete deck "{deckToDelete?.title}"? This
-            action cannot be undone.
-          </DialogContentText>
-          <DialogActions>
-            <Button
-              color="primary"
-              autoFocus
-              onClick={() => {
-                setShowDialog(false);
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              color="primary"
-              onClick={() => {
-                decksService
-                  .remove(deckToDelete?.id ?? '')
-                  .then(() => {
-                    if (!userId) {
-                      throw new Error('Unexpected nullish value: userId');
-                    }
-                    findDecks({
-                      authorId: [userId],
-                      orderTitleBy: 'asc',
-                      take: pageSize,
-                      skip: (page - 1) * pageSize,
-                      caseInsensitive: true,
-                      titleContains: searchValue ? searchValue : undefined,
-                    });
-                  })
-                  .finally(() => setShowDialog(false));
-              }}
-            >
-              Delete
-            </Button>
-          </DialogActions>
-        </DialogContent>
-      </Dialog>
+        onCancel={() => setShowDialog(false)}
+        onDelete={() => {
+          decksService
+            .remove(deckToDelete?.id ?? '')
+            .then(() =>
+              findDecks({
+                authorId: [userId],
+                orderTitleBy: 'asc',
+                take: pageSize,
+                skip: (page - 1) * pageSize,
+                caseInsensitive: true,
+                titleContains: searchValue ? searchValue : undefined,
+              })
+            )
+            .finally(() => setShowDialog(false));
+        }}
+      />
       <AppBar />
       <div className={classes.content}>
         <Typography variant="h2">Your decks</Typography>
@@ -149,17 +132,69 @@ export default function DashboardPage({ pageSize = 10 }: DashboardPageProps) {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          {!isMobile && (
-            <Button
-              color="primary"
-              variant="contained"
-              component={Link}
-              to={routes.deckAdd}
-              className={classes.addButton}
-            >
-              Add Deck
-            </Button>
-          )}
+
+          <div className={classes.buttonBox}>
+            <label>
+              <Button color="primary" component="span">
+                Import
+              </Button>
+              <input
+                type="file"
+                accept="application/json"
+                hidden
+                onChange={(changeEvent) => {
+                  setLoading(true);
+                  const reader = new FileReader();
+                  const file = changeEvent.target.files?.[0];
+                  if (!file) {
+                    return;
+                  }
+                  reader.onload = (e) => {
+                    const { result } = e.target ?? {};
+                    if (!result) {
+                      return;
+                    }
+                    const deck: Deck = JSON.parse(result as string);
+                    decksService
+                      .create(deck)
+                      .then(() =>
+                        findDecks({
+                          authorId: [userId],
+                          orderTitleBy: 'asc',
+                          take: pageSize,
+                          skip: (page - 1) * pageSize,
+                          caseInsensitive: true,
+                          titleContains: searchValue ? searchValue : undefined,
+                        })
+                      )
+                      .then(() => {
+                        setSnackbarMessage('Deck successfully imported');
+                        setShowSnackbar(true);
+                      })
+                      .catch(() => {
+                        setSnackbarMessage('Failed to import deck.');
+                        setShowSnackbar(true);
+                      })
+                      .finally(() => {
+                        changeEvent.target.value = '';
+                        setLoading(false);
+                      });
+                  };
+                  reader.readAsText(file);
+                }}
+              />
+            </label>
+            {!isMobile && (
+              <Button
+                color="primary"
+                variant="contained"
+                component={Link}
+                to={routes.deckAdd}
+              >
+                Create
+              </Button>
+            )}
+          </div>
         </div>
         <div className={classes.paginationContainer}>
           <div className={classes.deckList}>
@@ -174,6 +209,7 @@ export default function DashboardPage({ pageSize = 10 }: DashboardPageProps) {
                   setDeckToDelete(deck);
                   setShowDialog(true);
                 }}
+                onExport={() => exportDeck(deck)}
                 onEdit={() => history.push(`${routes.decks}/${deck.id}/edit`)}
               />
             ))}
@@ -200,6 +236,13 @@ export default function DashboardPage({ pageSize = 10 }: DashboardPageProps) {
             <AddIcon />
           </Fab>
         )}
+        <Snackbar
+          className={classes.snackbar}
+          open={showSnackbar}
+          message={snackbarMessage}
+          autoHideDuration={autoHideDuration}
+          onClose={() => setShowSnackbar(false)}
+        />
       </div>
     </div>
   );

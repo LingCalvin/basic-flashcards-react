@@ -1,9 +1,15 @@
-import { Backdrop, CircularProgress, Container } from '@material-ui/core';
+import {
+  Backdrop,
+  CircularProgress,
+  Container,
+  Snackbar,
+} from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
 import AppBarWithBackButton from '../../common/components/app-bar-with-back-button';
 import LoadableComponent from '../../common/components/loadable-component';
+import { autoHideDuration } from '../../common/constants/snackbar';
 import EditDeckForm from '../components/edit-deck-form';
 import Deck from '../interfaces/deck';
 import { decksService } from '../services/decks.service';
@@ -17,6 +23,9 @@ export default function EditDeckPage() {
 
   const [deck, setDeck] = useState<Deck | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const [showSnackbar, setShowsSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   useEffect(() => {
     setLoading(true);
@@ -85,6 +94,8 @@ export default function EditDeckPage() {
                   })
                   .then(() => history.goBack())
                   .catch(() => {
+                    setSnackbarMessage('Failed to update deck.');
+                    setShowsSnackbar(true);
                     setSubmitting(false);
                   });
               }}
@@ -92,6 +103,12 @@ export default function EditDeckPage() {
           </Container>
         )}
       </LoadableComponent>
+      <Snackbar
+        open={showSnackbar}
+        message={snackbarMessage}
+        autoHideDuration={autoHideDuration}
+        onClose={() => setShowsSnackbar(false)}
+      />
     </>
   );
 }

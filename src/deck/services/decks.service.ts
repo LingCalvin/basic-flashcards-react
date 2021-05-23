@@ -50,7 +50,8 @@ export class DecksService {
       description,
       visibility,
       cards: cards.map(
-        ({ sides: [{ text: frontText }, { text: backText }] }) => ({
+        ({ id: cardId, sides: [{ text: frontText }, { text: backText }] }) => ({
+          id: cardId,
           frontText,
           backText,
         })
@@ -75,6 +76,7 @@ function findOneDeckResponseToDeck(data: FindOneDeckResponse): Deck {
     description,
     visibility,
     cards: data.cards.map((card) => ({
+      id: card.id,
       sides: [{ text: card.frontText }, { text: card.backText }],
     })),
     tags: [],
