@@ -1,24 +1,24 @@
 {
   "files": {
     "main.css": "/basic-flashcards-react/static/css/main.6dea0f05.chunk.css",
-    "main.js": "/basic-flashcards-react/static/js/main.7a4865e4.chunk.js",
-    "main.js.map": "/basic-flashcards-react/static/js/main.7a4865e4.chunk.js.map",
-    "runtime-main.js": "/basic-flashcards-react/static/js/runtime-main.dbf5a275.js",
-    "runtime-main.js.map": "/basic-flashcards-react/static/js/runtime-main.dbf5a275.js.map",
-    "static/js/2.07848414.chunk.js": "/basic-flashcards-react/static/js/2.07848414.chunk.js",
-    "static/js/2.07848414.chunk.js.map": "/basic-flashcards-react/static/js/2.07848414.chunk.js.map",
-    "static/js/3.dbd68f9c.chunk.js": "/basic-flashcards-react/static/js/3.dbd68f9c.chunk.js",
-    "static/js/3.dbd68f9c.chunk.js.map": "/basic-flashcards-react/static/js/3.dbd68f9c.chunk.js.map",
+    "main.js": "/basic-flashcards-react/static/js/main.7b19a976.chunk.js",
+    "main.js.map": "/basic-flashcards-react/static/js/main.7b19a976.chunk.js.map",
+    "runtime-main.js": "/basic-flashcards-react/static/js/runtime-main.55fa2edf.js",
+    "runtime-main.js.map": "/basic-flashcards-react/static/js/runtime-main.55fa2edf.js.map",
+    "static/js/2.d587cbfe.chunk.js": "/basic-flashcards-react/static/js/2.d587cbfe.chunk.js",
+    "static/js/2.d587cbfe.chunk.js.map": "/basic-flashcards-react/static/js/2.d587cbfe.chunk.js.map",
+    "static/js/3.eae7c45b.chunk.js": "/basic-flashcards-react/static/js/3.eae7c45b.chunk.js",
+    "static/js/3.eae7c45b.chunk.js.map": "/basic-flashcards-react/static/js/3.eae7c45b.chunk.js.map",
     "index.html": "/basic-flashcards-react/index.html",
     "service-worker.js": "/basic-flashcards-react/service-worker.js",
     "service-worker.js.map": "/basic-flashcards-react/service-worker.js.map",
     "static/css/main.6dea0f05.chunk.css.map": "/basic-flashcards-react/static/css/main.6dea0f05.chunk.css.map",
-    "static/js/2.07848414.chunk.js.LICENSE.txt": "/basic-flashcards-react/static/js/2.07848414.chunk.js.LICENSE.txt"
+    "static/js/2.d587cbfe.chunk.js.LICENSE.txt": "/basic-flashcards-react/static/js/2.d587cbfe.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.dbf5a275.js",
-    "static/js/2.07848414.chunk.js",
+    "static/js/runtime-main.55fa2edf.js",
+    "static/js/2.d587cbfe.chunk.js",
     "static/css/main.6dea0f05.chunk.css",
-    "static/js/main.7a4865e4.chunk.js"
+    "static/js/main.7b19a976.chunk.js"
   ]
 }
