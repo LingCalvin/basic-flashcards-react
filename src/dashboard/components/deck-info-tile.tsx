@@ -31,7 +31,12 @@ export default function DeckInfoTile({
       </Typography>
       <Typography>{`${numberOfCards} cards`}</Typography>
       {author && (
-        <Typography>
+        <Typography
+          onClick={(e: React.MouseEvent<HTMLSpanElement, MouseEvent>) =>
+            e.stopPropagation()
+          }
+          component="span"
+        >
           By <Link to={`/users/${author}`}>{author}</Link>
         </Typography>
       )}
