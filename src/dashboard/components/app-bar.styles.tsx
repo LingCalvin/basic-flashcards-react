@@ -15,6 +15,20 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
     fontWeight: theme.typography.fontWeightBold,
   },
+  searchBar: {
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+    },
+    width: '300px',
+  },
+  searchBarInput: {
+    paddingLeft: theme.spacing(1),
+    paddingTop: theme.spacing(0.5),
+    paddingBottom: theme.spacing(0.5),
+  },
+  toolbar: {
+    gap: theme.spacing(1),
+  },
 }));
 
 export default useStyles;

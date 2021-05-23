@@ -4,20 +4,32 @@ import {
   Button,
   Divider,
   IconButton,
+  InputAdornment,
+  InputBase,
   Menu,
   MenuItem,
+  Paper,
   Toolbar,
   Typography,
 } from '@material-ui/core';
+import { Close, Search } from '@material-ui/icons';
 import { useContext, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import CredentialsContext from '../../auth/contexts/credentials.context';
 import { authService } from '../../auth/services/auth.service';
+import useIsMobile from '../../common/hooks/use-is-mobile';
+import useTextFieldValue from '../../common/hooks/use-text-field-value';
 import routes from '../../router/constants/routes';
 import useStyles from './app-bar.styles';
 
-export default function AppBar() {
+interface AppBarProps {
+  forceSearchOpen?: boolean;
+}
+
+export default function AppBar({ forceSearchOpen }: AppBarProps) {
   const classes = useStyles();
+
+  const isMobile = useIsMobile();
 
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
 
@@ -25,6 +37,9 @@ export default function AppBar() {
 
   const closeMenu = () => setMenuAnchor(null);
   const history = useHistory();
+
+  const [showSearchBar, setShowSearchBar] = useState(false);
+  const [searchTerm, onSearchTermChange] = useTextFieldValue('');
 
   const menu = (
     <Menu
@@ -54,34 +69,102 @@ export default function AppBar() {
     <Avatar>{credentials?.username.substring(0, 1).toLocaleUpperCase()}</Avatar>
   );
 
+  const loginProfile = authService.isAuthenticated() ? (
+    <IconButton
+      className={classes.avatarButton}
+      color="inherit"
+      onClick={(e) => setMenuAnchor(e.currentTarget)}
+    >
+      {avatar}
+    </IconButton>
+  ) : (
+    <Button component={Link} to={routes.login} color="inherit">
+      Log in
+    </Button>
+  );
+
+  const searchBar = (
+    <Paper className={classes.searchBar}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          history.push({
+            pathname: routes.deckSearch,
+            search: `?term=${encodeURIComponent(searchTerm)}`,
+          });
+        }}
+      >
+        <InputBase
+          value={searchTerm}
+          fullWidth={isMobile}
+          placeholder="Search"
+          className={classes.searchBarInput}
+          startAdornment={
+            <InputAdornment position="start">
+              <Search />
+            </InputAdornment>
+          }
+          endAdornment={
+            isMobile ? (
+              <InputAdornment position="end">
+                <IconButton onClick={() => setShowSearchBar(false)}>
+                  <Close />
+                </IconButton>
+              </InputAdornment>
+            ) : undefined
+          }
+          onChange={onSearchTermChange}
+        />
+      </form>
+    </Paper>
+  );
+
+  const mobileToolbar = (
+    <Toolbar className={classes.toolbar}>
+      {showSearchBar || forceSearchOpen ? (
+        searchBar
+      ) : (
+        <>
+          <div className={classes.titleContainer}>
+            <Button
+              color="inherit"
+              component={Link}
+              to={routes.home}
+              className={classes.homeLink}
+            >
+              <Typography variant="h6">Basic Flashcards</Typography>
+            </Button>
+          </div>
+          <IconButton color="inherit" onClick={() => setShowSearchBar(true)}>
+            <Search />
+          </IconButton>
+          {loginProfile}
+        </>
+      )}
+    </Toolbar>
+  );
+
+  const standardToolbar = (
+    <Toolbar className={classes.toolbar}>
+      <div className={classes.titleContainer}>
+        <Button
+          color="inherit"
+          component={Link}
+          to={routes.home}
+          className={classes.homeLink}
+        >
+          <Typography variant="h6">Basic Flashcards</Typography>
+        </Button>
+      </div>
+      {searchBar}
+      {loginProfile}
+    </Toolbar>
+  );
+
   return (
     <MuiAppBar position="sticky">
       {menu}
-      <Toolbar>
-        <div className={classes.titleContainer}>
-          <Button
-            color="inherit"
-            component={Link}
-            to={routes.home}
-            className={classes.homeLink}
-          >
-            <Typography variant="h6">Basic Flashcards</Typography>
-          </Button>
-        </div>
-        {authService.isAuthenticated() ? (
-          <IconButton
-            className={classes.avatarButton}
-            color="inherit"
-            onClick={(e) => setMenuAnchor(e.currentTarget)}
-          >
-            {avatar}
-          </IconButton>
-        ) : (
-          <Button component={Link} to={routes.login} color="inherit">
-            Log in
-          </Button>
-        )}
-      </Toolbar>
+      {isMobile ? mobileToolbar : standardToolbar}
     </MuiAppBar>
   );
 }

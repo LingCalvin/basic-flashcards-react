@@ -2,7 +2,7 @@ const routes = {
   home: '/',
   dashboard: '/dashboard',
   decks: '/decks',
-  deckSearch: '/search-decks',
+  deckSearch: '/search',
   deckAdd: '/add-deck',
   deckEdit: '/decks/:id/edit',
   deckView: '/decks/:id',
