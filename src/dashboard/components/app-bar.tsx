@@ -13,6 +13,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Close, Search } from '@material-ui/icons';
+import clsx from 'clsx';
 import { useContext, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import CredentialsContext from '../../auth/contexts/credentials.context';
@@ -78,7 +79,12 @@ export default function AppBar({ forceSearchOpen }: AppBarProps) {
       {avatar}
     </IconButton>
   ) : (
-    <Button component={Link} to={routes.login} color="inherit">
+    <Button
+      className={classes.button}
+      component={Link}
+      to={routes.login}
+      color="inherit"
+    >
       Log in
     </Button>
   );
@@ -130,7 +136,7 @@ export default function AppBar({ forceSearchOpen }: AppBarProps) {
               color="inherit"
               component={Link}
               to={routes.home}
-              className={classes.homeLink}
+              className={clsx(classes.button, classes.homeLink)}
             >
               <Typography variant="h6">Basic Flashcards</Typography>
             </Button>
@@ -151,7 +157,7 @@ export default function AppBar({ forceSearchOpen }: AppBarProps) {
           color="inherit"
           component={Link}
           to={routes.home}
-          className={classes.homeLink}
+          className={clsx(classes.button, classes.homeLink)}
         >
           <Typography variant="h6">Basic Flashcards</Typography>
         </Button>

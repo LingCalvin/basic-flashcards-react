@@ -76,7 +76,6 @@ export default function DeckSearchPage() {
                 />
               ))}
             </div>
-            {/* FIXME: Fix spacing */}
             {totalDecks / pageSize > 1 && (
               <div className={classes.paginationControls}>
                 <Pagination

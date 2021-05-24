@@ -1,6 +1,9 @@
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
+  button: {
+    whiteSpace: 'nowrap',
+  },
   homeLink: {
     textTransform: 'none',
   },
@@ -19,7 +22,8 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('xs')]: {
       width: '100%',
     },
-    width: '300px',
+    maxWidth: '100%',
+    width: '600px',
   },
   searchBarInput: {
     paddingLeft: theme.spacing(1),
