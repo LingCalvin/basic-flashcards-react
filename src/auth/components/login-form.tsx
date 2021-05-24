@@ -56,6 +56,7 @@ export default function LoginForm({
         onValidate={validateRequired}
         forceValidate={forceValidate}
         variant={variant}
+        inputProps={{ 'aria-label': 'username' }}
         required
       />
       <ValidatedTextField
@@ -66,6 +67,7 @@ export default function LoginForm({
         forceValidate={forceValidate}
         variant={variant}
         type="password"
+        inputProps={{ 'aria-label': 'password' }}
         required
       />
       <div className={classes.submitOrAltRow}>

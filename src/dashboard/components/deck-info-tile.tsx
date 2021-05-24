@@ -26,7 +26,7 @@ export default function DeckInfoTile({
   const classes = useStyles();
   return (
     <Paper className={classes.root} onClick={onClick}>
-      <Typography className={classes.title} variant="h5">
+      <Typography className={classes.title} variant="h5" component="div">
         {title}
       </Typography>
       <Typography>{`${numberOfCards} cards`}</Typography>
@@ -44,7 +44,6 @@ export default function DeckInfoTile({
         <div className={classes.buttonBox}>
           {onDelete && (
             <Button
-              color="secondary"
               onClick={(e) => {
                 e.stopPropagation();
                 onDelete();

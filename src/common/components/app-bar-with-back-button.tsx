@@ -21,6 +21,7 @@ export default function AppBarWithBackButton({
     <MuiAppBar position="sticky">
       <Toolbar>
         <IconButton
+          aria-label="back"
           edge="start"
           color="inherit"
           onClick={onBack ?? (() => history.goBack())}

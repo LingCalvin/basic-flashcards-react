@@ -57,6 +57,7 @@ export default function EditCardTile({
               setValidateFrontText(true);
               onFrontTextChange(e.target.value);
             }}
+            inputProps={{ 'aria-label': 'term' }}
           />
           <TextField
             label="Definition"
@@ -72,16 +73,29 @@ export default function EditCardTile({
               setValidateBackText(true);
               onBackTextChange(e.target.value);
             }}
+            inputProps={{ 'aria-label': 'definition' }}
           />
         </div>
         <div className={classes.actionArea}>
-          <IconButton onClick={onDelete} disabled={!onDelete}>
+          <IconButton
+            aria-label="delete"
+            onClick={onDelete}
+            disabled={!onDelete}
+          >
             <Delete />
           </IconButton>
-          <IconButton onClick={onMoveUp} disabled={!onMoveUp}>
+          <IconButton
+            aria-label="move up"
+            onClick={onMoveUp}
+            disabled={!onMoveUp}
+          >
             <ArrowUpward />
           </IconButton>
-          <IconButton onClick={onMoveDown} disabled={!onMoveDown}>
+          <IconButton
+            aria-label="move down"
+            onClick={onMoveDown}
+            disabled={!onMoveDown}
+          >
             <ArrowDownward />
           </IconButton>
         </div>

@@ -30,12 +30,14 @@ export default function HomePage() {
       <AppBar />
       <main>
         <div className={classes.topSection}>
-          <Typography variant="h1">
+          <Typography variant="h1" component="p">
             Create, search for, and review decks.
           </Typography>
         </div>
         <div className={classes.exampleDecksSection}>
-          <Typography variant="h2">Example decks</Typography>
+          <Typography variant="h2" component="div">
+            Example decks
+          </Typography>
           <LoadableComponent loading={loading}>
             <div className={classes.exampleDecksContainer}>
               {exampleDecks.map((deck) => (

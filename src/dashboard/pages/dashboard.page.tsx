@@ -129,6 +129,7 @@ export default function DashboardPage({ pageSize = 10 }: DashboardPageProps) {
           </div>
           <TextField
             label="Search"
+            inputProps={{ 'aria-label': 'search' }}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -228,6 +229,7 @@ export default function DashboardPage({ pageSize = 10 }: DashboardPageProps) {
         </div>
         {isMobile && (
           <Fab
+            aria-label="create deck"
             className={classes.fab}
             color="primary"
             component={Link}

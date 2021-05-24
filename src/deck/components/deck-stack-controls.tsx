@@ -19,6 +19,7 @@ export default function DeckStackControls({
   return (
     <div className={classes.root}>
       <IconButton
+        aria-label="previous card"
         onClick={onBack}
         disabled={currentIndex === 0 || numberOfCards === 0}
       >
@@ -27,6 +28,7 @@ export default function DeckStackControls({
       <div>
         <Typography
           variant="subtitle2"
+          component="span"
           align="center"
           className={classes.positionIndicator}
         >{`${
@@ -35,6 +37,7 @@ export default function DeckStackControls({
       </div>
 
       <IconButton
+        aria-label="next card"
         onClick={onForward}
         disabled={currentIndex === numberOfCards - 1 || numberOfCards === 0}
       >

@@ -68,6 +68,7 @@ export default function RegistrationForm({
         onValidate={validateRequired}
         required
         value={username}
+        inputProps={{ 'aria-label': 'username' }}
         onChange={onChangeUsername}
       />
       <ValidatedTextField
@@ -76,6 +77,7 @@ export default function RegistrationForm({
         type="password"
         required
         value={password}
+        inputProps={{ 'aria-label': 'password' }}
         onChange={onChangePassword}
         forceValidate={forceValidate}
         onValidate={validateRequired}
@@ -86,6 +88,7 @@ export default function RegistrationForm({
         type="password"
         required
         value={confirmPassword}
+        inputProps={{ 'aria-label': 'confirm password' }}
         onChange={onChangeConfirmPassword}
         forceValidate={forceValidate}
         onValidate={validateConfirmPassword}

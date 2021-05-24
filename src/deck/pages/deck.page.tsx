@@ -48,8 +48,10 @@ export default function DeckPage() {
             <>
               <section className={classes.section}>
                 <div>
-                  <Typography variant="h4">{deck.title}</Typography>
-                  <Typography variant="subtitle1">
+                  <Typography variant="h4" component="h1">
+                    {deck.title}
+                  </Typography>
+                  <Typography variant="subtitle1" component="div">
                     by{' '}
                     <Link to={`/users/${deck.authorId}`} color="inherit">
                       {deck.authorId}
@@ -75,6 +77,7 @@ export default function DeckPage() {
                     }}
                   />
                   <Slider
+                    aria-label="current card slider"
                     className={classes.progressBar}
                     value={activeCardIndex}
                     max={deck.cards.length - 1}
@@ -87,7 +90,9 @@ export default function DeckPage() {
               </section>
               {/* Tag list */}
               <section className={classes.section}>
-                <Typography variant="h5">Tags</Typography>
+                <Typography variant="h5" component="h2">
+                  Tags
+                </Typography>
                 <div className={classes.tagList}>
                   {sortedTags.map((tag) => (
                     <Chip key={tag} label={tag} variant="outlined" />
@@ -96,7 +101,9 @@ export default function DeckPage() {
               </section>
               {/* Term list */}
               <section className={classes.section}>
-                <Typography variant="h5">Terms</Typography>
+                <Typography variant="h5" component="h2">
+                  Terms
+                </Typography>
                 <CardList cards={deck.cards} />
               </section>
             </>

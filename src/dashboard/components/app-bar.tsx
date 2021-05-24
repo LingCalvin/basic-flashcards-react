@@ -136,6 +136,7 @@ export default function AppBar({
             isMobile ? (
               <InputAdornment position="end">
                 <IconButton
+                  aria-label="close search"
                   onClick={onCloseSearchBar ?? (() => setShowSearchBar(false))}
                 >
                   <Close />
@@ -162,7 +163,9 @@ export default function AppBar({
               to={routes.home}
               className={clsx(classes.button, classes.homeLink)}
             >
-              <Typography variant="h6">Basic Flashcards</Typography>
+              <Typography variant="h6" component="span">
+                Basic Flashcards
+              </Typography>
             </Button>
           </div>
           <IconButton

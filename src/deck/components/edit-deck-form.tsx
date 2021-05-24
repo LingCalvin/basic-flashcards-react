@@ -1,15 +1,7 @@
-import {
-  Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from '@material-ui/core';
+import { Button, MenuItem, TextField } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import { useState } from 'react';
 import Card from '../../card/interfaces/card';
-import useUniqueId from '../../common/hooks/use-unique-id';
 import missingRequiredFieldErrorMessage from '../../common/constants/missing-required-field-error-message';
 import { DeckVisibility } from '../types/deck-visibility';
 import EditCardTile from './edit-card-tile';
@@ -39,7 +31,6 @@ export default function EditDeckForm({
   onSubmit,
 }: EditDeckFormProps) {
   const classes = useStyles();
-  const visibilityId = useUniqueId();
 
   const [validateTitle, setValidateTitle] = useState(false);
   const [forceValidate, setForceValidate] = useState(false);
@@ -90,46 +81,41 @@ export default function EditDeckForm({
       }}
     >
       <div className={classes.generalInfoContainer}>
-        <FormControl>
-          <TextField
-            required
-            variant="outlined"
-            label="Title"
-            fullWidth
-            error={showTitleError}
-            helperText={
-              showTitleError ? missingRequiredFieldErrorMessage : undefined
-            }
-            value={title}
-            onChange={(e) => {
-              setValidateTitle(true);
-              onTitleChange(e.target.value);
-            }}
-          />
-        </FormControl>
-        <FormControl>
-          <TextField
-            variant="outlined"
-            label="Description"
-            fullWidth
-            value={description}
-            onChange={(e) => onDescriptionChange(e.target.value)}
-          />
-        </FormControl>
-        <FormControl>
-          <InputLabel id={visibilityId}>Visibility</InputLabel>
-          <Select
-            labelId={visibilityId}
-            variant="outlined"
-            value={visibility}
-            onChange={(e) =>
-              onChangeVisibility(e.target.value as DeckVisibility)
-            }
-          >
-            <MenuItem value="PRIVATE">Private</MenuItem>
-            <MenuItem value="PUBLIC">Public</MenuItem>
-          </Select>
-        </FormControl>
+        <TextField
+          required
+          variant="outlined"
+          label="Title"
+          fullWidth
+          error={showTitleError}
+          helperText={
+            showTitleError ? missingRequiredFieldErrorMessage : undefined
+          }
+          value={title}
+          onChange={(e) => {
+            setValidateTitle(true);
+            onTitleChange(e.target.value);
+          }}
+          inputProps={{ 'aria-label': 'title' }}
+        />
+        <TextField
+          variant="outlined"
+          label="Description"
+          fullWidth
+          value={description}
+          onChange={(e) => onDescriptionChange(e.target.value)}
+          inputProps={{ 'aria-label': 'description' }}
+        />
+        <TextField
+          variant="outlined"
+          value={visibility}
+          onChange={(e) => onChangeVisibility(e.target.value as DeckVisibility)}
+          select
+          label="Visibility"
+          inputProps={{ 'aria-label': 'visibility' }}
+        >
+          <MenuItem value="PRIVATE">Private</MenuItem>
+          <MenuItem value="PUBLIC">Public</MenuItem>
+        </TextField>
       </div>
 
       <div className={classes.cardList}>
