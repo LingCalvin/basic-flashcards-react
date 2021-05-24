@@ -15,7 +15,7 @@ import {
 import { Close, Search } from '@material-ui/icons';
 import clsx from 'clsx';
 import { useContext, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import CredentialsContext from '../../auth/contexts/credentials.context';
 import { authService } from '../../auth/services/auth.service';
 import useIsMobile from '../../common/hooks/use-is-mobile';
@@ -27,14 +27,20 @@ interface AppBarProps {
   searchBarOpen?: boolean;
   searchBarValue?: string;
   onChangeSearchBarValue?: (value: string) => void;
+  onCloseSearchBar?: () => void;
+  onSearch?: () => void;
 }
 
 export default function AppBar({
   searchBarOpen,
   searchBarValue,
   onChangeSearchBarValue,
+  onCloseSearchBar,
+  onSearch,
 }: AppBarProps) {
   const classes = useStyles();
+
+  const location = useLocation();
 
   const isMobile = useIsMobile();
 
@@ -105,14 +111,19 @@ export default function AppBar({
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          history.push({
-            pathname: routes.deckSearch,
-            search: `?term=${encodeURIComponent(searchBarValue ?? searchTerm)}`,
-          });
+          onSearch
+            ? onSearch()
+            : history.push({
+                pathname: routes.deckSearch,
+                search: `?from=${encodeURIComponent(
+                  location.pathname
+                )}&term=${encodeURIComponent(searchBarValue ?? searchTerm)}`,
+              });
         }}
       >
         <InputBase
           value={searchBarValue ?? searchTerm}
+          autoFocus={isMobile}
           fullWidth={isMobile}
           placeholder="Search"
           className={classes.searchBarInput}
@@ -124,7 +135,9 @@ export default function AppBar({
           endAdornment={
             isMobile ? (
               <InputAdornment position="end">
-                <IconButton onClick={() => setShowSearchBar(false)}>
+                <IconButton
+                  onClick={onCloseSearchBar ?? (() => setShowSearchBar(false))}
+                >
                   <Close />
                 </IconButton>
               </InputAdornment>

@@ -1,5 +1,5 @@
 import { Pagination } from '@material-ui/lab';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
 import LoadableComponent from '../../common/components/loadable-component';
 import AppBar from '../../dashboard/components/app-bar';
@@ -10,9 +10,12 @@ import Deck from '../interfaces/deck';
 import { decksService } from '../services/decks.service';
 import useStyles from './deck-search.page.styles';
 import * as MathUtils from '../../common/utils/math.utils';
+import useIsMobile from '../../common/hooks/use-is-mobile';
 
 export default function DeckSearchPage() {
   const classes = useStyles();
+
+  const isMobile = useIsMobile();
 
   const [deckSlice, setDeckSlice] = useState<Deck[]>([]);
   const [totalDecks, setTotalDecks] = useState(0);
@@ -34,13 +37,29 @@ export default function DeckSearchPage() {
   const pageString = qs.get('page');
   const page = MathUtils.clamp(1, numberOfPages, pageString ? +pageString : 1);
 
+  const from = qs.get('from');
+
+  const previousLocation = useRef(from ?? routes.home);
+
   const [loading, setLoading] = useState(true);
 
   const history = useHistory();
 
+  // Remove the from search param
+  useEffect(() => {
+    if (from) {
+      qs.delete('from');
+      history.replace({ search: qs.toString() });
+    }
+  });
+
   const [searchBarValue, setSearchBarValue] = useState(term);
 
   useEffect(() => {
+    // Do not send a request if the from param is being removed
+    if (from) {
+      return;
+    }
     if (!term) {
       setLoading(false);
       setDeckSlice([]);
@@ -58,7 +77,7 @@ export default function DeckSearchPage() {
         setTotalDecks(count);
       })
       .finally(() => setLoading(false));
-  }, [page, pageSize, term]);
+  }, [from, page, pageSize, term]);
 
   return (
     <div>
@@ -66,6 +85,15 @@ export default function DeckSearchPage() {
         searchBarOpen
         searchBarValue={searchBarValue}
         onChangeSearchBarValue={setSearchBarValue}
+        onCloseSearchBar={
+          isMobile ? () => history.push(previousLocation.current) : undefined
+        }
+        onSearch={() =>
+          history.push({
+            pathname: routes.deckSearch,
+            search: `?term=${encodeURIComponent(searchBarValue)}`,
+          })
+        }
       />
       <div className={classes.content}>
         <LoadableComponent loading={loading}>

@@ -27,8 +27,10 @@ const useStyles = makeStyles((theme) => ({
   },
   searchBarInput: {
     paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
     paddingTop: theme.spacing(0.5),
     paddingBottom: theme.spacing(0.5),
+    width: '100%',
   },
   toolbar: {
     gap: theme.spacing(1),
