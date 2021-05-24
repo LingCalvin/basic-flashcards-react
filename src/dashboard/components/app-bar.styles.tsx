@@ -22,8 +22,8 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('xs')]: {
       width: '100%',
     },
-    maxWidth: '100%',
-    width: '600px',
+    maxWidth: '600px',
+    width: '100%',
   },
   searchBarInput: {
     paddingLeft: theme.spacing(1),
