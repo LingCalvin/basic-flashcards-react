@@ -1,24 +1,31 @@
 {
   "files": {
     "main.css": "/basic-flashcards-react/static/css/main.6dea0f05.chunk.css",
-    "main.js": "/basic-flashcards-react/static/js/main.208ad681.chunk.js",
-    "main.js.map": "/basic-flashcards-react/static/js/main.208ad681.chunk.js.map",
-    "runtime-main.js": "/basic-flashcards-react/static/js/runtime-main.55fa2edf.js",
-    "runtime-main.js.map": "/basic-flashcards-react/static/js/runtime-main.55fa2edf.js.map",
-    "static/js/2.43f37f89.chunk.js": "/basic-flashcards-react/static/js/2.43f37f89.chunk.js",
-    "static/js/2.43f37f89.chunk.js.map": "/basic-flashcards-react/static/js/2.43f37f89.chunk.js.map",
-    "static/js/3.eae7c45b.chunk.js": "/basic-flashcards-react/static/js/3.eae7c45b.chunk.js",
-    "static/js/3.eae7c45b.chunk.js.map": "/basic-flashcards-react/static/js/3.eae7c45b.chunk.js.map",
+    "main.js": "/basic-flashcards-react/static/js/main.d358e7e7.chunk.js",
+    "main.js.map": "/basic-flashcards-react/static/js/main.d358e7e7.chunk.js.map",
+    "runtime-main.js": "/basic-flashcards-react/static/js/runtime-main.d8b624cc.js",
+    "runtime-main.js.map": "/basic-flashcards-react/static/js/runtime-main.d8b624cc.js.map",
+    "static/css/2.43c6852f.chunk.css": "/basic-flashcards-react/static/css/2.43c6852f.chunk.css",
+    "static/js/2.0fa14359.chunk.js": "/basic-flashcards-react/static/js/2.0fa14359.chunk.js",
+    "static/js/2.0fa14359.chunk.js.map": "/basic-flashcards-react/static/js/2.0fa14359.chunk.js.map",
+    "static/js/3.d802deb4.chunk.js": "/basic-flashcards-react/static/js/3.d802deb4.chunk.js",
+    "static/js/3.d802deb4.chunk.js.map": "/basic-flashcards-react/static/js/3.d802deb4.chunk.js.map",
     "index.html": "/basic-flashcards-react/index.html",
     "service-worker.js": "/basic-flashcards-react/service-worker.js",
     "service-worker.js.map": "/basic-flashcards-react/service-worker.js.map",
+    "static/css/2.43c6852f.chunk.css.map": "/basic-flashcards-react/static/css/2.43c6852f.chunk.css.map",
     "static/css/main.6dea0f05.chunk.css.map": "/basic-flashcards-react/static/css/main.6dea0f05.chunk.css.map",
-    "static/js/2.43f37f89.chunk.js.LICENSE.txt": "/basic-flashcards-react/static/js/2.43f37f89.chunk.js.LICENSE.txt"
+    "static/js/2.0fa14359.chunk.js.LICENSE.txt": "/basic-flashcards-react/static/js/2.0fa14359.chunk.js.LICENSE.txt",
+    "static/media/300.css": "/basic-flashcards-react/static/media/roboto-vietnamese-300-normal.af9afdc1.woff2",
+    "static/media/400.css": "/basic-flashcards-react/static/media/roboto-vietnamese-400-normal.c0bec65d.woff2",
+    "static/media/500.css": "/basic-flashcards-react/static/media/roboto-vietnamese-500-normal.b8e494da.woff2",
+    "static/media/700.css": "/basic-flashcards-react/static/media/roboto-vietnamese-700-normal.3096f18a.woff2"
   },
   "entrypoints": [
-    "static/js/runtime-main.55fa2edf.js",
-    "static/js/2.43f37f89.chunk.js",
+    "static/js/runtime-main.d8b624cc.js",
+    "static/css/2.43c6852f.chunk.css",
+    "static/js/2.0fa14359.chunk.js",
     "static/css/main.6dea0f05.chunk.css",
-    "static/js/main.208ad681.chunk.js"
+    "static/js/main.d358e7e7.chunk.js"
   ]
 }
