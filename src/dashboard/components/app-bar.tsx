@@ -24,10 +24,16 @@ import routes from '../../router/constants/routes';
 import useStyles from './app-bar.styles';
 
 interface AppBarProps {
-  forceSearchOpen?: boolean;
+  searchBarOpen?: boolean;
+  searchBarValue?: string;
+  onChangeSearchBarValue?: (value: string) => void;
 }
 
-export default function AppBar({ forceSearchOpen }: AppBarProps) {
+export default function AppBar({
+  searchBarOpen,
+  searchBarValue,
+  onChangeSearchBarValue,
+}: AppBarProps) {
   const classes = useStyles();
 
   const isMobile = useIsMobile();
@@ -41,6 +47,11 @@ export default function AppBar({ forceSearchOpen }: AppBarProps) {
 
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [searchTerm, onSearchTermChange] = useTextFieldValue('');
+
+  const handleChangeSearchBarValue = onChangeSearchBarValue
+    ? (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
+        onChangeSearchBarValue(e.target.value)
+    : onSearchTermChange;
 
   const menu = (
     <Menu
@@ -96,12 +107,12 @@ export default function AppBar({ forceSearchOpen }: AppBarProps) {
           e.preventDefault();
           history.push({
             pathname: routes.deckSearch,
-            search: `?term=${encodeURIComponent(searchTerm)}`,
+            search: `?term=${encodeURIComponent(searchBarValue ?? searchTerm)}`,
           });
         }}
       >
         <InputBase
-          value={searchTerm}
+          value={searchBarValue ?? searchTerm}
           fullWidth={isMobile}
           placeholder="Search"
           className={classes.searchBarInput}
@@ -119,7 +130,7 @@ export default function AppBar({ forceSearchOpen }: AppBarProps) {
               </InputAdornment>
             ) : undefined
           }
-          onChange={onSearchTermChange}
+          onChange={handleChangeSearchBarValue}
         />
       </form>
     </Paper>
@@ -127,7 +138,7 @@ export default function AppBar({ forceSearchOpen }: AppBarProps) {
 
   const mobileToolbar = (
     <Toolbar className={classes.toolbar}>
-      {showSearchBar || forceSearchOpen ? (
+      {searchBarOpen ?? showSearchBar ? (
         searchBar
       ) : (
         <>
@@ -141,7 +152,11 @@ export default function AppBar({ forceSearchOpen }: AppBarProps) {
               <Typography variant="h6">Basic Flashcards</Typography>
             </Button>
           </div>
-          <IconButton color="inherit" onClick={() => setShowSearchBar(true)}>
+          <IconButton
+            aria-label="toggle search"
+            color="inherit"
+            onClick={() => setShowSearchBar(true)}
+          >
             <Search />
           </IconButton>
           {loginProfile}

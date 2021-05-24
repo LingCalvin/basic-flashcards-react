@@ -38,6 +38,8 @@ export default function DeckSearchPage() {
 
   const history = useHistory();
 
+  const [searchBarValue, setSearchBarValue] = useState(term);
+
   useEffect(() => {
     if (!term) {
       setLoading(false);
@@ -60,7 +62,11 @@ export default function DeckSearchPage() {
 
   return (
     <div>
-      <AppBar forceSearchOpen />
+      <AppBar
+        searchBarOpen
+        searchBarValue={searchBarValue}
+        onChangeSearchBarValue={setSearchBarValue}
+      />
       <div className={classes.content}>
         <LoadableComponent loading={loading}>
           <div className={classes.paginationContainer}>
