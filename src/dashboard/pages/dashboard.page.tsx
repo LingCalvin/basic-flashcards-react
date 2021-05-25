@@ -28,6 +28,7 @@ import CredentialsContext from '../../auth/contexts/credentials.context';
 import DeleteDeckDialog from '../components/delete-deck-dialog';
 import { downloadBlob } from '../../common/utils/download.utils';
 import { autoHideDuration } from '../../common/constants/snackbar';
+import LoadableComponent from '../../common/components/loadable-component';
 
 interface DashboardPageProps {
   pageSize?: number;
@@ -42,6 +43,8 @@ export default function DashboardPage({ pageSize = 10 }: DashboardPageProps) {
   if (!userId) {
     throw new Error('Unexpected nullish value: userId');
   }
+
+  const [initialLoad, setInitialLoad] = useState(true);
 
   const [loadedDecks, setLoadedDecks] = useState<Deck[]>([]);
   const [totalDecks, setTotalDecks] = useState(0);
@@ -71,7 +74,10 @@ export default function DashboardPage({ pageSize = 10 }: DashboardPageProps) {
         setLoadedDecks(res.decks);
         setTotalDecks(res.count);
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+        setInitialLoad(false);
+      });
   };
 
   useEffect(() => {
@@ -195,36 +201,39 @@ export default function DashboardPage({ pageSize = 10 }: DashboardPageProps) {
             )}
           </div>
         </div>
-        <div className={classes.paginationContainer}>
-          <div className={classes.deckList}>
-            {loadedDecks.map((deck) => (
-              <DeckInfoTile
-                key={deck.id}
-                deckId={deck.id ?? ''}
-                title={deck.title}
-                numberOfCards={deck.cards.length}
-                onClick={() => history.push(deckView(deck.id ?? ''))}
-                onDelete={() => {
-                  setDeckToDelete(deck);
-                  setShowDialog(true);
-                }}
-                onExport={() => exportDeck(deck)}
-                onEdit={() => history.push(`${routes.decks}/${deck.id}/edit`)}
-              />
-            ))}
-          </div>
-          {/* Only show pagination controls if there is more than one page */}
-          {totalDecks / pageSize > 1 && (
-            <div className={classes.paginationControls}>
-              <Pagination
-                count={Math.ceil(totalDecks / pageSize)}
-                page={page}
-                onChange={(_e, value) => setPage(value)}
-                disabled={loading}
-              />
+        <LoadableComponent loading={initialLoad}>
+          <div className={classes.paginationContainer}>
+            <div className={classes.deckList}>
+              {loadedDecks.map((deck) => (
+                <DeckInfoTile
+                  key={deck.id}
+                  deckId={deck.id ?? ''}
+                  title={deck.title}
+                  numberOfCards={deck.cards.length}
+                  onClick={() => history.push(deckView(deck.id ?? ''))}
+                  onDelete={() => {
+                    setDeckToDelete(deck);
+                    setShowDialog(true);
+                  }}
+                  onExport={() => exportDeck(deck)}
+                  onEdit={() => history.push(`${routes.decks}/${deck.id}/edit`)}
+                />
+              ))}
             </div>
-          )}
-        </div>
+            {/* Only show pagination controls if there is more than one page */}
+            {totalDecks / pageSize > 1 && (
+              <div className={classes.paginationControls}>
+                <Pagination
+                  count={Math.ceil(totalDecks / pageSize)}
+                  page={page}
+                  onChange={(_e, value) => setPage(value)}
+                  disabled={loading}
+                />
+              </div>
+            )}
+          </div>
+        </LoadableComponent>
+
         {isMobile && (
           <Fab
             aria-label="create deck"

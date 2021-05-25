@@ -8,7 +8,7 @@ interface LazyLoadingFallbackPageProps {
 export default function LazyLoadingFallbackPage({
   delay = 300,
 }: LazyLoadingFallbackPageProps) {
-  const [showProgress, setShowProgress] = useState(false);
+  const [showProgress, setShowProgress] = useState(delay <= 0);
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowProgress(true);
