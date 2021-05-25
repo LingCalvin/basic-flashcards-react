@@ -3,7 +3,6 @@ import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router';
 import Link from '../../common/components/link';
 import LoadableComponent from '../../common/components/loadable-component';
-import AppBar from '../../dashboard/components/app-bar';
 import CardList from '../components/card-list';
 import DeckStack from '../components/deck-stack';
 import DeckStackControls from '../components/deck-stack-controls';
@@ -40,7 +39,6 @@ export default function DeckPage() {
 
   return (
     <div>
-      <AppBar />
       <div className={classes.root}>
         {/* Deck */}
         <LoadableComponent loading={loading}>

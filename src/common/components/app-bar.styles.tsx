@@ -31,6 +31,9 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(0.5),
     paddingBottom: theme.spacing(0.5),
     width: '100%',
+    [theme.breakpoints.down('xs')]: {
+      paddingRight: 0,
+    },
   },
   toolbar: {
     gap: theme.spacing(1),

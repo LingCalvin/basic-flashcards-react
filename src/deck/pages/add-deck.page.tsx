@@ -7,7 +7,6 @@ import {
 import { useState } from 'react';
 import { useHistory } from 'react-router';
 import Card from '../../card/interfaces/card';
-import AppBarWithBackButton from '../../common/components/app-bar-with-back-button';
 import { autoHideDuration } from '../../common/constants/snackbar';
 import EditDeckForm from '../components/edit-deck-form';
 import { decksService } from '../services/decks.service';
@@ -33,7 +32,6 @@ export default function AddDeckPage() {
       <Backdrop open={submitting} className={classes.backdrop}>
         <CircularProgress color="inherit" />
       </Backdrop>
-      <AppBarWithBackButton title="Add deck" />
       <Container>
         <EditDeckForm
           title={title}

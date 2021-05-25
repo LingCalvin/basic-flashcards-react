@@ -2,7 +2,6 @@ import { Container } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { useState } from 'react';
 import { useHistory } from 'react-router';
-import AppBarWithBackButton from '../../common/components/app-bar-with-back-button';
 import routes from '../../router/constants/routes';
 import useTextFieldValue from '../../common/hooks/use-text-field-value';
 import userService from '../../user/services/user.service';
@@ -18,7 +17,6 @@ export default function RegistrationPage() {
   const history = useHistory();
   return (
     <div>
-      <AppBarWithBackButton title="Basic Flashcards" />
       <Container className={classes.content}>
         {serverError && <Alert severity="error">{serverError}</Alert>}
         <RegistrationForm

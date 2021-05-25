@@ -21,7 +21,6 @@ import useUniqueId from '../../common/hooks/use-unique-id';
 import Deck from '../../deck/interfaces/deck';
 import { FindAllDecksParams } from '../../deck/interfaces/find-all-decks-params';
 import { decksService } from '../../deck/services/decks.service';
-import AppBar from '../components/app-bar';
 import DeckInfoTile from '../components/deck-info-tile';
 import useStyles from './dashboard.page.styles';
 import { deckView } from '../../router/utils/route.utils';
@@ -116,7 +115,6 @@ export default function DashboardPage({ pageSize = 10 }: DashboardPageProps) {
             .finally(() => setShowDialog(false));
         }}
       />
-      <AppBar />
       <div className={classes.content}>
         <Typography variant="h2">Your decks</Typography>
 

@@ -18,12 +18,11 @@ import { useContext, useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import CredentialsContext from '../../auth/contexts/credentials.context';
 import { authService } from '../../auth/services/auth.service';
-import useIsMobile from '../../common/hooks/use-is-mobile';
-import useTextFieldValue from '../../common/hooks/use-text-field-value';
+import useIsMobile from '../hooks/use-is-mobile';
 import routes from '../../router/constants/routes';
 import useStyles from './app-bar.styles';
 
-interface AppBarProps {
+export interface AppBarProps {
   searchBarOpen?: boolean;
   searchBarValue?: string;
   onChangeSearchBarValue?: (value: string) => void;
@@ -52,12 +51,11 @@ export default function AppBar({
   const history = useHistory();
 
   const [showSearchBar, setShowSearchBar] = useState(false);
-  const [searchTerm, onSearchTermChange] = useTextFieldValue('');
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const handleChangeSearchBarValue = onChangeSearchBarValue
-    ? (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
-        onChangeSearchBarValue(e.target.value)
-    : onSearchTermChange;
+  const qs = new URLSearchParams(location.search);
+  const from = qs.get('from');
+  const previousLocation = from ?? routes.home;
 
   const menu = (
     <Menu
@@ -75,6 +73,7 @@ export default function AppBar({
       <MenuItem onClick={closeMenu}>Manage account</MenuItem>
       <MenuItem
         onClick={() => {
+          setMenuAnchor(null);
           authService.logOut().then(() => history.push(routes.home));
         }}
       >
@@ -137,14 +136,25 @@ export default function AppBar({
               <InputAdornment position="end">
                 <IconButton
                   aria-label="close search"
-                  onClick={onCloseSearchBar ?? (() => setShowSearchBar(false))}
+                  onClick={
+                    location.pathname === routes.deckSearch
+                      ? () => {
+                          setShowSearchBar(false);
+                          setSearchTerm('');
+                          history.push(previousLocation);
+                        }
+                      : () => {
+                          setShowSearchBar(false);
+                          setSearchTerm('');
+                        }
+                  }
                 >
                   <Close />
                 </IconButton>
               </InputAdornment>
             ) : undefined
           }
-          onChange={handleChangeSearchBarValue}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
       </form>
     </Paper>
@@ -152,7 +162,7 @@ export default function AppBar({
 
   const mobileToolbar = (
     <Toolbar className={classes.toolbar}>
-      {searchBarOpen ?? showSearchBar ? (
+      {location.pathname === routes.deckSearch || showSearchBar ? (
         searchBar
       ) : (
         <>

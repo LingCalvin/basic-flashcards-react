@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import CredentialsContext from './auth/contexts/credentials.context';
 import Credentials from './auth/interfaces/credentials';
 import { retrieve } from './auth/utils/credentials.utils';
-import Router from './router/components/router';
+import AppBar from './common/components/app-bar';
+import RouterSwitch from './router/components/router-switch';
 
 export default function App() {
   const [credentials, setCredentials] = useState<Credentials | null>(retrieve);
@@ -24,7 +25,8 @@ export default function App() {
     <>
       <CredentialsContext.Provider value={credentials}>
         <CssBaseline />
-        <Router />
+        <AppBar />
+        <RouterSwitch />
       </CredentialsContext.Provider>
     </>
   );

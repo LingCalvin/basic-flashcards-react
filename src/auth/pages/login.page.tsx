@@ -3,7 +3,6 @@ import { Alert } from '@material-ui/lab';
 import { useContext, useState } from 'react';
 import { useLocation } from 'react-router';
 import { Redirect } from 'react-router-dom';
-import AppBarWithBackButton from '../../common/components/app-bar-with-back-button';
 import routes from '../../router/constants/routes';
 import useTextFieldValue from '../../common/hooks/use-text-field-value';
 import LoginForm from '../components/login-form';
@@ -29,7 +28,6 @@ export default function LoginPage() {
 
   return (
     <div>
-      <AppBarWithBackButton title="Basic Flashcards" />
       <Container className={classes.content}>
         {serverError && <Alert severity="error">{serverError}</Alert>}
         <LoginForm

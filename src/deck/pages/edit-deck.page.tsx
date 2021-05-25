@@ -7,7 +7,6 @@ import {
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
-import AppBarWithBackButton from '../../common/components/app-bar-with-back-button';
 import LoadableComponent from '../../common/components/loadable-component';
 import { autoHideDuration } from '../../common/constants/snackbar';
 import EditDeckForm from '../components/edit-deck-form';
@@ -40,7 +39,6 @@ export default function EditDeckPage() {
       <Backdrop open={submitting} className={classes.backdrop}>
         <CircularProgress color="inherit" />
       </Backdrop>
-      <AppBarWithBackButton title="Edit deck" />
       <LoadableComponent loading={loading}>
         {deck && (
           <Container>

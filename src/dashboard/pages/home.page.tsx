@@ -4,7 +4,6 @@ import { useHistory } from 'react-router';
 import LoadableComponent from '../../common/components/loadable-component';
 import Deck from '../../deck/interfaces/deck';
 import { decksService } from '../../deck/services/decks.service';
-import AppBar from '../components/app-bar';
 import DeckInfoTile from '../components/deck-info-tile';
 import useStyles from './home.page.styles';
 import { deckView } from '../../router/utils/route.utils';
@@ -27,7 +26,6 @@ export default function HomePage() {
 
   return (
     <div>
-      <AppBar />
       <main>
         <div className={classes.topSection}>
           <Typography variant="h1" component="p">

@@ -1,21 +1,27 @@
-import { HashRouter, Redirect, Route, Switch } from 'react-router-dom';
-import LoginPage from '../../auth/pages/login.page';
-import RegistrationPage from '../../auth/pages/registration.page';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import routes from '../constants/routes';
-import DashboardPage from '../../dashboard/pages/dashboard.page';
-import HomePage from '../../dashboard/pages/home.page';
-import AddDeckPage from '../../deck/pages/add-deck.page';
-import DeckPage from '../../deck/pages/deck.page';
 import ProtectedRoute from './protected-route';
-import { useContext } from 'react';
+import { lazy, Suspense, useContext } from 'react';
 import CredentialsContext from '../../auth/contexts/credentials.context';
-import EditDeckPage from '../../deck/pages/edit-deck.page';
-import DeckSearchPage from '../../deck/pages/deck-search.page';
+import LazyLoadingFallbackPage from '../../common/pages/lazy-loading-fallback.page';
 
-export default function Router() {
+const DashboardPage = lazy(
+  () => import('../../dashboard/pages/dashboard.page')
+);
+const AddDeckPage = lazy(() => import('../../deck/pages/add-deck.page'));
+const DeckPage = lazy(() => import('../../deck/pages/deck.page'));
+const LoginPage = lazy(() => import('../../auth/pages/login.page'));
+const RegistrationPage = lazy(
+  () => import('../../auth/pages/registration.page')
+);
+const HomePage = lazy(() => import('../../dashboard/pages/home.page'));
+const EditDeckPage = lazy(() => import('../../deck/pages/edit-deck.page'));
+const DeckSearchPage = lazy(() => import('../../deck/pages/deck-search.page'));
+
+export default function RouterSwitch() {
   const credentials = useContext(CredentialsContext);
   return (
-    <HashRouter>
+    <Suspense fallback={<LazyLoadingFallbackPage />}>
       <Switch>
         <Route exact path={routes.home}>
           {credentials ? <Redirect to={routes.dashboard} /> : <HomePage />}
@@ -42,6 +48,6 @@ export default function Router() {
           <LoginPage />
         </Route>
       </Switch>
-    </HashRouter>
+    </Suspense>
   );
 }

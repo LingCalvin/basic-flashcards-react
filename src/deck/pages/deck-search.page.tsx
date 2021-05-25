@@ -1,8 +1,7 @@
 import { Pagination } from '@material-ui/lab';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
 import LoadableComponent from '../../common/components/loadable-component';
-import AppBar from '../../dashboard/components/app-bar';
 import DeckInfoTile from '../../dashboard/components/deck-info-tile';
 import routes from '../../router/constants/routes';
 import { deckView } from '../../router/utils/route.utils';
@@ -10,12 +9,9 @@ import Deck from '../interfaces/deck';
 import { decksService } from '../services/decks.service';
 import useStyles from './deck-search.page.styles';
 import * as MathUtils from '../../common/utils/math.utils';
-import useIsMobile from '../../common/hooks/use-is-mobile';
 
 export default function DeckSearchPage() {
   const classes = useStyles();
-
-  const isMobile = useIsMobile();
 
   const [deckSlice, setDeckSlice] = useState<Deck[]>([]);
   const [totalDecks, setTotalDecks] = useState(0);
@@ -39,8 +35,6 @@ export default function DeckSearchPage() {
 
   const from = qs.get('from');
 
-  const previousLocation = useRef(from ?? routes.home);
-
   const [loading, setLoading] = useState(true);
 
   const history = useHistory();
@@ -52,8 +46,6 @@ export default function DeckSearchPage() {
       history.replace({ search: qs.toString() });
     }
   });
-
-  const [searchBarValue, setSearchBarValue] = useState(term);
 
   useEffect(() => {
     // Do not send a request if the from param is being removed
@@ -81,20 +73,6 @@ export default function DeckSearchPage() {
 
   return (
     <div>
-      <AppBar
-        searchBarOpen
-        searchBarValue={searchBarValue}
-        onChangeSearchBarValue={setSearchBarValue}
-        onCloseSearchBar={
-          isMobile ? () => history.push(previousLocation.current) : undefined
-        }
-        onSearch={() =>
-          history.push({
-            pathname: routes.deckSearch,
-            search: `?term=${encodeURIComponent(searchBarValue)}`,
-          })
-        }
-      />
       <div className={classes.content}>
         <LoadableComponent loading={loading}>
           <div className={classes.paginationContainer}>
