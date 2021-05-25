@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer',
     padding: theme.spacing(2),
     '&:hover': {
-      backgroundColor: theme.palette.grey[50],
+      backgroundColor: theme.palette.action.hover,
     },
   },
   title: {
@@ -16,6 +16,9 @@ const useStyles = makeStyles((theme) => ({
   buttonBox: {
     display: 'flex',
     justifyContent: 'flex-end',
+  },
+  deleteButton: {
+    color: theme.palette.error.dark,
   },
 }));
 

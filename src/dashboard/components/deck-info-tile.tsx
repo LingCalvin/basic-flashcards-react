@@ -44,6 +44,7 @@ export default function DeckInfoTile({
         <div className={classes.buttonBox}>
           {onDelete && (
             <Button
+              className={classes.deleteButton}
               onClick={(e) => {
                 e.stopPropagation();
                 onDelete();
