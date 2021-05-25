@@ -5,41 +5,15 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="192"
    height="192"
-   viewBox="0 0 50.8 50.800001"
+   viewBox="0 0 50.8 50.8"
    version="1.1"
-   id="svg1219"
-   sodipodi:docname="favicon.svg"
-   inkscape:version="1.0.2 (e86c870879, 2021-01-15)"
-   inkscape:export-xdpi="256"
-   inkscape:export-ydpi="256">
+   id="svg8">
   <defs
-     id="defs1213" />
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="0.42618202"
-     inkscape:cx="448.1912"
-     inkscape:cy="621.10054"
-     inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
-     inkscape:document-rotation="0"
-     showgrid="false"
-     units="px"
-     inkscape:window-width="1526"
-     inkscape:window-height="932"
-     inkscape:window-x="56"
-     inkscape:window-y="50"
-     inkscape:window-maximized="0" />
+     id="defs2" />
   <metadata
-     id="metadata1216">
+     id="metadata5">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
@@ -51,28 +25,38 @@
     </rdf:RDF>
   </metadata>
   <g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="fill:#3f51b5;fill-opacity:1;stroke-width:0;stroke:none;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:#3f51b5;stroke-width:0.264583;fill-opacity:1"
        id="rect12"
        width="50.799999"
        height="50.799999"
-       x="3.8146973e-07"
-       y="3.814697e-07"
-       rx="3.175"
-       ry="3.175" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="4.3518529"
-       y="37.49041"
-       id="text2365"><tspan
-         sodipodi:role="line"
-         id="tspan2363"
-         x="4.3518529"
-         y="37.49041"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:33.8667px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';fill:#ffffff;stroke-width:0.264583">BF</tspan></text>
+       x="3.814697e-07"
+       y="3.814697e-07" />
+    <rect
+       style="fill:#ffffff;stroke-width:0.264583;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect10"
+       width="25.4"
+       height="25.4"
+       x="12.7"
+       y="12.7"
+       rx="1.0583333"
+       ry="1.0583333" />
+    <path
+       style="fill:none;stroke:#f44336;stroke-width:2.64583;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 12.699999,17.197918 h 25.4"
+       id="path14" />
+    <path
+       style="fill:none;stroke:#03a9f4;stroke-width:2.64583;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 12.7,34.131249 H 38.099999"
+       id="path14-36-7-5-3" />
+    <path
+       style="fill:none;stroke:#03a9f4;stroke-width:2.64583;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 12.7,28.310415 H 38.099999"
+       id="path14-36-7-5-3-2" />
+    <path
+       style="fill:none;stroke:#03a9f4;stroke-width:2.64583;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 12.7,22.489583 H 38.099999"
+       id="path14-36-7-5-3-9" />
   </g>
 </svg>
