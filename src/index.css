@@ -7,6 +7,23 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+html,
+body,
+#root {
+  height: 100%;
+}
+
+#app-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+#page-container {
+  flex-grow: 1;
+  overflow: auto;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

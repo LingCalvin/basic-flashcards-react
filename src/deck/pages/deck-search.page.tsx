@@ -9,6 +9,8 @@ import Deck from '../interfaces/deck';
 import { decksService } from '../services/decks.service';
 import useStyles from './deck-search.page.styles';
 import * as MathUtils from '../../common/utils/math.utils';
+import { Search } from '@material-ui/icons';
+import { Typography } from '@material-ui/core';
 
 export default function DeckSearchPage() {
   const classes = useStyles();
@@ -57,6 +59,7 @@ export default function DeckSearchPage() {
       setDeckSlice([]);
       return;
     }
+    setLoading(true);
     decksService
       .findAll({
         titleContains: term,
@@ -71,45 +74,57 @@ export default function DeckSearchPage() {
       .finally(() => setLoading(false));
   }, [from, page, pageSize, term]);
 
-  return (
-    <div>
-      <div className={classes.content}>
-        <LoadableComponent loading={loading}>
-          <div className={classes.paginationContainer}>
-            <div className={classes.results}>
-              {deckSlice.map((deck) => (
-                <DeckInfoTile
-                  key={deck.id}
-                  deckId={deck.id ?? ''}
-                  title={deck.title}
-                  numberOfCards={deck.cards.length}
-                  author={deck.authorId ?? ''}
-                  onClick={() => history.push(deckView(deck.id ?? ''))}
-                />
-              ))}
-            </div>
-            {totalDecks / pageSize > 1 && (
-              <div className={classes.paginationControls}>
-                <Pagination
-                  count={numberOfPages}
-                  page={page}
-                  onChange={(_e, value) =>
-                    history.push({
-                      pathname: routes.deckSearch,
-                      search: `?term=${encodeURIComponent(
-                        term
-                      )}&page=${encodeURIComponent(
-                        value
-                      )}&pageSize=${encodeURIComponent(pageSize)}`,
-                    })
-                  }
-                  disabled={loading}
-                />
-              </div>
-            )}
-          </div>
-        </LoadableComponent>
+  const results = (
+    <div className={classes.paginationContainer}>
+      <div className={classes.results}>
+        {deckSlice.map((deck) => (
+          <DeckInfoTile
+            key={deck.id}
+            deckId={deck.id ?? ''}
+            title={deck.title}
+            numberOfCards={deck.cards.length}
+            author={deck.authorId ?? ''}
+            onClick={() => history.push(deckView(deck.id ?? ''))}
+          />
+        ))}
       </div>
+      {totalDecks / pageSize > 1 && (
+        <div className={classes.paginationControls}>
+          <Pagination
+            count={numberOfPages}
+            page={page}
+            onChange={(_e, value) =>
+              history.push({
+                pathname: routes.deckSearch,
+                search: `?term=${encodeURIComponent(
+                  term
+                )}&page=${encodeURIComponent(
+                  value
+                )}&pageSize=${encodeURIComponent(pageSize)}`,
+              })
+            }
+            disabled={loading}
+          />
+        </div>
+      )}
+    </div>
+  );
+
+  const emptyResults = (
+    <div className={classes.emptyResults}>
+      <Search className={classes.emptyResultsIcon} />
+      <Typography variant="h4" component="div">
+        No results found
+      </Typography>
+      <Typography>Enter a new search and results will show up here.</Typography>
+    </div>
+  );
+
+  return (
+    <div className={classes.content}>
+      <LoadableComponent loading={loading}>
+        {totalDecks > 0 ? results : emptyResults}
+      </LoadableComponent>
     </div>
   );
 }

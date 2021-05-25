@@ -25,8 +25,12 @@ export default function App() {
     <>
       <CredentialsContext.Provider value={credentials}>
         <CssBaseline />
-        <AppBar />
-        <RouterSwitch />
+        <div id="app-content">
+          <AppBar />
+          <div id="page-container">
+            <RouterSwitch />
+          </div>
+        </div>
       </CredentialsContext.Provider>
     </>
   );

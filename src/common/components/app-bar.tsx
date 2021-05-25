@@ -22,21 +22,7 @@ import useIsMobile from '../hooks/use-is-mobile';
 import routes from '../../router/constants/routes';
 import useStyles from './app-bar.styles';
 
-export interface AppBarProps {
-  searchBarOpen?: boolean;
-  searchBarValue?: string;
-  onChangeSearchBarValue?: (value: string) => void;
-  onCloseSearchBar?: () => void;
-  onSearch?: () => void;
-}
-
-export default function AppBar({
-  searchBarOpen,
-  searchBarValue,
-  onChangeSearchBarValue,
-  onCloseSearchBar,
-  onSearch,
-}: AppBarProps) {
+export default function AppBar() {
   const classes = useStyles();
 
   const location = useLocation();
@@ -110,18 +96,16 @@ export default function AppBar({
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          onSearch
-            ? onSearch()
-            : history.push({
-                pathname: routes.deckSearch,
-                search: `?from=${encodeURIComponent(
-                  location.pathname
-                )}&term=${encodeURIComponent(searchBarValue ?? searchTerm)}`,
-              });
+          history.push({
+            pathname: routes.deckSearch,
+            search: `?from=${encodeURIComponent(
+              location.pathname
+            )}&term=${encodeURIComponent(searchTerm)}`,
+          });
         }}
       >
         <InputBase
-          value={searchBarValue ?? searchTerm}
+          value={searchTerm}
           autoFocus={isMobile}
           fullWidth={isMobile}
           placeholder="Search"
