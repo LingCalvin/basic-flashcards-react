@@ -4,7 +4,6 @@ import { useContext, useState } from 'react';
 import { useLocation } from 'react-router';
 import { Redirect } from 'react-router-dom';
 import routes from '../../router/constants/routes';
-import useTextFieldValue from '../../common/hooks/use-text-field-value';
 import LoginForm from '../components/login-form';
 import { authService } from '../services/auth.service';
 import useStyles from './login.page.styles';
@@ -13,8 +12,6 @@ import CredentialsContext from '../contexts/credentials.context';
 export default function LoginPage() {
   const credentials = useContext(CredentialsContext);
   const classes = useStyles();
-  const [username, onChangeUsername] = useTextFieldValue('');
-  const [password, onChangePassword] = useTextFieldValue('');
 
   const [serverError, setServerError] = useState('');
 
@@ -32,12 +29,8 @@ export default function LoginPage() {
         {serverError && <Alert severity="error">{serverError}</Alert>}
         <LoginForm
           variant="outlined"
-          username={username}
-          password={password}
-          onChangeUsername={onChangeUsername}
-          onChangePassword={onChangePassword}
-          onSubmit={() => {
-            authService.logIn(username, password).catch((e) => {
+          onSubmit={(value) => {
+            authService.logIn(value.username, value.password).catch((e) => {
               if (e.response) {
                 setServerError(e.response?.data?.message);
               } else {

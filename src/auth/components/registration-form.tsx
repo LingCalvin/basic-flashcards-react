@@ -1,97 +1,68 @@
-import { Button, TextFieldProps } from '@material-ui/core';
-import { useState } from 'react';
-import ValidatedTextField from '../../common/components/validated-text-field';
-import missingRequiredFieldErrorMessage from '../../common/constants/missing-required-field-error-message';
+import { Button, TextField, TextFieldProps } from '@material-ui/core';
 import useStyles from './form.styles';
-import validator from 'validator';
 import routes from '../../router/constants/routes';
 import { Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
-interface RegistrationFormProps {
+export type FormValues = {
   username: string;
   password: string;
   confirmPassword: string;
-  onChangeUsername: React.ChangeEventHandler<
-    HTMLTextAreaElement | HTMLInputElement
-  >;
+};
 
-  onChangePassword: React.ChangeEventHandler<
-    HTMLTextAreaElement | HTMLInputElement
-  >;
-  onChangeConfirmPassword: React.ChangeEventHandler<
-    HTMLTextAreaElement | HTMLInputElement
-  >;
-  textFieldVariant?: TextFieldProps['variant'];
-  onSubmit: () => void;
+const schema = yup.object().shape({
+  username: yup.string().label('Username').required(),
+  password: yup.string().label('Password').required().min(8),
+  confirmPassword: yup
+    .string()
+    .label('Confirm password')
+    .required()
+    .oneOf([yup.ref('password'), null], 'Passwords must match'),
+});
+
+interface RegistrationFormProps {
+  variant?: TextFieldProps['variant'];
+  onSubmit: (value: FormValues) => void;
 }
 
 export default function RegistrationForm({
-  username,
-  password,
-  confirmPassword,
-  onChangeUsername,
-  onChangePassword,
-  onChangeConfirmPassword,
-  textFieldVariant = 'outlined',
+  variant,
   onSubmit,
 }: RegistrationFormProps) {
   const classes = useStyles();
 
-  const [forceValidate, setForceValidate] = useState(false);
-
-  const validateRequired = (value: string) =>
-    validator.isEmpty(value) ? missingRequiredFieldErrorMessage : undefined;
-
-  const validateConfirmPassword = (value: string) =>
-    value !== password ? 'Passwords do not match.' : undefined;
+  const {
+    formState: { errors },
+    handleSubmit,
+    register,
+  } = useForm<FormValues>({ resolver: yupResolver(schema) });
 
   return (
-    <form
-      className={classes.form}
-      noValidate
-      onSubmit={(e) => {
-        e.preventDefault();
-        setForceValidate(true);
-        if (
-          [username, password].some(validateRequired) ||
-          validateConfirmPassword(confirmPassword)
-        ) {
-          return;
-        }
-        onSubmit();
-      }}
-    >
-      <ValidatedTextField
-        variant={textFieldVariant}
+    <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+      <TextField
         label="Username"
-        forceValidate={forceValidate}
-        onValidate={validateRequired}
-        required
-        value={username}
-        inputProps={{ 'aria-label': 'username' }}
-        onChange={onChangeUsername}
+        variant={variant}
+        inputProps={register('username')}
+        error={errors.username !== undefined}
+        helperText={errors.username?.message}
       />
-      <ValidatedTextField
-        variant={textFieldVariant}
+      <TextField
         label="Password"
         type="password"
-        required
-        value={password}
-        inputProps={{ 'aria-label': 'password' }}
-        onChange={onChangePassword}
-        forceValidate={forceValidate}
-        onValidate={validateRequired}
+        variant={variant}
+        inputProps={register('password')}
+        error={errors.password !== undefined}
+        helperText={errors.password?.message}
       />
-      <ValidatedTextField
-        variant={textFieldVariant}
+      <TextField
         label="Confirm password"
         type="password"
-        required
-        value={confirmPassword}
-        inputProps={{ 'aria-label': 'confirm password' }}
-        onChange={onChangeConfirmPassword}
-        forceValidate={forceValidate}
-        onValidate={validateConfirmPassword}
+        variant={variant}
+        inputProps={register('confirmPassword')}
+        error={errors.confirmPassword !== undefined}
+        helperText={errors.confirmPassword?.message}
       />
       <div className={classes.submitOrAltRow}>
         <Button component={Link} to={routes.login} color="primary">

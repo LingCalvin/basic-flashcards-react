@@ -1,74 +1,50 @@
-import { useState } from 'react';
-import ValidatedTextField from '../../common/components/validated-text-field';
-import validator from 'validator';
-import missingRequiredFieldErrorMessage from '../../common/constants/missing-required-field-error-message';
 import useStyles from './form.styles';
-import { Button, TextFieldProps } from '@material-ui/core';
+import { Button, TextField, TextFieldProps } from '@material-ui/core';
 import routes from '../../router/constants/routes';
 import { Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
-interface LoginFormProps {
-  variant?: TextFieldProps['variant'];
+export type FormValues = {
   username: string;
   password: string;
-  onChangeUsername: React.ChangeEventHandler<
-    HTMLTextAreaElement | HTMLInputElement
-  >;
-  onChangePassword: React.ChangeEventHandler<
-    HTMLTextAreaElement | HTMLInputElement
-  >;
-  onSubmit: () => void;
+};
+
+const schema = yup.object().shape({
+  username: yup.string().label('Username').required(),
+  password: yup.string().label('Password').required(),
+});
+interface LoginFormProps {
+  variant?: TextFieldProps['variant'];
+  onSubmit: (value: FormValues) => void;
 }
 
-export default function LoginForm({
-  variant = 'outlined',
-  username,
-  password,
-  onChangeUsername,
-  onChangePassword,
-  onSubmit,
-}: LoginFormProps) {
+export default function LoginForm({ variant, onSubmit }: LoginFormProps) {
   const classes = useStyles();
 
-  const [forceValidate, setForceValidate] = useState(false);
-
-  const validateRequired = (value: string) =>
-    validator.isEmpty(value) ? missingRequiredFieldErrorMessage : undefined;
+  const {
+    formState: { errors },
+    register,
+    handleSubmit,
+  } = useForm<FormValues>({ resolver: yupResolver(schema) });
 
   return (
-    <form
-      className={classes.form}
-      noValidate
-      onSubmit={(e) => {
-        e.preventDefault();
-        setForceValidate(true);
-        if ([username, password].some(validateRequired)) {
-          return;
-        }
-
-        onSubmit();
-      }}
-    >
-      <ValidatedTextField
+    <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+      <TextField
         label="Username"
-        value={username}
-        onChange={onChangeUsername}
-        onValidate={validateRequired}
-        forceValidate={forceValidate}
         variant={variant}
-        inputProps={{ 'aria-label': 'username' }}
-        required
+        inputProps={register('username', { required: true })}
+        error={errors.username !== undefined}
+        helperText={errors.username?.message}
       />
-      <ValidatedTextField
+      <TextField
         label="Password"
-        value={password}
-        onChange={onChangePassword}
-        onValidate={validateRequired}
-        forceValidate={forceValidate}
-        variant={variant}
         type="password"
-        inputProps={{ 'aria-label': 'password' }}
-        required
+        variant={variant}
+        inputProps={register('password', { required: true })}
+        error={errors.password !== undefined}
+        helperText={errors.password?.message}
       />
       <div className={classes.submitOrAltRow}>
         <Button component={Link} to={routes.registration} color="primary">

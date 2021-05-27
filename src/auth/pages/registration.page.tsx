@@ -3,16 +3,13 @@ import { Alert } from '@material-ui/lab';
 import { useState } from 'react';
 import { useHistory } from 'react-router';
 import routes from '../../router/constants/routes';
-import useTextFieldValue from '../../common/hooks/use-text-field-value';
 import userService from '../../user/services/user.service';
 import RegistrationForm from '../components/registration-form';
 import useStyles from './registration.page.styles';
 
 export default function RegistrationPage() {
   const classes = useStyles();
-  const [username, onChangeUsername] = useTextFieldValue('');
-  const [password, onChangePassword] = useTextFieldValue('');
-  const [confirmPassword, onChangeConfirmPassword] = useTextFieldValue('');
+
   const [serverError, setServerError] = useState('');
   const history = useHistory();
   return (
@@ -20,15 +17,10 @@ export default function RegistrationPage() {
       <Container className={classes.content}>
         {serverError && <Alert severity="error">{serverError}</Alert>}
         <RegistrationForm
-          username={username}
-          password={password}
-          confirmPassword={confirmPassword}
-          onChangeUsername={onChangeUsername}
-          onChangePassword={onChangePassword}
-          onChangeConfirmPassword={onChangeConfirmPassword}
-          onSubmit={() => {
+          variant="outlined"
+          onSubmit={(value) => {
             userService
-              .create({ username, password })
+              .create(value)
               .then(() => history.push(routes.login))
               .catch((e) => {
                 if (e.response) {
