@@ -43,53 +43,12 @@ export default function EditDeckPage() {
         {deck && (
           <Container>
             <EditDeckForm
-              title={deck.title}
-              description={deck.description}
-              visibility={deck.visibility}
-              cards={deck.cards}
-              onTitleChange={(title) =>
-                setDeck((state) => {
-                  if (!state) {
-                    return state;
-                  }
-                  return { ...state, title };
-                })
-              }
-              onDescriptionChange={(description) =>
-                setDeck((state) => {
-                  if (!state) {
-                    return state;
-                  }
-                  return { ...state, description };
-                })
-              }
-              onChangeVisibility={(visibility) =>
-                setDeck((state) => {
-                  if (!state) {
-                    return state;
-                  }
-                  return { ...state, visibility };
-                })
-              }
-              onCardsChange={(cards) =>
-                setDeck((state) => {
-                  if (!state) {
-                    return state;
-                  }
-                  return { ...state, cards };
-                })
-              }
-              onSubmit={() => {
+              variant="outlined"
+              defaultValues={deck}
+              onSubmit={(value) => {
                 setSubmitting(true);
                 decksService
-                  .update({
-                    id: deck.id,
-                    title: deck.title,
-                    description: deck.description,
-                    visibility: deck.visibility,
-                    cards: deck.cards,
-                    tags: [],
-                  })
+                  .update({ tags: [], ...value })
                   .then(() => history.goBack())
                   .catch(() => {
                     setSnackbarMessage('Failed to update deck.');

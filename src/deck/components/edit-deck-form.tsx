@@ -1,117 +1,100 @@
-import { Button, MenuItem, TextField } from '@material-ui/core';
-import { Add } from '@material-ui/icons';
-import { useState } from 'react';
+import {
+  Button,
+  IconButton,
+  MenuItem,
+  Paper,
+  TextField,
+  TextFieldProps,
+  Typography,
+} from '@material-ui/core';
+import { Add, Delete, ArrowUpward, ArrowDownward } from '@material-ui/icons';
+import { useFieldArray, useForm } from 'react-hook-form';
 import Card from '../../card/interfaces/card';
-import missingRequiredFieldErrorMessage from '../../common/constants/missing-required-field-error-message';
 import { DeckVisibility } from '../types/deck-visibility';
-import EditCardTile from './edit-card-tile';
 import useStyles from './edit-deck-form.styles';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
-interface EditDeckFormProps {
+export type FormValues = {
   title: string;
   description: string;
   visibility: DeckVisibility;
   cards: Card[];
-  onTitleChange: (value: string) => void;
-  onDescriptionChange: (value: string) => void;
-  onChangeVisibility: (value: DeckVisibility) => void;
-  onCardsChange: (value: Card[]) => void;
-  onSubmit: () => void;
+};
+
+const schema = yup.object().shape({
+  title: yup.string().label('Title').required().max(255),
+  description: yup.string().label('Description').max(4096),
+  visibility: yup.string().label('Visibility').oneOf(['PRIVATE', 'PUBLIC']),
+  cards: yup.array().of(
+    yup.object().shape({
+      sides: yup.array().of(
+        yup.object().shape({
+          text: yup.string().label('This').required().max(4096),
+        })
+      ),
+    })
+  ),
+});
+
+interface EditDeckFormProps {
+  defaultValues?: FormValues;
+  variant?: TextFieldProps['variant'];
+  onSubmit: (value: FormValues) => void;
 }
 
 export default function EditDeckForm({
-  title,
-  description,
-  visibility,
-  cards,
-  onTitleChange,
-  onDescriptionChange,
-  onChangeVisibility,
-  onCardsChange,
+  defaultValues,
+  variant,
   onSubmit,
 }: EditDeckFormProps) {
   const classes = useStyles();
 
-  const [validateTitle, setValidateTitle] = useState(false);
-  const [forceValidate, setForceValidate] = useState(false);
-  const showTitleError = (forceValidate || validateTitle) && title.length === 0;
-
-  const changeCardSideText = (
-    cardIndex: number,
-    side: number,
-    value: string
-  ) => {
-    const newCards = [...cards];
-    const modifiedCard = { ...cards[cardIndex] };
-    modifiedCard.sides[side].text = value;
-    newCards[cardIndex] = modifiedCard;
-    onCardsChange(newCards);
-  };
-
-  const addCard = () => {
-    onCardsChange([...cards, { sides: [{ text: '' }, { text: '' }] }]);
-  };
-
-  const deleteCard = (index: number) => {
-    onCardsChange([...cards.slice(0, index), ...cards.slice(index + 1)]);
-  };
-
-  const moveCard = (currentIndex: number, targetIndex: number) => {
-    const newCards = [...cards];
-    newCards.splice(targetIndex, 0, newCards.splice(currentIndex, 1)[0]);
-    onCardsChange(newCards);
-  };
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+    register,
+  } = useForm<FormValues>({
+    defaultValues,
+    resolver: yupResolver(schema),
+  });
+  const { append, fields, move, remove } = useFieldArray({
+    control,
+    name: 'cards',
+    keyName: 'key', // A Card already has an id field
+  });
 
   return (
-    <form
-      noValidate
-      className={classes.form}
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (
-          title.length === 0 ||
-          cards.some(({ sides }) =>
-            sides.some((side) => side.text.length === 0)
-          )
-        ) {
-          setForceValidate(true);
-          return;
-        }
-        onSubmit();
-      }}
-    >
+    <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
       <div className={classes.generalInfoContainer}>
         <TextField
-          required
-          variant="outlined"
           label="Title"
-          fullWidth
-          error={showTitleError}
-          helperText={
-            showTitleError ? missingRequiredFieldErrorMessage : undefined
-          }
-          value={title}
-          onChange={(e) => {
-            setValidateTitle(true);
-            onTitleChange(e.target.value);
-          }}
-          inputProps={{ 'aria-label': 'title' }}
+          variant={variant}
+          defaultValue=""
+          inputProps={{ 'aria-label': 'title', ...register('title') }}
+          error={errors.title !== undefined}
+          helperText={errors.title?.message}
         />
         <TextField
-          variant="outlined"
           label="Description"
-          fullWidth
-          value={description}
-          onChange={(e) => onDescriptionChange(e.target.value)}
-          inputProps={{ 'aria-label': 'description' }}
+          variant={variant}
+          defaultValue=""
+          inputProps={{
+            'aria-label': 'description',
+            ...register('description'),
+          }}
+          error={errors.description !== undefined}
+          helperText={errors.description?.message}
         />
         <TextField
-          variant="outlined"
-          value={visibility}
-          onChange={(e) => onChangeVisibility(e.target.value as DeckVisibility)}
-          select
           label="Visibility"
-          inputProps={{ 'aria-label': 'visibility' }}
+          select
+          variant={variant}
+          defaultValue="PRIVATE"
+          inputProps={{ 'aria-label': 'visibility', ...register('visibility') }}
+          error={errors.visibility !== undefined}
+          helperText={errors.visibility?.message}
         >
           <MenuItem value="PRIVATE">Private</MenuItem>
           <MenuItem value="PUBLIC">Public</MenuItem>
@@ -119,31 +102,67 @@ export default function EditDeckForm({
       </div>
 
       <div className={classes.cardList}>
-        {cards.map(
-          ({ sides: [{ text: frontText }, { text: backText }] }, i) => (
-            <EditCardTile
-              key={i}
-              forceValidate={forceValidate}
-              cardNumber={i + 1}
-              frontText={frontText}
-              backText={backText}
-              onFrontTextChange={(value) => changeCardSideText(i, 0, value)}
-              onBackTextChange={(value) => changeCardSideText(i, 1, value)}
-              onDelete={cards.length > 1 ? () => deleteCard(i) : undefined}
-              onMoveUp={i !== 0 ? () => moveCard(i, i - 1) : undefined}
-              onMoveDown={
-                i !== cards.length - 1 ? () => moveCard(i, i + 1) : undefined
-              }
-            />
-          )
-        )}
+        {fields.map(({ key, sides }, index) => (
+          <Paper className={classes.editCardTile} key={key}>
+            <Typography variant="h6" component="div">{`Card ${
+              index + 1
+            }`}</Typography>
+            <div className={classes.editCardTileFieldContainer}>
+              <TextField
+                label="Term"
+                variant={variant}
+                defaultValue={sides[0].text}
+                inputProps={{
+                  'aria-label': 'term',
+                  ...register(`cards.${index}.sides.0.text` as const),
+                }}
+                error={errors.cards?.[index]?.sides?.[0]?.text !== undefined}
+                helperText={errors.cards?.[index]?.sides?.[0]?.text?.message}
+              />
+              <TextField
+                label="Definition"
+                variant={variant}
+                defaultValue={sides[1].text}
+                inputProps={{
+                  'aria-label': 'definition',
+                  ...register(`cards.${index}.sides.1.text` as const),
+                }}
+                error={errors.cards?.[index]?.sides?.[1]?.text !== undefined}
+                helperText={errors.cards?.[index]?.sides?.[1]?.text?.message}
+              />
+            </div>
+            <div className={classes.editCardTileActionArea}>
+              <IconButton
+                aria-label="delete"
+                onClick={() => remove(index)}
+                disabled={fields.length <= 1}
+              >
+                <Delete />
+              </IconButton>
+              <IconButton
+                aria-label="move up"
+                onClick={() => move(index, index - 1)}
+                disabled={index <= 0}
+              >
+                <ArrowUpward />
+              </IconButton>
+              <IconButton
+                aria-label="move down"
+                onClick={() => move(index, index + 1)}
+                disabled={index >= fields.length - 1}
+              >
+                <ArrowDownward />
+              </IconButton>
+            </div>
+          </Paper>
+        ))}
       </div>
 
       <Button
         variant="outlined"
         fullWidth
         startIcon={<Add />}
-        onClick={addCard}
+        onClick={() => append({ sides: [{ text: '' }, { text: '' }] })}
       >
         Add card
       </Button>
