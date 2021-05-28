@@ -15,4 +15,13 @@ apiClient.interceptors.request.use((config) => {
   return config;
 });
 
+apiClient.interceptors.response.use(
+  (res) => res,
+  (e) => {
+    console.log(e);
+    if (e?.response?.status === 401) {
+      localStorageService.removeItem('accessToken');
+    }
+  }
+);
 export default apiClient;
