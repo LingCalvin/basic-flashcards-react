@@ -33,9 +33,10 @@ export default function DeckPage() {
   }, [activeCardIndex]);
 
   // Alphabetize deck tags
-  const sortedTags = useMemo(() => (deck?.tags ? [...deck.tags].sort() : []), [
-    deck?.tags,
-  ]);
+  const sortedTags = useMemo(
+    () => (deck?.tags ? [...deck.tags].sort() : []),
+    [deck?.tags]
+  );
 
   return (
     <div>
@@ -77,11 +78,13 @@ export default function DeckPage() {
                   <Slider
                     aria-label="current card slider"
                     className={classes.progressBar}
-                    value={activeCardIndex}
-                    max={deck.cards.length - 1}
+                    value={deck.cards.length !== 1 ? activeCardIndex : 1}
+                    max={deck.cards.length !== 1 ? deck.cards.length - 1 : 1}
                     valueLabelFormat={(value) => value + 1}
-                    onChange={(_event, value) =>
-                      setActiveCardIndex(value as number)
+                    onChange={
+                      deck.cards.length > 1
+                        ? (_event, value) => setActiveCardIndex(value as number)
+                        : undefined
                     }
                   />
                 </div>
