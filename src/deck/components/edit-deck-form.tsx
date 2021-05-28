@@ -57,6 +57,7 @@ export default function EditDeckForm({
     register,
   } = useForm<FormValues>({
     defaultValues,
+    reValidateMode: 'onBlur',
     resolver: yupResolver(schema),
   });
   const { append, fields, move, remove } = useFieldArray({
@@ -66,10 +67,11 @@ export default function EditDeckForm({
   });
 
   return (
-    <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+    <form className={classes.form} noValidate onSubmit={handleSubmit(onSubmit)}>
       <div className={classes.generalInfoContainer}>
         <TextField
           label="Title"
+          required
           variant={variant}
           defaultValue=""
           inputProps={{ 'aria-label': 'title', ...register('title') }}
@@ -110,6 +112,7 @@ export default function EditDeckForm({
             <div className={classes.editCardTileFieldContainer}>
               <TextField
                 label="Term"
+                required
                 variant={variant}
                 defaultValue={sides[0].text}
                 inputProps={{
@@ -121,6 +124,7 @@ export default function EditDeckForm({
               />
               <TextField
                 label="Definition"
+                required
                 variant={variant}
                 defaultValue={sides[1].text}
                 inputProps={{
