@@ -93,7 +93,7 @@ export default function EditDeckForm({
           label="Visibility"
           select
           variant={variant}
-          defaultValue="PRIVATE"
+          defaultValue={defaultValues?.visibility ?? 'PRIVATE'}
           inputProps={{ 'aria-label': 'visibility', ...register('visibility') }}
           error={errors.visibility !== undefined}
           helperText={errors.visibility?.message}
