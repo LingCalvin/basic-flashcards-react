@@ -141,6 +141,7 @@ export default function EditDeckForm({
                   <TextField
                     label="Term"
                     required
+                    multiline
                     variant={variant}
                     defaultValue={sides[0].text}
                     inputProps={{
@@ -157,6 +158,7 @@ export default function EditDeckForm({
                   <TextField
                     label="Definition"
                     required
+                    multiline
                     variant={variant}
                     defaultValue={sides[1].text}
                     inputProps={{
