@@ -1,3 +1,4 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Button,
   IconButton,
@@ -7,13 +8,14 @@ import {
   TextFieldProps,
   Typography,
 } from '@material-ui/core';
-import { Add, Delete, ArrowUpward, ArrowDownward } from '@material-ui/icons';
+import { Add, ArrowDownward, ArrowUpward, Delete } from '@material-ui/icons';
+import { Alert } from '@material-ui/lab';
 import { useFieldArray, useForm } from 'react-hook-form';
+import { Virtuoso } from 'react-virtuoso';
+import * as yup from 'yup';
 import Card from '../../card/interfaces/card';
 import { DeckVisibility } from '../types/deck-visibility';
 import useStyles from './edit-deck-form.styles';
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
 
 export type FormValues = {
   title: string;
@@ -53,11 +55,12 @@ export default function EditDeckForm({
   const {
     control,
     formState: { errors },
+    getValues,
     handleSubmit,
     register,
   } = useForm<FormValues>({
     defaultValues,
-    reValidateMode: 'onBlur',
+    // reValidateMode: 'onBlur',
     resolver: yupResolver(schema),
   });
   const { append, fields, move, remove } = useFieldArray({
@@ -68,6 +71,9 @@ export default function EditDeckForm({
 
   return (
     <form className={classes.form} noValidate onSubmit={handleSubmit(onSubmit)}>
+      {Object.values(errors).length > 0 && (
+        <Alert color="error">Please correct all errors.</Alert>
+      )}
       <div className={classes.generalInfoContainer}>
         <TextField
           label="Title"
@@ -103,64 +109,82 @@ export default function EditDeckForm({
         </TextField>
       </div>
 
-      <div className={classes.cardList}>
-        {fields.map(({ key, sides }, index) => (
-          <Paper className={classes.editCardTile} key={key}>
-            <Typography variant="h6" component="div">{`Card ${
-              index + 1
-            }`}</Typography>
-            <div className={classes.editCardTileFieldContainer}>
-              <TextField
-                label="Term"
-                required
-                variant={variant}
-                defaultValue={sides[0].text}
-                inputProps={{
-                  'aria-label': 'term',
-                  ...register(`cards.${index}.sides.0.text` as const),
-                }}
-                error={errors.cards?.[index]?.sides?.[0]?.text !== undefined}
-                helperText={errors.cards?.[index]?.sides?.[0]?.text?.message}
-              />
-              <TextField
-                label="Definition"
-                required
-                variant={variant}
-                defaultValue={sides[1].text}
-                inputProps={{
-                  'aria-label': 'definition',
-                  ...register(`cards.${index}.sides.1.text` as const),
-                }}
-                error={errors.cards?.[index]?.sides?.[1]?.text !== undefined}
-                helperText={errors.cards?.[index]?.sides?.[1]?.text?.message}
-              />
+      <Virtuoso
+        useWindowScroll
+        data={fields}
+        computeItemKey={(index) => fields[index].key}
+        itemContent={(index) => {
+          const { sides } = getValues('cards')[index];
+          return (
+            <div
+              className={index > 0 ? classes.editCardTileContainer : undefined}
+            >
+              <Paper className={classes.editCardTile}>
+                <Typography variant="h6" component="div">{`Card ${
+                  index + 1
+                }`}</Typography>
+                <div className={classes.editCardTileFieldContainer}>
+                  <TextField
+                    label="Term"
+                    required
+                    variant={variant}
+                    defaultValue={sides[0].text}
+                    inputProps={{
+                      'aria-label': 'term',
+                      ...register(`cards.${index}.sides.0.text` as const),
+                    }}
+                    error={
+                      errors.cards?.[index]?.sides?.[0]?.text !== undefined
+                    }
+                    helperText={
+                      errors.cards?.[index]?.sides?.[0]?.text?.message
+                    }
+                  />
+                  <TextField
+                    label="Definition"
+                    required
+                    variant={variant}
+                    defaultValue={sides[1].text}
+                    inputProps={{
+                      'aria-label': 'definition',
+                      ...register(`cards.${index}.sides.1.text` as const),
+                    }}
+                    error={
+                      errors.cards?.[index]?.sides?.[1]?.text !== undefined
+                    }
+                    helperText={
+                      errors.cards?.[index]?.sides?.[1]?.text?.message
+                    }
+                  />
+                </div>
+                <div className={classes.editCardTileActionArea}>
+                  <IconButton
+                    aria-label="delete"
+                    onClick={() => remove(index)}
+                    disabled={fields.length <= 1}
+                  >
+                    <Delete />
+                  </IconButton>
+                  <IconButton
+                    aria-label="move up"
+                    onClick={() => move(index, index - 1)}
+                    disabled={index <= 0}
+                  >
+                    <ArrowUpward />
+                  </IconButton>
+                  <IconButton
+                    aria-label="move down"
+                    onClick={() => move(index, index + 1)}
+                    disabled={index >= fields.length - 1}
+                  >
+                    <ArrowDownward />
+                  </IconButton>
+                </div>
+              </Paper>
             </div>
-            <div className={classes.editCardTileActionArea}>
-              <IconButton
-                aria-label="delete"
-                onClick={() => remove(index)}
-                disabled={fields.length <= 1}
-              >
-                <Delete />
-              </IconButton>
-              <IconButton
-                aria-label="move up"
-                onClick={() => move(index, index - 1)}
-                disabled={index <= 0}
-              >
-                <ArrowUpward />
-              </IconButton>
-              <IconButton
-                aria-label="move down"
-                onClick={() => move(index, index + 1)}
-                disabled={index >= fields.length - 1}
-              >
-                <ArrowDownward />
-              </IconButton>
-            </div>
-          </Paper>
-        ))}
-      </div>
+          );
+        }}
+      />
 
       <Button
         variant="outlined"
@@ -171,7 +195,21 @@ export default function EditDeckForm({
         Add card
       </Button>
       <div className={classes.saveButtonContainer}>
-        <Button type="submit" variant="contained" color="primary">
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            if (
+              !errors.title &&
+              !errors.description &&
+              !errors.visibility &&
+              errors.cards !== undefined
+            ) {
+              window.scrollTo({ top: 0 });
+            }
+          }}
+        >
           Save
         </Button>
       </div>

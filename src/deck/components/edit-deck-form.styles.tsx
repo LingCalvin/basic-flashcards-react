@@ -37,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'flex-end',
   },
+  editCardTileContainer: {
+    paddingTop: theme.spacing(2),
+  },
 }));
 
 export default useStyles;

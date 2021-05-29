@@ -193,9 +193,12 @@ export default function AppBar() {
   );
 
   return (
-    <MuiAppBar position="sticky">
-      {menu}
-      {isMobile ? mobileToolbar : standardToolbar}
-    </MuiAppBar>
+    <>
+      <MuiAppBar position="fixed">
+        {menu}
+        {isMobile ? mobileToolbar : standardToolbar}
+      </MuiAppBar>
+      <Toolbar />
+    </>
   );
 }
