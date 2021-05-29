@@ -18,7 +18,6 @@ apiClient.interceptors.request.use((config) => {
 apiClient.interceptors.response.use(
   (res) => res,
   (e) => {
-    console.log(e);
     if (e?.response?.status === 401) {
       localStorageService.removeItem('accessToken');
     }

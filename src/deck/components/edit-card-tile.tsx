@@ -5,9 +5,16 @@ import {
   TextFieldProps,
   Typography,
 } from '@material-ui/core';
-import { ArrowDownward, ArrowUpward, Delete } from '@material-ui/icons';
+import {
+  ArrowDownward,
+  ArrowUpward,
+  Delete,
+  DragHandle,
+} from '@material-ui/icons';
 import { memo, useCallback } from 'react';
+import { Draggable } from 'react-beautiful-dnd';
 import { UseFormRegister } from 'react-hook-form';
+import useUniqueId from '../../common/hooks/use-unique-id';
 import useStyles from './edit-card-tile.styles';
 import { FormValues } from './edit-deck-form';
 
@@ -43,6 +50,8 @@ export function EditCardTileInner(props: EditCardTileProps) {
   } = props;
   const classes = useStyles();
 
+  const draggableId = useUniqueId();
+
   const handleRemove = useCallback(() => onRemove(index), [index, onRemove]);
 
   const handleMoveUp = useCallback(
@@ -56,62 +65,79 @@ export function EditCardTileInner(props: EditCardTileProps) {
   );
 
   return (
-    <Paper className={classes.root}>
-      <Typography variant="h6" component="div">{`Card ${
-        index + 1
-      }`}</Typography>
-      <div className={classes.textFieldContainer}>
-        <TextField
-          label="Term"
-          required
-          multiline
-          variant={variant}
-          defaultValue={defaultTerm}
-          inputProps={{
-            'aria-label': 'term',
-            ...register(`cards.${index}.sides.0.text` as const),
-          }}
-          error={termError !== undefined}
-          helperText={termError}
-        />
-        <TextField
-          label="Definition"
-          required
-          multiline
-          variant={variant}
-          defaultValue={defaultDefinition}
-          inputProps={{
-            'aria-label': 'definition',
-            ...register(`cards.${index}.sides.1.text` as const),
-          }}
-          error={definitionError !== undefined}
-          helperText={definitionError}
-        />
-      </div>
-      <div className={classes.actionArea}>
-        <IconButton
-          aria-label="delete"
-          onClick={handleRemove}
-          disabled={removeDisabled}
+    <Draggable draggableId={draggableId} index={index}>
+      {(provided) => (
+        <Paper
+          className={classes.root}
+          {...provided.draggableProps}
+          innerRef={provided.innerRef}
         >
-          <Delete />
-        </IconButton>
-        <IconButton
-          aria-label="move up"
-          onClick={handleMoveUp}
-          disabled={moveUpDisabled}
-        >
-          <ArrowUpward />
-        </IconButton>
-        <IconButton
-          aria-label="move down"
-          onClick={handleMoveDown}
-          disabled={moveDownDisabled}
-        >
-          <ArrowDownward />
-        </IconButton>
-      </div>
-    </Paper>
+          <div className={classes.header}>
+            <Typography variant="h5" component="div">{`Card ${
+              index + 1
+            }`}</Typography>
+            <div
+              aria-label="card reorder drag handle"
+              {...provided.dragHandleProps}
+              style={{ height: '24px' }}
+            >
+              <DragHandle />
+            </div>
+          </div>
+          <div className={classes.textFieldContainer}>
+            <TextField
+              label="Term"
+              required
+              multiline
+              variant={variant}
+              defaultValue={defaultTerm}
+              inputProps={{
+                'aria-label': 'term',
+                ...register(`cards.${index}.sides.0.text` as const),
+              }}
+              error={termError !== undefined}
+              helperText={termError}
+            />
+            <TextField
+              label="Definition"
+              required
+              multiline
+              variant={variant}
+              defaultValue={defaultDefinition}
+              inputProps={{
+                'aria-label': 'definition',
+                ...register(`cards.${index}.sides.1.text` as const),
+              }}
+              error={definitionError !== undefined}
+              helperText={definitionError}
+            />
+          </div>
+          <div className={classes.actionArea}>
+            <IconButton
+              aria-label="delete"
+              onClick={handleRemove}
+              disabled={removeDisabled}
+            >
+              <Delete />
+            </IconButton>
+            <IconButton
+              aria-label="move up"
+              onClick={handleMoveUp}
+              disabled={moveUpDisabled}
+            >
+              <ArrowUpward />
+            </IconButton>
+            <IconButton
+              aria-label="move down"
+              onClick={handleMoveDown}
+              disabled={moveDownDisabled}
+            >
+              <ArrowDownward />
+            </IconButton>
+          </div>
+        </Paper>
+      )}
+    </Draggable>
   );
 }
 

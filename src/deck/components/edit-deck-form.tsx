@@ -1,9 +1,12 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, MenuItem, TextField, TextFieldProps } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
+import { useCallback } from 'react';
+import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useFieldArray, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import Card from '../../card/interfaces/card';
+import useUniqueId from '../../common/hooks/use-unique-id';
 import { DeckVisibility } from '../types/deck-visibility';
 import EditCardTile from './edit-card-tile';
 import useStyles from './edit-deck-form.styles';
@@ -59,6 +62,22 @@ export default function EditDeckForm({
     keyName: 'key', // A Card already has an id field
   });
 
+  const handleDragEnd = useCallback(
+    ({ source, destination }: DropResult) => {
+      if (
+        !destination ||
+        (destination.droppableId === source.droppableId &&
+          destination.index === source.index)
+      ) {
+        return;
+      }
+      move(source.index, destination.index);
+    },
+    [move]
+  );
+
+  const droppableId = useUniqueId();
+
   return (
     <form className={classes.form} noValidate onSubmit={handleSubmit(onSubmit)}>
       <div className={classes.generalInfoContainer}>
@@ -96,33 +115,46 @@ export default function EditDeckForm({
         </TextField>
       </div>
 
-      <div className={classes.cardList}>
-        {fields.map(
-          (
-            {
-              key,
-              sides: [{ text: defaultTerm }, { text: defaultDefinition }],
-            },
-            index
-          ) => (
-            <EditCardTile
-              key={key}
-              index={index}
-              variant={variant}
-              defaultTerm={defaultTerm}
-              defaultDefinition={defaultDefinition}
-              termError={errors.cards?.[index]?.sides?.[0]?.text?.message}
-              definitionError={errors.cards?.[index]?.sides?.[1]?.text?.message}
-              onRemove={remove}
-              onMove={move}
-              removeDisabled={fields.length <= 1}
-              moveUpDisabled={index === 0}
-              moveDownDisabled={index >= fields.length - 1}
-              register={register}
-            />
-          )
-        )}
-      </div>
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <Droppable droppableId={droppableId}>
+          {(provided) => (
+            <div
+              className={classes.cardList}
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
+              {fields.map(
+                (
+                  {
+                    key,
+                    sides: [{ text: defaultTerm }, { text: defaultDefinition }],
+                  },
+                  index
+                ) => (
+                  <EditCardTile
+                    key={key}
+                    index={index}
+                    variant={variant}
+                    defaultTerm={defaultTerm}
+                    defaultDefinition={defaultDefinition}
+                    termError={errors.cards?.[index]?.sides?.[0]?.text?.message}
+                    definitionError={
+                      errors.cards?.[index]?.sides?.[1]?.text?.message
+                    }
+                    onRemove={remove}
+                    onMove={move}
+                    removeDisabled={fields.length <= 1}
+                    moveUpDisabled={index === 0}
+                    moveDownDisabled={index >= fields.length - 1}
+                    register={register}
+                  />
+                )
+              )}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
 
       <Button
         variant="outlined"
