@@ -7,43 +7,41 @@ import {
 } from '@material-ui/core';
 import { ArrowDownward, ArrowUpward, Delete } from '@material-ui/icons';
 import { memo, useCallback } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { UseFormRegister } from 'react-hook-form';
 import useStyles from './edit-card-tile.styles';
 import { FormValues } from './edit-deck-form';
 
 export interface EditCardTileProps {
   index: number;
   variant?: TextFieldProps['variant'];
+  defaultTerm: string;
+  defaultDefinition: string;
+  termError?: string;
+  definitionError?: string;
   removeDisabled?: boolean;
   moveUpDisabled?: boolean;
   moveDownDisabled?: boolean;
   onRemove: (index: number) => void;
   onMove: (source: number, destination: number) => void;
+  register: UseFormRegister<FormValues>;
 }
 
-export function EditCardTileInner({
-  index,
-  variant,
-  removeDisabled,
-  moveUpDisabled,
-  moveDownDisabled,
-  onRemove,
-  onMove,
-}: EditCardTileProps) {
-  const classes = useStyles();
-
+export function EditCardTileInner(props: EditCardTileProps) {
   const {
-    formState: {
-      errors: { cards: cardErrors },
-    },
-    getValues,
+    index,
+    variant,
+    defaultTerm,
+    defaultDefinition,
+    termError,
+    definitionError,
+    removeDisabled,
+    moveUpDisabled,
+    moveDownDisabled,
+    onRemove,
+    onMove,
     register,
-  } = useFormContext<FormValues>();
-
-  const { sides } = getValues('cards')[index] ?? [{ text: '' }, { text: '' }];
-
-  const defaultTerm = sides?.[0].text;
-  const defaultDefinition = sides?.[1].text;
+  } = props;
+  const classes = useStyles();
 
   const handleRemove = useCallback(() => onRemove(index), [index, onRemove]);
 
@@ -73,8 +71,8 @@ export function EditCardTileInner({
             'aria-label': 'term',
             ...register(`cards.${index}.sides.0.text` as const),
           }}
-          error={cardErrors?.[index]?.sides?.[0]?.text !== undefined}
-          helperText={cardErrors?.[index]?.sides?.[0]?.text?.message}
+          error={termError !== undefined}
+          helperText={termError}
         />
         <TextField
           label="Definition"
@@ -86,8 +84,8 @@ export function EditCardTileInner({
             'aria-label': 'definition',
             ...register(`cards.${index}.sides.1.text` as const),
           }}
-          error={cardErrors?.[index]?.sides?.[1]?.text !== undefined}
-          helperText={cardErrors?.[index]?.sides?.[1]?.text?.message}
+          error={definitionError !== undefined}
+          helperText={definitionError}
         />
       </div>
       <div className={classes.actionArea}>

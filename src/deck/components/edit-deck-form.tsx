@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, MenuItem, TextField, TextFieldProps } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
-import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import Card from '../../card/interfaces/card';
 import { DeckVisibility } from '../types/deck-visibility';
@@ -43,16 +43,16 @@ export default function EditDeckForm({
 }: EditDeckFormProps) {
   const classes = useStyles();
 
-  const formMethods = useForm<FormValues>({
-    defaultValues,
-    resolver: yupResolver(schema),
-  });
   const {
     control,
     formState: { errors },
     handleSubmit,
     register,
-  } = formMethods;
+  } = useForm<FormValues>({
+    defaultValues,
+    resolver: yupResolver(schema),
+  });
+
   const { append, fields, move, remove } = useFieldArray({
     control,
     name: 'cards',
@@ -96,18 +96,33 @@ export default function EditDeckForm({
         </TextField>
       </div>
 
-      <FormProvider {...formMethods}>
-        <div className={classes.cardList}>
-          {fields.map(({ key }, index) => (
+      <div className={classes.cardList}>
+        {fields.map(
+          (
+            {
+              key,
+              sides: [{ text: defaultTerm }, { text: defaultDefinition }],
+            },
+            index
+          ) => (
             <EditCardTile
               key={key}
               index={index}
+              variant={variant}
+              defaultTerm={defaultTerm}
+              defaultDefinition={defaultDefinition}
+              termError={errors.cards?.[index]?.sides?.[0]?.text?.message}
+              definitionError={errors.cards?.[index]?.sides?.[1]?.text?.message}
               onRemove={remove}
               onMove={move}
+              removeDisabled={fields.length <= 1}
+              moveUpDisabled={index === 0}
+              moveDownDisabled={index >= fields.length - 1}
+              register={register}
             />
-          ))}
-        </div>
-      </FormProvider>
+          )
+        )}
+      </div>
 
       <Button
         variant="outlined"
