@@ -1,105 +1,120 @@
-import { Card, IconButton, TextField, Typography } from '@material-ui/core';
+import {
+  IconButton,
+  Paper,
+  TextField,
+  TextFieldProps,
+  Typography,
+} from '@material-ui/core';
 import { ArrowDownward, ArrowUpward, Delete } from '@material-ui/icons';
-import { useState } from 'react';
-import missingRequiredFieldErrorMessage from '../../common/constants/missing-required-field-error-message';
+import { memo, useCallback } from 'react';
+import { useFormContext } from 'react-hook-form';
 import useStyles from './edit-card-tile.styles';
+import { FormValues } from './edit-deck-form';
 
-interface EditCardTileProps {
-  cardNumber: number;
-  frontText: string;
-  backText: string;
-  forceValidate?: boolean;
-  onFrontTextChange: (value: string) => void;
-  onBackTextChange: (value: string) => void;
-  onDelete?: () => void;
-  onMoveUp?: () => void;
-  onMoveDown?: () => void;
+export interface EditCardTileProps {
+  index: number;
+  variant?: TextFieldProps['variant'];
+  removeDisabled?: boolean;
+  moveUpDisabled?: boolean;
+  moveDownDisabled?: boolean;
+  onRemove: (index: number) => void;
+  onMove: (source: number, destination: number) => void;
 }
 
-export default function EditCardTile({
-  cardNumber,
-  frontText,
-  backText,
-  forceValidate,
-  onFrontTextChange,
-  onBackTextChange,
-  onDelete,
-  onMoveUp,
-  onMoveDown,
+export function EditCardTileInner({
+  index,
+  variant,
+  removeDisabled,
+  moveUpDisabled,
+  moveDownDisabled,
+  onRemove,
+  onMove,
 }: EditCardTileProps) {
   const classes = useStyles();
 
-  const [validateFrontText, setValidateFrontText] = useState(false);
-  const frontTextValid = frontText.length > 0;
-  const frontTextError =
-    (forceValidate || validateFrontText) && !frontTextValid;
+  const {
+    formState: {
+      errors: { cards: cardErrors },
+    },
+    getValues,
+    register,
+  } = useFormContext<FormValues>();
 
-  const [validateBackText, setValidateBackText] = useState(false);
-  const backTextValid = backText.length > 0;
-  const backTextError = (forceValidate || validateBackText) && !backTextValid;
+  const {
+    sides: [{ text: defaultTerm }, { text: defaultDefinition }],
+  } = getValues('cards')[index];
+
+  const handleRemove = useCallback(() => onRemove(index), [index, onRemove]);
+
+  const handleMoveUp = useCallback(
+    () => onMove(index, index - 1),
+    [index, onMove]
+  );
+
+  const handleMoveDown = useCallback(
+    () => onMove(index, index + 1),
+    [index, onMove]
+  );
 
   return (
-    <Card>
-      <div className={classes.cardContent}>
-        <Typography variant="h5">{`Card ${cardNumber}`}</Typography>
-        <div className={classes.textFieldContainer}>
-          <TextField
-            label="Term"
-            required
-            variant="outlined"
-            multiline
-            value={frontText}
-            error={frontTextError}
-            helperText={
-              frontTextError ? missingRequiredFieldErrorMessage : undefined
-            }
-            onChange={(e) => {
-              setValidateFrontText(true);
-              onFrontTextChange(e.target.value);
-            }}
-            inputProps={{ 'aria-label': 'term' }}
-          />
-          <TextField
-            label="Definition"
-            required
-            variant="outlined"
-            multiline
-            value={backText}
-            error={backTextError}
-            helperText={
-              backTextError ? missingRequiredFieldErrorMessage : undefined
-            }
-            onChange={(e) => {
-              setValidateBackText(true);
-              onBackTextChange(e.target.value);
-            }}
-            inputProps={{ 'aria-label': 'definition' }}
-          />
-        </div>
-        <div className={classes.actionArea}>
-          <IconButton
-            aria-label="delete"
-            onClick={onDelete}
-            disabled={!onDelete}
-          >
-            <Delete />
-          </IconButton>
-          <IconButton
-            aria-label="move up"
-            onClick={onMoveUp}
-            disabled={!onMoveUp}
-          >
-            <ArrowUpward />
-          </IconButton>
-          <IconButton
-            aria-label="move down"
-            onClick={onMoveDown}
-            disabled={!onMoveDown}
-          >
-            <ArrowDownward />
-          </IconButton>
-        </div>
+    <Paper className={classes.root}>
+      <Typography variant="h6" component="div">{`Card ${
+        index + 1
+      }`}</Typography>
+      <div className={classes.textFieldContainer}>
+        <TextField
+          label="Term"
+          required
+          multiline
+          variant={variant}
+          defaultValue={defaultTerm}
+          inputProps={{
+            'aria-label': 'term',
+            ...register(`cards.${index}.sides.0.text` as const),
+          }}
+          error={cardErrors?.[index]?.sides?.[0]?.text !== undefined}
+          helperText={cardErrors?.[index]?.sides?.[0]?.text?.message}
+        />
+        <TextField
+          label="Definition"
+          required
+          multiline
+          variant={variant}
+          defaultValue={defaultDefinition}
+          inputProps={{
+            'aria-label': 'definition',
+            ...register(`cards.${index}.sides.1.text` as const),
+          }}
+          error={cardErrors?.[index]?.sides?.[1]?.text !== undefined}
+          helperText={cardErrors?.[index]?.sides?.[1]?.text?.message}
+        />
       </div>
-    </Card>
+      <div className={classes.actionArea}>
+        <IconButton
+          aria-label="delete"
+          onClick={handleRemove}
+          disabled={removeDisabled}
+        >
+          <Delete />
+        </IconButton>
+        <IconButton
+          aria-label="move up"
+          onClick={handleMoveUp}
+          disabled={moveUpDisabled}
+        >
+          <ArrowUpward />
+        </IconButton>
+        <IconButton
+          aria-label="move down"
+          onClick={handleMoveDown}
+          disabled={moveDownDisabled}
+        >
+          <ArrowDownward />
+        </IconButton>
+      </div>
+    </Paper>
   );
 }
+
+const EditCardTile = memo(EditCardTileInner);
+export default EditCardTile;

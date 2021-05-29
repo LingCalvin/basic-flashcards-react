@@ -22,21 +22,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'flex-end',
   },
-  editCardTile: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: theme.spacing(1),
-    padding: theme.spacing(2),
-  },
-  editCardTileFieldContainer: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gap: theme.spacing(2),
-  },
-  editCardTileActionArea: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-  },
   editCardTileContainer: {
     paddingTop: theme.spacing(2),
   },

@@ -1,20 +1,19 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  Button,
-  IconButton,
-  MenuItem,
-  Paper,
-  TextField,
-  TextFieldProps,
-  Typography,
-} from '@material-ui/core';
-import { Add, ArrowDownward, ArrowUpward, Delete } from '@material-ui/icons';
+import { Button, MenuItem, TextField, TextFieldProps } from '@material-ui/core';
+import { Add } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab';
-import { SubmitErrorHandler, useFieldArray, useForm } from 'react-hook-form';
+import { memo } from 'react';
+import {
+  FormProvider,
+  SubmitErrorHandler,
+  useFieldArray,
+  useForm,
+} from 'react-hook-form';
 import { Virtuoso } from 'react-virtuoso';
 import * as yup from 'yup';
 import Card from '../../card/interfaces/card';
 import { DeckVisibility } from '../types/deck-visibility';
+import EditCardTile, { EditCardTileProps } from './edit-card-tile';
 import useStyles from './edit-deck-form.styles';
 
 export type FormValues = {
@@ -45,6 +44,17 @@ interface EditDeckFormProps {
   onSubmit: (value: FormValues) => void;
 }
 
+const WrappedCardTile = memo(
+  ({
+    className,
+    ...editCardTileProps
+  }: EditCardTileProps & { className?: string }) => (
+    <div className={className}>
+      <EditCardTile {...editCardTileProps} />
+    </div>
+  )
+);
+
 export default function EditDeckForm({
   defaultValues,
   variant,
@@ -52,17 +62,16 @@ export default function EditDeckForm({
 }: EditDeckFormProps) {
   const classes = useStyles();
 
+  const formMethods = useForm<FormValues>({
+    defaultValues,
+    resolver: yupResolver(schema),
+  });
   const {
     control,
     formState: { errors },
-    getValues,
     handleSubmit,
     register,
-  } = useForm<FormValues>({
-    defaultValues,
-    // reValidateMode: 'onBlur',
-    resolver: yupResolver(schema),
-  });
+  } = formMethods;
   const { append, fields, move, remove } = useFieldArray({
     control,
     name: 'cards',
@@ -123,84 +132,27 @@ export default function EditDeckForm({
         </TextField>
       </div>
 
-      <Virtuoso
-        useWindowScroll
-        data={fields}
-        computeItemKey={(index) => fields[index].key}
-        itemContent={(index) => {
-          const { sides } = getValues('cards')[index];
-          return (
-            <div
+      <FormProvider {...formMethods}>
+        <Virtuoso
+          useWindowScroll
+          data={fields}
+          computeItemKey={(index) => fields[index].key}
+          itemContent={(index) => (
+            <WrappedCardTile
+              // Ideally, spacing would be handled by the gap CSS property.
+              // However, react-virtuoso does not support this.
               className={index > 0 ? classes.editCardTileContainer : undefined}
-            >
-              <Paper className={classes.editCardTile}>
-                <Typography variant="h6" component="div">{`Card ${
-                  index + 1
-                }`}</Typography>
-                <div className={classes.editCardTileFieldContainer}>
-                  <TextField
-                    label="Term"
-                    required
-                    multiline
-                    variant={variant}
-                    defaultValue={sides[0].text}
-                    inputProps={{
-                      'aria-label': 'term',
-                      ...register(`cards.${index}.sides.0.text` as const),
-                    }}
-                    error={
-                      errors.cards?.[index]?.sides?.[0]?.text !== undefined
-                    }
-                    helperText={
-                      errors.cards?.[index]?.sides?.[0]?.text?.message
-                    }
-                  />
-                  <TextField
-                    label="Definition"
-                    required
-                    multiline
-                    variant={variant}
-                    defaultValue={sides[1].text}
-                    inputProps={{
-                      'aria-label': 'definition',
-                      ...register(`cards.${index}.sides.1.text` as const),
-                    }}
-                    error={
-                      errors.cards?.[index]?.sides?.[1]?.text !== undefined
-                    }
-                    helperText={
-                      errors.cards?.[index]?.sides?.[1]?.text?.message
-                    }
-                  />
-                </div>
-                <div className={classes.editCardTileActionArea}>
-                  <IconButton
-                    aria-label="delete"
-                    onClick={() => remove(index)}
-                    disabled={fields.length <= 1}
-                  >
-                    <Delete />
-                  </IconButton>
-                  <IconButton
-                    aria-label="move up"
-                    onClick={() => move(index, index - 1)}
-                    disabled={index <= 0}
-                  >
-                    <ArrowUpward />
-                  </IconButton>
-                  <IconButton
-                    aria-label="move down"
-                    onClick={() => move(index, index + 1)}
-                    disabled={index >= fields.length - 1}
-                  >
-                    <ArrowDownward />
-                  </IconButton>
-                </div>
-              </Paper>
-            </div>
-          );
-        }}
-      />
+              index={index}
+              variant="outlined"
+              removeDisabled={fields.length <= 1}
+              moveUpDisabled={index <= 0}
+              moveDownDisabled={index >= fields.length - 1}
+              onRemove={remove}
+              onMove={move}
+            />
+          )}
+        />
+      </FormProvider>
 
       <Button
         variant="outlined"
