@@ -1,19 +1,11 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, MenuItem, TextField, TextFieldProps } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
-import { Alert } from '@material-ui/lab';
-import { memo } from 'react';
-import {
-  FormProvider,
-  SubmitErrorHandler,
-  useFieldArray,
-  useForm,
-} from 'react-hook-form';
-import { Virtuoso } from 'react-virtuoso';
+import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import Card from '../../card/interfaces/card';
 import { DeckVisibility } from '../types/deck-visibility';
-import EditCardTile, { EditCardTileProps } from './edit-card-tile';
+import EditCardTile from './edit-card-tile';
 import useStyles from './edit-deck-form.styles';
 
 export type FormValues = {
@@ -44,17 +36,6 @@ interface EditDeckFormProps {
   onSubmit: (value: FormValues) => void;
 }
 
-const WrappedCardTile = memo(
-  ({
-    className,
-    ...editCardTileProps
-  }: EditCardTileProps & { className?: string }) => (
-    <div className={className}>
-      <EditCardTile {...editCardTileProps} />
-    </div>
-  )
-);
-
 export default function EditDeckForm({
   defaultValues,
   variant,
@@ -77,26 +58,9 @@ export default function EditDeckForm({
     name: 'cards',
     keyName: 'key', // A Card already has an id field
   });
-  const onInvalid: SubmitErrorHandler<FormValues> = (errors) => {
-    if (
-      !errors.title &&
-      !errors.description &&
-      !errors.visibility &&
-      errors.cards !== undefined
-    ) {
-      window.scrollTo({ top: 0 });
-    }
-  };
 
   return (
-    <form
-      className={classes.form}
-      noValidate
-      onSubmit={handleSubmit(onSubmit, onInvalid)}
-    >
-      {Object.values(errors).length > 0 && (
-        <Alert color="error">Please correct all errors.</Alert>
-      )}
+    <form className={classes.form} noValidate onSubmit={handleSubmit(onSubmit)}>
       <div className={classes.generalInfoContainer}>
         <TextField
           label="Title"
@@ -133,25 +97,16 @@ export default function EditDeckForm({
       </div>
 
       <FormProvider {...formMethods}>
-        <Virtuoso
-          useWindowScroll
-          data={fields}
-          computeItemKey={(index) => fields[index].key}
-          itemContent={(index) => (
-            <WrappedCardTile
-              // Ideally, spacing would be handled by the gap CSS property.
-              // However, react-virtuoso does not support this.
-              className={index > 0 ? classes.editCardTileContainer : undefined}
+        <div className={classes.cardList}>
+          {fields.map(({ key }, index) => (
+            <EditCardTile
+              key={key}
               index={index}
-              variant="outlined"
-              removeDisabled={fields.length <= 1}
-              moveUpDisabled={index <= 0}
-              moveDownDisabled={index >= fields.length - 1}
               onRemove={remove}
               onMove={move}
             />
-          )}
-        />
+          ))}
+        </div>
       </FormProvider>
 
       <Button

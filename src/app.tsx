@@ -27,7 +27,9 @@ export default function App() {
         <CssBaseline />
         <div id="app-content">
           <AppBar />
-          <RouterSwitch />
+          <div id="page-container">
+            <RouterSwitch />
+          </div>
         </div>
       </CredentialsContext.Provider>
     </>

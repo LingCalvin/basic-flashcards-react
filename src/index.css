@@ -19,6 +19,11 @@ body,
   height: 100%;
 }
 
+#page-container {
+  flex-grow: 1;
+  overflow: auto;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

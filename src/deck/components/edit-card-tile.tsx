@@ -40,9 +40,10 @@ export function EditCardTileInner({
     register,
   } = useFormContext<FormValues>();
 
-  const {
-    sides: [{ text: defaultTerm }, { text: defaultDefinition }],
-  } = getValues('cards')[index];
+  const { sides } = getValues('cards')[index] ?? [{ text: '' }, { text: '' }];
+
+  const defaultTerm = sides?.[0].text;
+  const defaultDefinition = sides?.[1].text;
 
   const handleRemove = useCallback(() => onRemove(index), [index, onRemove]);
 
