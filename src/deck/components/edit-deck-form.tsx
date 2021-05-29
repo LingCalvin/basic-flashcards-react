@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 import { Add, ArrowDownward, ArrowUpward, Delete } from '@material-ui/icons';
 import { Alert } from '@material-ui/lab';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { SubmitErrorHandler, useFieldArray, useForm } from 'react-hook-form';
 import { Virtuoso } from 'react-virtuoso';
 import * as yup from 'yup';
 import Card from '../../card/interfaces/card';
@@ -68,9 +68,23 @@ export default function EditDeckForm({
     name: 'cards',
     keyName: 'key', // A Card already has an id field
   });
+  const onInvalid: SubmitErrorHandler<FormValues> = (errors) => {
+    if (
+      !errors.title &&
+      !errors.description &&
+      !errors.visibility &&
+      errors.cards !== undefined
+    ) {
+      window.scrollTo({ top: 0 });
+    }
+  };
 
   return (
-    <form className={classes.form} noValidate onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className={classes.form}
+      noValidate
+      onSubmit={handleSubmit(onSubmit, onInvalid)}
+    >
       {Object.values(errors).length > 0 && (
         <Alert color="error">Please correct all errors.</Alert>
       )}
@@ -195,21 +209,7 @@ export default function EditDeckForm({
         Add card
       </Button>
       <div className={classes.saveButtonContainer}>
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            if (
-              !errors.title &&
-              !errors.description &&
-              !errors.visibility &&
-              errors.cards !== undefined
-            ) {
-              window.scrollTo({ top: 0 });
-            }
-          }}
-        >
+        <Button type="submit" variant="contained" color="primary">
           Save
         </Button>
       </div>
