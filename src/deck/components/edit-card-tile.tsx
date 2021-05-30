@@ -1,10 +1,4 @@
-import {
-  IconButton,
-  Paper,
-  TextField,
-  TextFieldProps,
-  Typography,
-} from '@material-ui/core';
+import { IconButton, Paper, Typography } from '@material-ui/core';
 import {
   ArrowDownward,
   ArrowUpward,
@@ -14,6 +8,7 @@ import {
 import { memo, useCallback } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { UseFormRegister } from 'react-hook-form';
+import TextField, { TextFieldProps } from '../../common/components/text-field';
 import useUniqueId from '../../common/hooks/use-unique-id';
 import useStyles from './edit-card-tile.styles';
 import { FormValues } from './edit-deck-form';
@@ -92,7 +87,6 @@ export function EditCardTileInner(props: EditCardTileProps) {
               variant={variant}
               defaultValue={defaultTerm}
               inputProps={{
-                'aria-label': 'term',
                 ...register(`cards.${index}.sides.0.text` as const),
               }}
               error={termError !== undefined}
@@ -105,7 +99,6 @@ export function EditCardTileInner(props: EditCardTileProps) {
               variant={variant}
               defaultValue={defaultDefinition}
               inputProps={{
-                'aria-label': 'definition',
                 ...register(`cards.${index}.sides.1.text` as const),
               }}
               error={definitionError !== undefined}

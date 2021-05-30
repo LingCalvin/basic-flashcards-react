@@ -116,6 +116,7 @@ export default function AppBar() {
         }}
       >
         <InputBase
+          inputProps={{ 'aria-label': 'Search' }}
           value={searchTerm}
           autoFocus={isMobile}
           fullWidth={isMobile}
@@ -195,7 +196,9 @@ export default function AppBar() {
           to={routes.home}
           className={clsx(classes.button, classes.homeLink)}
         >
-          <Typography variant="h6">Basic Flashcards</Typography>
+          <Typography variant="h6" component="span">
+            Basic Flashcards
+          </Typography>
         </Button>
       </div>
       {searchBar}

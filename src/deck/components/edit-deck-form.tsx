@@ -1,11 +1,12 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, MenuItem, TextField, TextFieldProps } from '@material-ui/core';
+import { Button, MenuItem } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import { useCallback } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useFieldArray, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import Card from '../../card/interfaces/card';
+import TextField, { TextFieldProps } from '../../common/components/text-field';
 import useUniqueId from '../../common/hooks/use-unique-id';
 import { DeckVisibility } from '../types/deck-visibility';
 import EditCardTile from './edit-card-tile';
@@ -86,7 +87,7 @@ export default function EditDeckForm({
           required
           variant={variant}
           defaultValue=""
-          inputProps={{ 'aria-label': 'title', ...register('title') }}
+          inputProps={{ ...register('title') }}
           error={errors.title !== undefined}
           helperText={errors.title?.message}
         />
@@ -94,10 +95,7 @@ export default function EditDeckForm({
           label="Description"
           variant={variant}
           defaultValue=""
-          inputProps={{
-            'aria-label': 'description',
-            ...register('description'),
-          }}
+          inputProps={{ ...register('description') }}
           error={errors.description !== undefined}
           helperText={errors.description?.message}
         />
@@ -106,7 +104,7 @@ export default function EditDeckForm({
           select
           variant={variant}
           defaultValue={defaultValues?.visibility ?? 'PRIVATE'}
-          inputProps={{ 'aria-label': 'visibility', ...register('visibility') }}
+          inputProps={{ ...register('visibility') }}
           error={errors.visibility !== undefined}
           helperText={errors.visibility?.message}
         >

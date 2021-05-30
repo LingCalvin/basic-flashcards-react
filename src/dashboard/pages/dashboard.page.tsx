@@ -1,11 +1,8 @@
 import {
   Button,
   Fab,
-  InputLabel,
   MenuItem,
-  Select,
   Snackbar,
-  TextField,
   Typography,
   useTheme,
 } from '@material-ui/core';
@@ -17,7 +14,6 @@ import { Link } from 'react-router-dom';
 import routes from '../../router/constants/routes';
 import useDebouncedValue from '../../common/hooks/use-debounced-value';
 import useIsMobile from '../../common/hooks/use-is-mobile';
-import useUniqueId from '../../common/hooks/use-unique-id';
 import Deck from '../../deck/interfaces/deck';
 import { FindAllDecksParams } from '../../deck/interfaces/find-all-decks-params';
 import { decksService } from '../../deck/services/decks.service';
@@ -29,6 +25,7 @@ import DeleteDeckDialog from '../components/delete-deck-dialog';
 import { downloadBlob } from '../../common/utils/download.utils';
 import { autoHideDuration } from '../../common/constants/snackbar';
 import LoadableComponent from '../../common/components/loadable-component';
+import TextField from '../../common/components/text-field';
 
 interface DashboardPageProps {
   pageSize?: number;
@@ -52,7 +49,6 @@ export default function DashboardPage({ pageSize = 10 }: DashboardPageProps) {
   const [loading, setLoading] = useState(false);
   const history = useHistory();
   const classes = useStyles();
-  const id = useUniqueId();
   const [search, setSearch] = useState('');
   const searchValue = useDebouncedValue(
     search,
@@ -126,14 +122,13 @@ export default function DashboardPage({ pageSize = 10 }: DashboardPageProps) {
 
         <div className={classes.sortAndSearchContainer}>
           <div>
-            <InputLabel id={id}>Sort by</InputLabel>
-            <Select labelId={id} value="title">
+            <TextField label="Sort by" variant="outlined" select value="title">
               <MenuItem value="title">Title</MenuItem>
-            </Select>
+            </TextField>
           </div>
           <TextField
             label="Search"
-            inputProps={{ 'aria-label': 'search' }}
+            variant="outlined"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />

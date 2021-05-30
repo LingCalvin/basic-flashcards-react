@@ -1,7 +1,8 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, TextField, TextFieldProps } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
+import TextField, { TextFieldProps } from '../../common/components/text-field';
 import useStyles from './form.styles';
 
 export type FormValues = {
@@ -45,10 +46,7 @@ export default function ChangePasswordForm({
         label="Current password"
         type="password"
         variant={variant}
-        inputProps={{
-          'aria-label': 'Current password',
-          ...register('currentPassword'),
-        }}
+        inputProps={{ ...register('currentPassword') }}
         error={errors.currentPassword !== undefined}
         helperText={errors.currentPassword?.message}
       />
@@ -56,10 +54,7 @@ export default function ChangePasswordForm({
         label="New password"
         type="password"
         variant={variant}
-        inputProps={{
-          'aria-label': 'New password',
-          ...register('newPassword'),
-        }}
+        inputProps={{ ...register('newPassword') }}
         error={errors.newPassword !== undefined}
         helperText={errors.newPassword?.message}
       />
@@ -67,10 +62,7 @@ export default function ChangePasswordForm({
         label="Confirm new password"
         type="password"
         variant={variant}
-        inputProps={{
-          'aria-label': 'Confirm new password',
-          ...register('confirmNewPassword'),
-        }}
+        inputProps={{ ...register('confirmNewPassword') }}
         error={errors.confirmNewPassword !== undefined}
         helperText={errors.confirmNewPassword?.message}
       />

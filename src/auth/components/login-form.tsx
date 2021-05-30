@@ -1,10 +1,11 @@
 import useStyles from './form.styles';
-import { Button, TextField, TextFieldProps } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import routes from '../../router/constants/routes';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import TextField, { TextFieldProps } from '../../common/components/text-field';
 
 export type FormValues = {
   username: string;
