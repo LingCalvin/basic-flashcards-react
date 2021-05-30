@@ -94,7 +94,7 @@ export default function DashboardPage({ pageSize = 10 }: DashboardPageProps) {
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
   return (
-    <div>
+    <main>
       <DeleteDeckDialog
         deckTitle={deckToDelete?.title ?? ''}
         open={showDialog}
@@ -118,7 +118,7 @@ export default function DashboardPage({ pageSize = 10 }: DashboardPageProps) {
         }}
       />
       <div className={classes.content}>
-        <Typography variant="h2">Your decks</Typography>
+        <Typography variant="h1">Your decks</Typography>
 
         <div className={classes.sortAndSearchContainer}>
           <div>
@@ -248,6 +248,6 @@ export default function DashboardPage({ pageSize = 10 }: DashboardPageProps) {
           onClose={() => setShowSnackbar(false)}
         />
       </div>
-    </div>
+    </main>
   );
 }

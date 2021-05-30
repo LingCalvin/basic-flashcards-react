@@ -25,33 +25,29 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div>
-      <main>
-        <div className={classes.topSection}>
-          <Typography variant="h1" component="p">
-            Create, search for, and review decks.
-          </Typography>
-        </div>
-        <div className={classes.exampleDecksSection}>
-          <Typography variant="h2" component="div">
-            Example decks
-          </Typography>
-          <LoadableComponent loading={loading}>
-            <div className={classes.exampleDecksContainer}>
-              {exampleDecks.map((deck) => (
-                <DeckInfoTile
-                  key={deck.id}
-                  deckId={deck.id ?? ''}
-                  title={deck.title}
-                  numberOfCards={deck.cards.length}
-                  author={deck.authorId ?? ''}
-                  onClick={() => history.push(deckView(deck.id ?? ''))}
-                />
-              ))}
-            </div>
-          </LoadableComponent>
-        </div>
-      </main>
-    </div>
+    <main>
+      <div className={classes.topSection}>
+        <Typography variant="h1">
+          Create, search for, and review decks.
+        </Typography>
+      </div>
+      <section className={classes.exampleDecksSection}>
+        <Typography variant="h2">Example decks</Typography>
+        <LoadableComponent loading={loading}>
+          <div className={classes.exampleDecksContainer}>
+            {exampleDecks.map((deck) => (
+              <DeckInfoTile
+                key={deck.id}
+                deckId={deck.id ?? ''}
+                title={deck.title}
+                numberOfCards={deck.cards.length}
+                author={deck.authorId ?? ''}
+                onClick={() => history.push(deckView(deck.id ?? ''))}
+              />
+            ))}
+          </div>
+        </LoadableComponent>
+      </section>
+    </main>
   );
 }

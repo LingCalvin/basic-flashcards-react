@@ -3,6 +3,7 @@ import {
   CircularProgress,
   Container,
   Snackbar,
+  Typography,
 } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
@@ -35,13 +36,15 @@ export default function EditDeckPage() {
   }, [deckId]);
 
   return (
-    <>
+    <main>
       <Backdrop open={submitting} className={classes.backdrop}>
         <CircularProgress color="inherit" />
       </Backdrop>
       <LoadableComponent loading={loading}>
         {deck && (
           <Container>
+            <Typography variant="h1">Edit deck</Typography>
+
             <EditDeckForm
               variant="outlined"
               defaultValues={deck}
@@ -66,6 +69,6 @@ export default function EditDeckPage() {
         autoHideDuration={autoHideDuration}
         onClose={() => setShowsSnackbar(false)}
       />
-    </>
+    </main>
   );
 }

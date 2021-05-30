@@ -45,18 +45,16 @@ export default function DeckPage() {
         <LoadableComponent loading={loading}>
           {deck && (
             <>
+              <div>
+                <Typography variant="h1">{deck.title}</Typography>
+                <Typography variant="subtitle1" component="div">
+                  by{' '}
+                  <Link to={`/users/${deck.authorId}`} color="inherit">
+                    {deck.authorId}
+                  </Link>
+                </Typography>
+              </div>
               <section className={classes.section}>
-                <div>
-                  <Typography variant="h4" component="h1">
-                    {deck.title}
-                  </Typography>
-                  <Typography variant="subtitle1" component="div">
-                    by{' '}
-                    <Link to={`/users/${deck.authorId}`} color="inherit">
-                      {deck.authorId}
-                    </Link>
-                  </Typography>
-                </div>
                 <div className={classes.deckStackContainer}>
                   <DeckStack
                     className={classes.deckStack}
@@ -91,9 +89,7 @@ export default function DeckPage() {
               </section>
               {/* Tag list */}
               <section className={classes.section}>
-                <Typography variant="h5" component="h2">
-                  Tags
-                </Typography>
+                <Typography variant="h2">Tags</Typography>
                 <div className={classes.tagList}>
                   {sortedTags.map((tag) => (
                     <Chip key={tag} label={tag} variant="outlined" />
@@ -102,9 +98,7 @@ export default function DeckPage() {
               </section>
               {/* Term list */}
               <section className={classes.section}>
-                <Typography variant="h5" component="h2">
-                  Terms
-                </Typography>
+                <Typography variant="h2">Terms</Typography>
                 <CardList cards={deck.cards} />
               </section>
             </>

@@ -75,7 +75,8 @@ export default function DeckSearchPage() {
   }, [from, page, pageSize, term]);
 
   const results = (
-    <div className={classes.paginationContainer}>
+    <main className={classes.paginationContainer}>
+      <Typography variant="h1">Results</Typography>
       <div className={classes.results}>
         {deckSlice.map((deck) => (
           <DeckInfoTile
@@ -107,7 +108,7 @@ export default function DeckSearchPage() {
           />
         </div>
       )}
-    </div>
+    </main>
   );
 
   const emptyResults = (

@@ -1,4 +1,4 @@
-import { Container } from '@material-ui/core';
+import { Container, Typography } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { useContext, useState } from 'react';
 import { useLocation } from 'react-router';
@@ -24,22 +24,21 @@ export default function LoginPage() {
   }
 
   return (
-    <div>
-      <Container className={classes.content}>
-        {serverError && <Alert severity="error">{serverError}</Alert>}
-        <LoginForm
-          variant="outlined"
-          onSubmit={(value) => {
-            authService.logIn(value.username, value.password).catch((e) => {
-              if (e.response) {
-                setServerError(e.response?.data?.message);
-              } else {
-                setServerError('An error has occurred.');
-              }
-            });
-          }}
-        />
-      </Container>
-    </div>
+    <Container className={classes.content} component="main">
+      <Typography variant="h1">Log in</Typography>
+      {serverError && <Alert severity="error">{serverError}</Alert>}
+      <LoginForm
+        variant="outlined"
+        onSubmit={(value) => {
+          authService.logIn(value.username, value.password).catch((e) => {
+            if (e.response) {
+              setServerError(e.response?.data?.message);
+            } else {
+              setServerError('An error has occurred.');
+            }
+          });
+        }}
+      />
+    </Container>
   );
 }

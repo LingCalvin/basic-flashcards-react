@@ -3,6 +3,7 @@ import {
   CircularProgress,
   Container,
   Snackbar,
+  Typography,
 } from '@material-ui/core';
 import { useState } from 'react';
 import { useHistory } from 'react-router';
@@ -21,11 +22,12 @@ export default function AddDeckPage() {
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
   return (
-    <>
+    <main>
       <Backdrop open={submitting} className={classes.backdrop}>
         <CircularProgress color="inherit" />
       </Backdrop>
       <Container>
+        <Typography variant="h1">Create deck</Typography>
         <EditDeckForm
           variant="outlined"
           defaultValues={{
@@ -53,6 +55,6 @@ export default function AddDeckPage() {
         autoHideDuration={autoHideDuration}
         onClose={() => setShowsSnackbar(false)}
       />
-    </>
+    </main>
   );
 }
