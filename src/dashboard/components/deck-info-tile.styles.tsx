@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'flex-end',
   },
   deleteButton: {
-    color: theme.palette.error.dark,
+    color: theme.palette.error.main,
   },
 }));
 

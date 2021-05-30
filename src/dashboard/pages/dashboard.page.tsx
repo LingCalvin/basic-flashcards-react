@@ -233,7 +233,7 @@ export default function DashboardPage({ pageSize = 10 }: DashboardPageProps) {
           <Fab
             aria-label="create deck"
             className={classes.fab}
-            color="primary"
+            color="secondary"
             component={Link}
             to={routes.deckAdd}
           >

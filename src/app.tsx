@@ -1,10 +1,11 @@
-import { CssBaseline } from '@material-ui/core';
+import { CssBaseline, ThemeProvider } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import CredentialsContext from './auth/contexts/credentials.context';
 import Credentials from './auth/interfaces/credentials';
 import { retrieve } from './auth/utils/credentials.utils';
 import AppBar from './common/components/app-bar';
 import RouterSwitch from './router/components/router-switch';
+import theme from './theme';
 
 export default function App() {
   const [credentials, setCredentials] = useState<Credentials | null>(retrieve);
@@ -24,13 +25,15 @@ export default function App() {
   return (
     <>
       <CredentialsContext.Provider value={credentials}>
-        <CssBaseline />
-        <div id="app-content">
-          <AppBar />
-          <div id="page-container">
-            <RouterSwitch />
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <div id="app-content">
+            <AppBar />
+            <div id="page-container">
+              <RouterSwitch />
+            </div>
           </div>
-        </div>
+        </ThemeProvider>
       </CredentialsContext.Provider>
     </>
   );
