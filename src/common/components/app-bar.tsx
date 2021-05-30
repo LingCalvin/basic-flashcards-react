@@ -56,7 +56,14 @@ export default function AppBar() {
         {credentials?.username.toLocaleUpperCase()}
       </Typography>
       <Divider />
-      <MenuItem onClick={closeMenu}>Manage account</MenuItem>
+      <MenuItem
+        onClick={() => {
+          closeMenu();
+          history.push(routes.accountSettings);
+        }}
+      >
+        Manage account
+      </MenuItem>
       <MenuItem
         onClick={() => {
           setMenuAnchor(null);
@@ -69,7 +76,11 @@ export default function AppBar() {
   );
 
   const avatar = (
-    <Avatar>{credentials?.username.substring(0, 1).toLocaleUpperCase()}</Avatar>
+    <Avatar>
+      <Typography className={classes.avatarText} component="div">
+        {credentials?.username.substring(0, 1).toLocaleUpperCase()}
+      </Typography>
+    </Avatar>
   );
 
   const loginProfile = authService.isAuthenticated() ? (

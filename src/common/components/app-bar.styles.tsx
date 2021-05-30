@@ -13,6 +13,10 @@ const useStyles = makeStyles((theme) => ({
   avatarButton: {
     padding: theme.spacing(0.5),
   },
+  avatarText: {
+    fontSize: theme.typography.h5.fontSize,
+    fontWeight: theme.typography.fontWeightBold,
+  },
   menuUsername: {
     textAlign: 'center',
     padding: theme.spacing(1),

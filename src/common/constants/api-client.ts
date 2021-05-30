@@ -21,6 +21,7 @@ apiClient.interceptors.response.use(
     if (e?.response?.status === 401) {
       localStorageService.removeItem('accessToken');
     }
+    throw e;
   }
 );
 export default apiClient;

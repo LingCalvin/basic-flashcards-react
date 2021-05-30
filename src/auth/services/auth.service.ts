@@ -46,13 +46,20 @@ export class AuthService {
   }
 
   getCurrentUser(): string | null {
-    const accessTokenPayload = localStorageService.getItem(
-      'accessTokenPayload'
-    );
+    const accessTokenPayload =
+      localStorageService.getItem('accessTokenPayload');
     if (!accessTokenPayload) {
       return null;
     }
     return JSON.parse(accessTokenPayload).sub;
+  }
+
+  async changePassword(currentPassword: string, newPassword: string) {
+    await this.http.put(`/users/${this.getCurrentUser()}/password`, {
+      currentPassword,
+      newPassword,
+    });
+    await this.logOut();
   }
 }
 

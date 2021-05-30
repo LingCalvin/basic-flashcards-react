@@ -1,5 +1,6 @@
 const routes = {
   home: '/',
+  accountSettings: '/account/settings',
   dashboard: '/dashboard',
   decks: '/decks',
   deckSearch: '/search',

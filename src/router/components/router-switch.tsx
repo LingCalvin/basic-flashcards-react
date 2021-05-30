@@ -5,10 +5,13 @@ import { lazy, Suspense, useContext } from 'react';
 import CredentialsContext from '../../auth/contexts/credentials.context';
 import LazyLoadingFallbackPage from '../../common/pages/lazy-loading-fallback.page';
 
+const AccountSettingsPage = lazy(
+  () => import('../../auth/pages/account-settings.page')
+);
+const AddDeckPage = lazy(() => import('../../deck/pages/add-deck.page'));
 const DashboardPage = lazy(
   () => import('../../dashboard/pages/dashboard.page')
 );
-const AddDeckPage = lazy(() => import('../../deck/pages/add-deck.page'));
 const DeckPage = lazy(() => import('../../deck/pages/deck.page'));
 const LoginPage = lazy(() => import('../../auth/pages/login.page'));
 const RegistrationPage = lazy(
@@ -26,6 +29,9 @@ export default function RouterSwitch() {
         <Route exact path={routes.home}>
           {credentials ? <Redirect to={routes.dashboard} /> : <HomePage />}
         </Route>
+        <ProtectedRoute path={routes.accountSettings}>
+          <AccountSettingsPage />
+        </ProtectedRoute>
         <ProtectedRoute path={routes.dashboard}>
           <DashboardPage />
         </ProtectedRoute>
