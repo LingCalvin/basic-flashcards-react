@@ -1,12 +1,10 @@
 import { Typography } from '@material-ui/core';
 import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
 import LoadableComponent from '../../common/components/loadable-component';
 import Deck from '../../deck/interfaces/deck';
 import { decksService } from '../../deck/services/decks.service';
 import DeckInfoTile from '../components/deck-info-tile';
 import useStyles from './home.page.styles';
-import { deckView } from '../../router/utils/route.utils';
 
 export default function HomePage() {
   const classes = useStyles();
@@ -14,8 +12,6 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
 
   const [exampleDecks, setExampleDecks] = useState<Deck[]>([]);
-
-  const history = useHistory();
 
   useEffect(() => {
     decksService
@@ -42,7 +38,6 @@ export default function HomePage() {
                 title={deck.title}
                 numberOfCards={deck.cards.length}
                 author={deck.authorId ?? ''}
-                onClick={() => history.push(deckView(deck.id ?? ''))}
               />
             ))}
           </div>

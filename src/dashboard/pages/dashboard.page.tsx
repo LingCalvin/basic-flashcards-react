@@ -19,7 +19,6 @@ import { FindAllDecksParams } from '../../deck/interfaces/find-all-decks-params'
 import { decksService } from '../../deck/services/decks.service';
 import DeckInfoTile from '../components/deck-info-tile';
 import useStyles from './dashboard.page.styles';
-import { deckView } from '../../router/utils/route.utils';
 import CredentialsContext from '../../auth/contexts/credentials.context';
 import DeleteDeckDialog from '../components/delete-deck-dialog';
 import { downloadBlob } from '../../common/utils/download.utils';
@@ -205,7 +204,6 @@ export default function DashboardPage({ pageSize = 10 }: DashboardPageProps) {
                   deckId={deck.id ?? ''}
                   title={deck.title}
                   numberOfCards={deck.cards.length}
-                  onClick={() => history.push(deckView(deck.id ?? ''))}
                   onDelete={() => {
                     setDeckToDelete(deck);
                     setShowDialog(true);

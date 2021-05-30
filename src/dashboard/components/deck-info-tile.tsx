@@ -1,5 +1,6 @@
 import { Button, Paper, Typography } from '@material-ui/core';
 import Link from '../../common/components/link';
+import { deckView } from '../../router/utils/route.utils';
 import useStyles from './deck-info-tile.styles';
 
 interface DeckInfoTileProps {
@@ -7,7 +8,6 @@ interface DeckInfoTileProps {
   deckId: string;
   numberOfCards: number;
   author?: string;
-  onClick?: () => void;
   onDelete?: () => void;
   onExport?: () => void;
   onEdit?: () => void;
@@ -18,17 +18,18 @@ export default function DeckInfoTile({
   deckId,
   numberOfCards,
   author,
-  onClick,
   onDelete,
   onExport,
   onEdit,
 }: DeckInfoTileProps) {
   const classes = useStyles();
   return (
-    <Paper className={classes.root} onClick={onClick}>
-      <Typography className={classes.title} variant="h5" component="div">
-        {title}
-      </Typography>
+    <Paper className={classes.root}>
+      <Link to={deckView(deckId)}>
+        <Typography className={classes.title} variant="h5" component="div">
+          {title}
+        </Typography>
+      </Link>
       <Typography>{`${numberOfCards} cards`}</Typography>
       {author && (
         <Typography

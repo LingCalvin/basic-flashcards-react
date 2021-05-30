@@ -4,7 +4,6 @@ import { useHistory, useLocation } from 'react-router';
 import LoadableComponent from '../../common/components/loadable-component';
 import DeckInfoTile from '../../dashboard/components/deck-info-tile';
 import routes from '../../router/constants/routes';
-import { deckView } from '../../router/utils/route.utils';
 import Deck from '../interfaces/deck';
 import { decksService } from '../services/decks.service';
 import useStyles from './deck-search.page.styles';
@@ -85,7 +84,6 @@ export default function DeckSearchPage() {
             title={deck.title}
             numberOfCards={deck.cards.length}
             author={deck.authorId ?? ''}
-            onClick={() => history.push(deckView(deck.id ?? ''))}
           />
         ))}
       </div>

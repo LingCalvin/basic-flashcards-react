@@ -39,72 +39,67 @@ export default function DeckPage() {
   );
 
   return (
-    <div>
-      <div className={classes.root}>
-        {/* Deck */}
-        <LoadableComponent loading={loading}>
-          {deck && (
-            <>
-              <div>
-                <Typography variant="h1">{deck.title}</Typography>
-                <Typography variant="subtitle1" component="div">
-                  by{' '}
-                  <Link to={`/users/${deck.authorId}`} color="inherit">
-                    {deck.authorId}
-                  </Link>
-                </Typography>
+    <main className={classes.root}>
+      {/* Deck */}
+      <LoadableComponent loading={loading}>
+        {deck && (
+          <>
+            <div>
+              <Typography variant="h1">{deck.title}</Typography>
+              <Typography variant="subtitle1" component="div">
+                by <Link to={`/users/${deck.authorId}`}>{deck.authorId}</Link>
+              </Typography>
+            </div>
+            <section className={classes.section}>
+              <div className={classes.deckStackContainer}>
+                <DeckStack
+                  className={classes.deckStack}
+                  cards={deck.cards}
+                  activeIndex={activeCardIndex}
+                  showCardBack={showCardBack}
+                  onFlipCard={() => setShowCardBack((state) => !state)}
+                />
+                <DeckStackControls
+                  currentIndex={activeCardIndex}
+                  numberOfCards={deck.cards.length}
+                  onBack={() => {
+                    setActiveCardIndex((state) => state - 1);
+                  }}
+                  onForward={() => {
+                    setActiveCardIndex((state) => state + 1);
+                  }}
+                />
+                <Slider
+                  aria-label="current card slider"
+                  className={classes.progressBar}
+                  value={deck.cards.length !== 1 ? activeCardIndex : 1}
+                  max={deck.cards.length !== 1 ? deck.cards.length - 1 : 1}
+                  valueLabelFormat={(value) => value + 1}
+                  onChange={
+                    deck.cards.length > 1
+                      ? (_event, value) => setActiveCardIndex(value as number)
+                      : undefined
+                  }
+                />
               </div>
-              <section className={classes.section}>
-                <div className={classes.deckStackContainer}>
-                  <DeckStack
-                    className={classes.deckStack}
-                    cards={deck.cards}
-                    activeIndex={activeCardIndex}
-                    showCardBack={showCardBack}
-                    onFlipCard={() => setShowCardBack((state) => !state)}
-                  />
-                  <DeckStackControls
-                    currentIndex={activeCardIndex}
-                    numberOfCards={deck.cards.length}
-                    onBack={() => {
-                      setActiveCardIndex((state) => state - 1);
-                    }}
-                    onForward={() => {
-                      setActiveCardIndex((state) => state + 1);
-                    }}
-                  />
-                  <Slider
-                    aria-label="current card slider"
-                    className={classes.progressBar}
-                    value={deck.cards.length !== 1 ? activeCardIndex : 1}
-                    max={deck.cards.length !== 1 ? deck.cards.length - 1 : 1}
-                    valueLabelFormat={(value) => value + 1}
-                    onChange={
-                      deck.cards.length > 1
-                        ? (_event, value) => setActiveCardIndex(value as number)
-                        : undefined
-                    }
-                  />
-                </div>
-              </section>
-              {/* Tag list */}
-              <section className={classes.section}>
-                <Typography variant="h2">Tags</Typography>
-                <div className={classes.tagList}>
-                  {sortedTags.map((tag) => (
-                    <Chip key={tag} label={tag} variant="outlined" />
-                  ))}
-                </div>
-              </section>
-              {/* Term list */}
-              <section className={classes.section}>
-                <Typography variant="h2">Terms</Typography>
-                <CardList cards={deck.cards} />
-              </section>
-            </>
-          )}
-        </LoadableComponent>
-      </div>
-    </div>
+            </section>
+            {/* Tag list */}
+            <section className={classes.section}>
+              <Typography variant="h2">Tags</Typography>
+              <div className={classes.tagList}>
+                {sortedTags.map((tag) => (
+                  <Chip key={tag} label={tag} variant="outlined" />
+                ))}
+              </div>
+            </section>
+            {/* Term list */}
+            <section className={classes.section}>
+              <Typography variant="h2">Terms</Typography>
+              <CardList cards={deck.cards} />
+            </section>
+          </>
+        )}
+      </LoadableComponent>
+    </main>
   );
 }
