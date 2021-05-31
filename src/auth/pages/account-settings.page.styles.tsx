@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(16),
   },
   avatarText: {
-    fontWeight: theme.typography.fontWeightBold,
+    fontSize: '6rem',
   },
   generalInfo: {
     display: 'flex',

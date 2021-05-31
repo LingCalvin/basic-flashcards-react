@@ -1,6 +1,5 @@
 import {
   AppBar as MuiAppBar,
-  Avatar,
   Button,
   Divider,
   IconButton,
@@ -21,6 +20,7 @@ import { authService } from '../../auth/services/auth.service';
 import useIsMobile from '../hooks/use-is-mobile';
 import routes from '../../router/constants/routes';
 import useStyles from './app-bar.styles';
+import Avatar from './avatar';
 
 export default function AppBar() {
   const classes = useStyles();
@@ -75,16 +75,11 @@ export default function AppBar() {
     </Menu>
   );
 
-  const avatar = (
-    <Avatar>
-      <Typography className={classes.avatarText} component="div">
-        {credentials?.username.substring(0, 1).toLocaleUpperCase()}
-      </Typography>
-    </Avatar>
-  );
+  const avatar = <Avatar username={credentials?.username} />;
 
   const loginProfile = authService.isAuthenticated() ? (
     <IconButton
+      aria-label="Account settings"
       className={classes.avatarButton}
       color="inherit"
       onClick={(e) => setMenuAnchor(e.currentTarget)}

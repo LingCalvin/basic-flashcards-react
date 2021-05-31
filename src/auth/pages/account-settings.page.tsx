@@ -1,6 +1,7 @@
-import { Avatar, Paper, Snackbar, Typography } from '@material-ui/core';
+import { Paper, Snackbar, Typography } from '@material-ui/core';
 import clsx from 'clsx';
 import { useContext, useState } from 'react';
+import Avatar from '../../common/components/avatar';
 import { autoHideDuration } from '../../common/constants/snackbar';
 import ChangePasswordForm from '../components/change-password-form';
 import CredentialsContext from '../contexts/credentials.context';
@@ -15,18 +16,14 @@ export default function AccountSettings() {
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
   return (
-    <div className={classes.root}>
+    <main className={classes.root}>
       <Typography variant="h1">Account Settings</Typography>
       <Paper className={clsx(classes.section, classes.generalInfo)}>
-        <Avatar className={classes.avatar}>
-          <Typography
-            className={classes.avatarText}
-            variant="h1"
-            component="div"
-          >
-            {credentials?.username.substring(0, 1).toLocaleUpperCase()}
-          </Typography>
-        </Avatar>
+        <Avatar
+          className={classes.avatar}
+          typographyClassName={classes.avatarText}
+          username={credentials?.username}
+        />
         <Typography variant="h2" component="div">
           {credentials?.username.toLocaleUpperCase()}
         </Typography>
@@ -62,6 +59,6 @@ export default function AccountSettings() {
         autoHideDuration={autoHideDuration}
         onClose={() => setShowSnackbar(false)}
       />
-    </div>
+    </main>
   );
 }
