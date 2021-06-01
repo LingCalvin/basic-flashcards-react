@@ -13,14 +13,23 @@ const useStyles = makeStyles((theme) => ({
   skipLink: {
     position: 'fixed',
     top: theme.spacing(-10),
+    left: theme.spacing(2),
     color: theme.palette.secondary.dark,
     backgroundColor: theme.palette.background.paper,
     textTransform: 'none',
     zIndex: theme.zIndex.appBar + 1,
+    transition: theme.transitions.create(['top'], {
+      duration: theme.transitions.duration.leavingScreen,
+      easing: theme.transitions.easing.easeOut,
+    }),
     '&:focus': {
       top: theme.spacing(2),
       left: theme.spacing(2),
       textDecoration: 'underline',
+      transition: theme.transitions.create(['top'], {
+        duration: theme.transitions.duration.enteringScreen,
+        easing: theme.transitions.easing.easeIn,
+      }),
     },
   },
 }));
