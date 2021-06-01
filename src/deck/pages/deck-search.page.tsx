@@ -10,6 +10,7 @@ import useStyles from './deck-search.page.styles';
 import * as MathUtils from '../../common/utils/math.utils';
 import { Search } from '@material-ui/icons';
 import { Typography } from '@material-ui/core';
+import Page from '../../common/components/page';
 
 export default function DeckSearchPage() {
   const classes = useStyles();
@@ -120,10 +121,12 @@ export default function DeckSearchPage() {
   );
 
   return (
-    <div className={classes.content}>
-      <LoadableComponent loading={loading}>
-        {totalDecks > 0 ? results : emptyResults}
-      </LoadableComponent>
-    </div>
+    <Page skipLinks={[{ fragment: 'content', text: 'Skip to content' }]}>
+      <main className={classes.content}>
+        <LoadableComponent loading={loading}>
+          {totalDecks > 0 ? results : emptyResults}
+        </LoadableComponent>
+      </main>
+    </Page>
   );
 }

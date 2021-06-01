@@ -38,12 +38,18 @@ interface EditDeckFormProps {
   defaultValues?: FormValues;
   variant?: TextFieldProps['variant'];
   onSubmit: (value: FormValues) => void;
+  generalInfoSectionId?: string;
+  cardListId?: string;
+  submitButtonId?: string;
 }
 
 export default function EditDeckForm({
   defaultValues,
   variant,
   onSubmit,
+  generalInfoSectionId,
+  cardListId,
+  submitButtonId,
 }: EditDeckFormProps) {
   const classes = useStyles();
 
@@ -81,7 +87,7 @@ export default function EditDeckForm({
 
   return (
     <form className={classes.form} noValidate onSubmit={handleSubmit(onSubmit)}>
-      <div className={classes.generalInfoContainer}>
+      <div id={generalInfoSectionId} className={classes.generalInfoContainer}>
         <TextField
           label="Title"
           required
@@ -117,6 +123,7 @@ export default function EditDeckForm({
         <Droppable droppableId={droppableId}>
           {(provided) => (
             <div
+              id={cardListId}
               className={classes.cardList}
               ref={provided.innerRef}
               {...provided.droppableProps}
@@ -163,7 +170,12 @@ export default function EditDeckForm({
         Add card
       </Button>
       <div className={classes.saveButtonContainer}>
-        <Button type="submit" variant="contained" color="primary">
+        <Button
+          id={submitButtonId}
+          type="submit"
+          variant="contained"
+          color="primary"
+        >
           Save
         </Button>
       </div>

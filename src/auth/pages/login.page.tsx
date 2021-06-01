@@ -8,6 +8,7 @@ import LoginForm from '../components/login-form';
 import { authService } from '../services/auth.service';
 import useStyles from './login.page.styles';
 import CredentialsContext from '../contexts/credentials.context';
+import Page from '../../common/components/page';
 
 export default function LoginPage() {
   const credentials = useContext(CredentialsContext);
@@ -24,21 +25,23 @@ export default function LoginPage() {
   }
 
   return (
-    <Container className={classes.content} component="main">
-      <Typography variant="h1">Log in</Typography>
-      {serverError && <Alert severity="error">{serverError}</Alert>}
-      <LoginForm
-        variant="outlined"
-        onSubmit={(value) => {
-          authService.logIn(value.username, value.password).catch((e) => {
-            if (e.response) {
-              setServerError(e.response?.data?.message);
-            } else {
-              setServerError('An error has occurred.');
-            }
-          });
-        }}
-      />
-    </Container>
+    <Page skipLinks={[{ fragment: 'content', text: 'Skip to content' }]}>
+      <Container id="content" className={classes.content} component="main">
+        <Typography variant="h1">Log in</Typography>
+        {serverError && <Alert severity="error">{serverError}</Alert>}
+        <LoginForm
+          variant="outlined"
+          onSubmit={(value) => {
+            authService.logIn(value.username, value.password).catch((e) => {
+              if (e.response) {
+                setServerError(e.response?.data?.message);
+              } else {
+                setServerError('An error has occurred.');
+              }
+            });
+          }}
+        />
+      </Container>
+    </Page>
   );
 }

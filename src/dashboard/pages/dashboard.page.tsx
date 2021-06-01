@@ -25,6 +25,7 @@ import { downloadBlob } from '../../common/utils/download.utils';
 import { autoHideDuration } from '../../common/constants/snackbar';
 import LoadableComponent from '../../common/components/loadable-component';
 import TextField from '../../common/components/text-field';
+import Page from '../../common/components/page';
 
 interface DashboardPageProps {
   pageSize?: number;
@@ -93,7 +94,7 @@ export default function DashboardPage({ pageSize = 10 }: DashboardPageProps) {
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
   return (
-    <main>
+    <Page skipLinks={[{ fragment: 'content', text: 'Skip to content' }]}>
       <DeleteDeckDialog
         deckTitle={deckToDelete?.title ?? ''}
         open={showDialog}
@@ -116,7 +117,7 @@ export default function DashboardPage({ pageSize = 10 }: DashboardPageProps) {
             .finally(() => setShowDialog(false));
         }}
       />
-      <div className={classes.content}>
+      <main id="content" className={classes.content}>
         <Typography variant="h1">Your decks</Typography>
 
         <div className={classes.sortAndSearchContainer}>
@@ -245,7 +246,7 @@ export default function DashboardPage({ pageSize = 10 }: DashboardPageProps) {
           autoHideDuration={autoHideDuration}
           onClose={() => setShowSnackbar(false)}
         />
-      </div>
-    </main>
+      </main>
+    </Page>
   );
 }
