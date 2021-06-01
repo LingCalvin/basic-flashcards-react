@@ -94,7 +94,10 @@ export default function DashboardPage({ pageSize = 10 }: DashboardPageProps) {
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
   return (
-    <Page skipLinks={[{ fragment: 'content', text: 'Skip to content' }]}>
+    <Page
+      title="Dashboard"
+      skipLinks={[{ fragment: 'content', text: 'Skip to content' }]}
+    >
       <DeleteDeckDialog
         deckTitle={deckToDelete?.title ?? ''}
         open={showDialog}

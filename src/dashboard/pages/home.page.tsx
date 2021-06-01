@@ -26,6 +26,7 @@ export default function HomePage() {
 
   return (
     <Page
+      title="Home"
       skipLinks={[
         { fragment: 'content', text: 'Skip to content' },
         { fragment: exampleDecksSectionId, text: 'Skip to example decks' },

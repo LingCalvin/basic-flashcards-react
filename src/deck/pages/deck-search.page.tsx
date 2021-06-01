@@ -121,7 +121,10 @@ export default function DeckSearchPage() {
   );
 
   return (
-    <Page skipLinks={[{ fragment: 'content', text: 'Skip to content' }]}>
+    <Page
+      title={`Search "${term}"`}
+      skipLinks={[{ fragment: 'content', text: 'Skip to content' }]}
+    >
       <main className={classes.content}>
         <LoadableComponent loading={loading}>
           {totalDecks > 0 ? results : emptyResults}

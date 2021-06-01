@@ -46,6 +46,7 @@ export default function DeckPage() {
 
   return (
     <Page
+      title={deck?.title ? `"${deck.title}"` : 'Deck'}
       skipLinks={[
         { fragment: 'content', text: 'Skip to content' },
         { fragment: cardsSectionId, text: 'Skip to cards' },

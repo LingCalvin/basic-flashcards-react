@@ -43,6 +43,7 @@ export default function EditDeckPage() {
 
   return (
     <Page
+      title={deck?.title ? `Edit "${deck.title}"` : 'Edit deck'}
       skipLinks={[
         { fragment: 'content', text: 'Skip to content' },
         { fragment: generalInfoSectionId, text: 'Skip to general info' },

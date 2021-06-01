@@ -21,6 +21,7 @@ export default function AccountSettings() {
 
   return (
     <Page
+      title="Account settings"
       skipLinks={[
         { fragment: 'content', text: 'Skip to content' },
         { fragment: securitySectionId, text: 'Skip to security' },

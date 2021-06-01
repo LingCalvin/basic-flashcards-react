@@ -25,7 +25,10 @@ export default function LoginPage() {
   }
 
   return (
-    <Page skipLinks={[{ fragment: 'content', text: 'Skip to content' }]}>
+    <Page
+      title="Login"
+      skipLinks={[{ fragment: 'content', text: 'Skip to content' }]}
+    >
       <Container id="content" className={classes.content} component="main">
         <Typography variant="h1">Log in</Typography>
         {serverError && <Alert severity="error">{serverError}</Alert>}

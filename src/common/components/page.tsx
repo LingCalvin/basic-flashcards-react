@@ -1,5 +1,6 @@
 import { Button, Link } from '@material-ui/core';
 import { ReactNode } from 'react';
+import useTitle from '../hooks/use-title';
 import AppBar from './app-bar';
 import useStyles from './page.styles';
 
@@ -9,12 +10,15 @@ export interface SkipLink {
 }
 
 export interface PageProps {
+  title: string;
   skipLinks?: SkipLink[];
   children?: ReactNode;
 }
 
-export default function Page({ skipLinks, children }: PageProps) {
+export default function Page({ title, skipLinks, children }: PageProps) {
   const classes = useStyles();
+
+  useTitle(title);
 
   const scrollToAnchor = (fragment: string) => {
     const element = document.querySelector(`#${fragment}`);

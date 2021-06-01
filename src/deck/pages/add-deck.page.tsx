@@ -29,6 +29,7 @@ export default function AddDeckPage() {
 
   return (
     <Page
+      title="Create deck"
       skipLinks={[
         { fragment: 'content', text: 'Skip to content' },
         { fragment: generalInfoSectionId, text: 'Skip to general info' },

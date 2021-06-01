@@ -14,7 +14,10 @@ export default function RegistrationPage() {
   const [serverError, setServerError] = useState('');
   const history = useHistory();
   return (
-    <Page skipLinks={[{ fragment: 'content', text: 'Skip to content' }]}>
+    <Page
+      title="Sign up"
+      skipLinks={[{ fragment: 'content', text: 'Skip to content' }]}
+    >
       <Container id="content" className={classes.content} component="main">
         <Typography variant="h1">Sign up</Typography>
         {serverError && <Alert severity="error">{serverError}</Alert>}
